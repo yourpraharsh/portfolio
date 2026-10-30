@@ -845,6 +845,9 @@ footer{padding-block:2rem 3rem;position:relative;z-index:2}
 @media (max-width:640px){.me-frame{width:230px;margin-top:1rem}}
 .me-frame img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 100%;border-radius:1px}
 .me-frame figcaption{padding:.7rem .2rem .85rem;text-align:center;color:#3a3340;font-family:var(--ff-mono);font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase}
+.skills{margin-top:clamp(2.5rem,5vw,3.5rem)}.skills-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:.75rem 2rem;margin-bottom:1.25rem}.skills-head h3{font-family:var(--ff-display);font-weight:400;font-size:var(--step-2);line-height:1.15;letter-spacing:-.015em}.skills-head .note{max-width:52ch;color:var(--ink-2);font-size:var(--step--1);line-height:1.55}
+.skill-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(.9rem,1.6vw,1.2rem)}@media (max-width:1100px){.skill-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:620px){.skill-grid{grid-template-columns:1fr}}
+.skill:hover{transform:none}.skill .tool-body{height:100%}.skill-dl{margin-top:auto;padding-top:.9rem;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:.45rem}.skill-dl .btn{padding:.45rem .8rem;font-size:.8125rem}
 
 /* ============================================================
    IN-SITE CASE STUDIES
@@ -2469,6 +2472,44 @@ body.is-case{padding-bottom:0}
     </a>
 
   </div>
+  <div class="skills" id="skills">
+    <div class="skills-head"><h3>Claude skills I made for designers</h3><p class="note">Free to download. Each one turns your Figma work into something you would otherwise build by hand. To install: in Claude, open Settings, turn on code execution, then upload the .skill file under Skills. Each guide has the full steps.</p></div>
+    <div class="skill-grid">
+      <div class="card-glass tool skill">
+        <div class="tool-body">
+        <span class="head"><span class="badge" style="background:linear-gradient(140deg,#FF8A3D,#E0116B)">S</span><h3>Figma to project website</h3></span>
+        <p class="what">Turns a project in your Figma file into a one-page case study: problem, research, explorations, final design and impact, with your real screens. You get a shareable link and a Netlify zip.</p>
+        <p class="why">Use it before a design review, as a pre-read, or for your portfolio.</p>
+        <div class="skill-dl"><a class="btn" href="downloads/skills/figma-project-site.skill" download><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Download skill</a><a class="btn btn--ghost" href="downloads/skills/figma-project-site-guide.md" download><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Guide</a></div>
+        </div>
+      </div>
+      <div class="card-glass tool skill">
+        <div class="tool-body">
+        <span class="head"><span class="badge" style="background:linear-gradient(140deg,#2E1F6B,#E0116B)">F</span><h3>Figma to project film</h3></span>
+        <p class="what">Makes a 20 to 60 second problem-to-solution video from your Figma screens, slides or PDF, including the directions you explored and the research that ruled them out.</p>
+        <p class="why">Use it to open a review or share an async update with your pod.</p>
+        <div class="skill-dl"><a class="btn" href="downloads/skills/figma-project-film.skill" download><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Download skill</a><a class="btn btn--ghost" href="downloads/skills/figma-project-film-guide.md" download><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Guide</a></div>
+        </div>
+      </div>
+      <div class="card-glass tool skill">
+        <div class="tool-body">
+        <span class="head"><span class="badge" style="background:linear-gradient(140deg,#E0116B,#6B4BE8)">M</span><h3>Motion handover</h3></span>
+        <p class="what">Turns a Figma prototype or a screen recording into a motion spec page for Android engineers: a live reference, a timeline, exact timings, layers and the Compose APIs to use.</p>
+        <p class="why">Use it when you hand an animation to developers.</p>
+        <div class="skill-dl"><a class="btn" href="downloads/skills/motion-handover.skill" download><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Download skill</a><a class="btn btn--ghost" href="downloads/skills/motion-handover-guide.md" download><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Guide</a></div>
+        </div>
+      </div>
+      <div class="card-glass tool skill">
+        <div class="tool-body">
+        <span class="head"><span class="badge" style="background:linear-gradient(140deg,#12A05A,#2E1F6B)">P</span><h3>Figma to prototype</h3></span>
+        <p class="what">Turns Figma screens or screenshots into a clickable prototype you can switch between Android, iPhone with Liquid Glass, and a foldable iPhone.</p>
+        <p class="why">Use it for user tests and demos. Needs Node.js 18 or newer.</p>
+        <div class="skill-dl"><a class="btn" href="downloads/skills/figma-to-prototype.skill" download><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Download skill</a><a class="btn btn--ghost" href="downloads/skills/figma-to-prototype-guide.md" download><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Guide</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <div class="rule"><i></i></div>
