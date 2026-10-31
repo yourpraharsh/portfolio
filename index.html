@@ -846,7 +846,14 @@ footer{padding-block:2rem 3rem;position:relative;z-index:2}
 .me-frame img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 100%;border-radius:1px}
 .me-frame figcaption{padding:.7rem .2rem .85rem;text-align:center;color:#3a3340;font-family:var(--ff-mono);font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase}
 .skills{margin-top:clamp(2.5rem,5vw,3.5rem)}.skills-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:.75rem 2rem;margin-bottom:1.25rem}.skills-head h3{font-family:var(--ff-display);font-weight:400;font-size:var(--step-2);line-height:1.15;letter-spacing:-.015em}.skills-head .note{max-width:52ch;color:var(--ink-2);font-size:var(--step--1);line-height:1.55}
-.skill-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(.9rem,1.6vw,1.2rem)}@media (max-width:1100px){.skill-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:620px){.skill-grid{grid-template-columns:1fr}}
+.skill-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(.9rem,1.6vw,1.2rem)}@media (max-width:700px){.skill-grid{grid-template-columns:1fr}}
+.skill .tool-body{padding:1.25rem 1.5rem 1.4rem}.skill h3{font-size:1.5rem}
+.skill--vid .tool-body{height:auto}
+.skill-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:#FAF8F7;border-bottom:1px solid var(--line)}
+.skill-media img,.skill-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.skill-vid{opacity:0;transition:opacity .25s ease;pointer-events:none}
+.skill--vid.is-playing .skill-vid{opacity:1}
+@media (prefers-reduced-motion:reduce){.skill-vid{display:none}}
 .skill:hover{transform:none}.skill .tool-body{height:100%}.skill-dl{margin-top:auto;padding-top:.9rem;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:.45rem}.skill-dl .btn{padding:.45rem .8rem;font-size:.8125rem}
 
 /* ============================================================
@@ -2475,7 +2482,8 @@ body.is-case{padding-bottom:0}
   <div class="skills" id="skills">
     <div class="skills-head"><h3>Claude skills I made for designers</h3><p class="note">Free to download. Upload the .skill file in Claude under Settings › Skills.</p></div>
     <div class="skill-grid">
-      <div class="card-glass tool skill">
+      <div class="card-glass tool skill skill--vid" data-vid="figma-to-prototype">
+        <div class="skill-media"><img src="images/skills/figma-to-prototype-poster.8f819472.webp" data-file="images/skills/figma-to-prototype-poster.webp" alt="Figma screens turning into a working prototype on Android, iPhone and iPhone Duo" width="800" height="500" loading="lazy" decoding="async"><video class="skill-vid" data-src="images/skills/figma-to-prototype.mp4" muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true"></video></div>
         <div class="tool-body">
         <span class="head"><h3>Figma to prototype</h3></span>
         <p class="what">Turns Figma screens into a clickable prototype for Android, iPhone and iPhone Duo.</p>
@@ -2483,7 +2491,8 @@ body.is-case{padding-bottom:0}
         <div class="skill-dl"><a class="btn" href="downloads/skills/figma-to-prototype.skill" download><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Download skill</a><a class="btn btn--ghost" href="downloads/skills/figma-to-prototype-guide.md" download><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Guide</a></div>
         </div>
       </div>
-      <div class="card-glass tool skill">
+      <div class="card-glass tool skill skill--vid" data-vid="figma-to-website">
+        <div class="skill-media"><img src="images/skills/figma-to-website-poster.6db2a2a6.webp" data-file="images/skills/figma-to-website-poster.webp" alt="Figma frames turning into a one-page case study with a share link" width="800" height="500" loading="lazy" decoding="async"><video class="skill-vid" data-src="images/skills/figma-to-website.mp4" muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true"></video></div>
         <div class="tool-body">
         <span class="head"><h3>Figma to project website</h3></span>
         <p class="what">Turns a Figma project into a one-page case study with a shareable link.</p>
@@ -2491,7 +2500,8 @@ body.is-case{padding-bottom:0}
         <div class="skill-dl"><a class="btn" href="downloads/skills/figma-project-site.skill" download><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Download skill</a><a class="btn btn--ghost" href="downloads/skills/figma-project-site-guide.md" download><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Guide</a></div>
         </div>
       </div>
-      <div class="card-glass tool skill">
+      <div class="card-glass tool skill skill--vid" data-vid="figma-to-video">
+        <div class="skill-media"><img src="images/skills/figma-to-video-poster.0319774d.webp" data-file="images/skills/figma-to-video-poster.webp" alt="Figma frames turning into a storyboard and a 30 second film" width="800" height="500" loading="lazy" decoding="async"><video class="skill-vid" data-src="images/skills/figma-to-video.mp4" muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true"></video></div>
         <div class="tool-body">
         <span class="head"><h3>Figma to project video</h3></span>
         <p class="what">Turns Figma screens into a 20–60 second problem-to-solution video.</p>
@@ -2499,7 +2509,8 @@ body.is-case{padding-bottom:0}
         <div class="skill-dl"><a class="btn" href="downloads/skills/figma-project-film.skill" download><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Download skill</a><a class="btn btn--ghost" href="downloads/skills/figma-project-film-guide.md" download><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Guide</a></div>
         </div>
       </div>
-      <div class="card-glass tool skill">
+      <div class="card-glass tool skill skill--vid" data-vid="motion-handover">
+        <div class="skill-media"><img src="images/skills/motion-handover-poster.0e73c33b.webp" data-file="images/skills/motion-handover-poster.webp" alt="A prototype animation timed layer by layer with Compose and View code" width="800" height="500" loading="lazy" decoding="async"><video class="skill-vid" data-src="images/skills/motion-handover.mp4" muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true"></video></div>
         <div class="tool-body">
         <span class="head"><h3>Motion handover</h3></span>
         <p class="what">Turns a prototype or screen recording into a motion spec for Android engineers.</p>
@@ -3422,6 +3433,53 @@ Array.prototype.slice.call(document.querySelectorAll('.pc-track')).forEach(initM
     setActive(best);
   }
   window.addEventListener('scroll', update, { passive: true }); window.addEventListener('resize', update); update();
+})();
+</script>
+<script>
+/* skill cards: same behaviour as the work cards. Mouse -> play on hover; touch / narrow -> play once at 75% on screen.
+   Videos live in images/skills/ on the hosted site; inside the claude.ai artifact they come from its asset store. */
+(function(){
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var BLOB = {"figma-to-website":"/_blob/36f001c159e3f570d0a8bf77e373b666","figma-to-video":"/_blob/0ae188f43716b6400d005436ed367f7e","motion-handover":"/_blob/f6ee6b97b13686a75a5134ac0c3178be","figma-to-prototype":"/_blob/10e67be2f1000b636cf288aa33795690"};
+  var hosted = /(^|\.)github\.io$|netlify\.app$|^localhost$|^127\./.test(location.hostname) || location.protocol === 'file:';
+  var cards = [].slice.call(document.querySelectorAll('.skill--vid')); if (!cards.length) return;
+  var scrollMQ = window.matchMedia('(hover: none), (pointer: coarse), (max-width: 780px)');
+  function srcFor(c){ var v = c.querySelector('.skill-vid'), b = BLOB[c.dataset.vid]; return (!hosted && b) ? b : v.dataset.src; }
+  function ctl(c){
+    if (c._ctl) return c._ctl;
+    var v = c.querySelector('.skill-vid'), on = false;
+    v.muted = true; v.defaultMuted = true; v.playsInline = true; v.setAttribute('webkit-playsinline', '');
+    v.addEventListener('playing', function(){ if (on) c.classList.add('is-playing'); });
+    return c._ctl = {
+      play: function(){
+        on = true; v.loop = !scrollMQ.matches;
+        if (!v.getAttribute('src')) { v.src = srcFor(c); v.load(); }
+        try { v.currentTime = 0; } catch (e) {}
+        var p = v.play(); if (p && p.catch) p.catch(function(){});
+      },
+      stop: function(){ on = false; c.classList.remove('is-playing'); if (v.getAttribute('src')) { v.pause(); try { v.currentTime = 0; } catch (e) {} } }
+    };
+  }
+  cards.forEach(function(c){
+    c.addEventListener('pointerenter', function(e){ if (e.pointerType === 'mouse' && !scrollMQ.matches) ctl(c).play(); });
+    c.addEventListener('pointerleave', function(e){ if (e.pointerType === 'mouse' && !scrollMQ.matches) ctl(c).stop(); });
+  });
+  var active = null, played = new Set();
+  function setActive(c){ if (active === c) return; if (active) ctl(active).stop(); active = c; if (c) { played.add(c); ctl(c).play(); } }
+  cards.forEach(function(c){ c.querySelector('.skill-vid').addEventListener('ended', function(){ if (active === c) { ctl(c).stop(); active = null; } }); });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      if (!scrollMQ.matches) return;
+      es.forEach(function(e){
+        var c = e.target;
+        if (e.intersectionRatio >= 0.75 && !played.has(c)) setActive(c);
+        else if (active === c && e.intersectionRatio < 0.2) { ctl(c).stop(); active = null; }
+      });
+    }, { threshold: [0, 0.2, 0.75, 1] });
+    cards.forEach(function(c){ io.observe(c); });
+  }
+  function onMode(){ if (!scrollMQ.matches) setActive(null); }
+  if (scrollMQ.addEventListener) scrollMQ.addEventListener('change', onMode); else if (scrollMQ.addListener) scrollMQ.addListener(onMode);
 })();
 </script>
 
