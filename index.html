@@ -858,6 +858,15 @@ footer{padding-block:2rem 3rem;position:relative;z-index:2}
 @media (prefers-reduced-motion:reduce){.skill-vid{display:none}}
 .skill:hover{transform:none}.skill .tool-body{height:100%}.skill-dl{margin-top:auto;padding-top:.9rem;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:.5rem}.skill-dl .btn{justify-content:center;white-space:nowrap;padding:.65rem .9rem;font-size:.875rem}@media (max-width:420px){.skill-dl .btn{padding:.6rem .5rem;font-size:.8125rem}}.skill-dl .btn:not(.btn--ghost){order:2}
 
+/* ---- tool cards: a real recording of each app plays on hover (Duo: the unfold, once); the poster is its first / last frame ---- */
+.tool-shot .tool-vid{position:absolute;left:14px;top:14px;width:calc(100% - 28px);aspect-ratio:16/10;height:auto;object-fit:cover;border-radius:10px 10px 0 0;opacity:0;pointer-events:none;transform-origin:50% 0;transition:opacity .25s ease,transform .5s cubic-bezier(.2,.7,.3,1)}
+.tool:hover .tool-shot .tool-vid{transform:translateY(-6px) scale(1.02)}
+.tool.is-playing .tool-vid{opacity:1}
+@media (prefers-reduced-motion:reduce){.tool-vid{display:none}}
+/* V-coded cards: keep the frame at the top and sides, but the screen runs down to the card's bottom edge (P, 2026-11-03) */
+#tools .tool-shot img{height:100%;object-fit:cover;object-position:50% 0}
+#tools .tool-shot .tool-vid{height:calc(100% - 14px);aspect-ratio:auto;object-position:50% 0}
+
 /* ============================================================
    IN-SITE CASE STUDIES
    ============================================================ */
@@ -2087,6 +2096,552 @@ body.is-case{padding-bottom:0}
 #cs-gw .strip--wide{align-items:flex-start}
 #cs-gw .strip .uf-arrow{margin-top:calc(clamp(170px,23vw,214px) - 11px)}
 
+/* ---- previous work: centred button under the grid; opens Hevo, GoodWorker and WhatsApp at the same card size ---- */
+.work-more{display:flex;justify-content:center;margin-top:clamp(1.5rem,3vw,2.25rem)}
+.work-more-btn svg{transition:transform .25s ease}
+.work-more-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+.work-intern{margin-top:clamp(1rem,2vw,1.5rem)}
+.work-intern[hidden]{display:none!important}
+@media (min-width:1000px){.work-grid.work-intern{display:flex;justify-content:center}.work-intern>.case{flex:0 0 calc((100% - 2*clamp(1rem,2vw,1.5rem))/3)}}
+
+/* ---- Gold case (from the GOLD v3 chat) ---- */
+#cs-gold .ph-vid video{display:block;width:100%;height:auto}
+#cs-gold .ph--chosen .ph-win::after{content:"";position:absolute;inset:0;border:2.5px solid #E0116B;border-radius:inherit;z-index:3;pointer-events:none}
+#cs-gold .chosen-tag{display:table;margin:0 0 .35rem;padding:.12rem .45rem;border-radius:999px;background:#E0116B;color:#fff;font-size:.5625rem;line-height:1.4;letter-spacing:.12em}
+@media (min-width:901px){#cs-gold .cs-facts{grid-template-columns:repeat(5,minmax(0,1fr))}}
+#cs-gold #pop-ftux .ph{transition:opacity .3s ease}
+#cs-gold #pop-ftux .strip .ph:not(.is-on){opacity:.45}
+@media (min-width:641px){#cs-gold #pop-ftux .strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible}
+#cs-gold #pop-ftux .strip .ph{flex:none}
+#cs-gold #pop-ftux .strip::after{display:none}}
+#cs-gold .dt-wrap{overflow-x:auto;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:.4rem 1.1rem .6rem;-webkit-overflow-scrolling:touch}
+#cs-gold table.dt{width:100%;border-collapse:collapse;font-size:.875rem;min-width:520px}
+#cs-gold table.dt th{text-align:left;font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:500;padding:.85rem .75rem .5rem 0;vertical-align:bottom}
+#cs-gold table.dt td{padding:.6rem .75rem .6rem 0;border-top:1px solid var(--line);color:var(--ink-2);vertical-align:top;line-height:1.45}
+#cs-gold table.dt td.n,#cs-gold table.dt th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+#cs-gold table.dt td.n{color:var(--ink);font-weight:600}
+#cs-gold table.dt tr.hi td{background:color-mix(in srgb,var(--rose) 8%,var(--paper))}
+#cs-gold table.dt tr.hi td:first-child{box-shadow:inset 3px 0 0 var(--rose);padding-left:.6rem}
+#cs-gold table.dt tr.tot td{font-weight:600;color:var(--ink)}
+#cs-gold td .neg{color:var(--pop-neg)}
+#cs-gold td .pos{color:var(--pop-pos)}
+#cs-gold .dt-note{margin:.55rem .2rem 0;font-size:.8125rem!important;color:var(--ink-3)!important}
+#cs-gold .chart{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2.4vw,26px);overflow-x:auto}
+#cs-gold .chart svg{display:block;width:100%;min-width:600px;height:auto;font-family:var(--ff-body,inherit)}
+#cs-gold .badge{display:inline-flex;align-items:center;gap:.35rem;margin-left:.5rem;padding:.2rem .55rem;border-radius:999px;background:var(--rose);color:#fff;font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;vertical-align:middle}
+#cs-gold .qa{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){#cs-gold .qa{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){#cs-gold .qa{grid-template-columns:1fr}}
+#cs-gold .qa > div{background:var(--paper);border:1px solid var(--line-strong);border-radius:16px;padding:1rem 1.05rem}
+#cs-gold .qa span{display:block;font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--rose);margin-bottom:.45rem}
+#cs-gold .qa b{display:block;font-weight:500;color:var(--ink);line-height:1.45;font-size:.9375rem}
+#cs-gold .qa .not span{color:var(--ink-3)}
+#cs-gold .key{padding:clamp(20px,3vw,32px) clamp(20px,3.4vw,36px);border-radius:clamp(16px,2vw,24px);background:linear-gradient(135deg,color-mix(in srgb,var(--rose) 12%,var(--paper)),color-mix(in srgb,var(--marigold) 9%,var(--paper)));border:1px solid color-mix(in srgb,var(--rose) 28%,transparent)}
+#cs-gold .key h3{margin:0 0 .8rem}
+#cs-gold .split3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+@media (max-width:760px){#cs-gold .split3{grid-template-columns:1fr}}
+#cs-gold .optrow h3 .badge{font-size:.6rem}
+#cs-gold .ph figcaption b{color:var(--rose);font-weight:600}
+#cs-gold .lp-shots{margin:clamp(20px,3vw,32px) 0 .5rem}
+#cs-gold .ph-blank{aspect-ratio:1/2;border-radius:clamp(10px,1.4vw,16px);border:1.5px dashed rgba(22,18,26,.18);background:#F7F5F6}
+#cs-gold .lp-shots .uf-step{flex:0 0 clamp(120px,14vw,150px)}
+#cs-gold .lp-shots .uf-row--cap .uf-arrow{margin-top:calc(clamp(120px,14vw,150px) - 11px)}
+#cs-gold .lp-shots .uf-row{margin-right:0}
+#cs-gold .lp-shots .cs-fig{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.08)}
+#cs-gold .lp-flow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:clamp(12px,2vw,24px);align-items:center;margin:clamp(20px,3vw,32px) 0 .5rem}
+#cs-gold .lp-k{display:block;font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:#FF8DBB;margin-bottom:.6rem}
+#cs-gold .lp-ui{background:#fff;border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:0 20px 40px -24px rgba(0,0,0,.6)}
+#cs-gold .lp-opt{display:flex;align-items:center;gap:10px;border:1px solid rgba(22,18,26,.12);border-radius:12px;padding:10px 12px;color:#16121A;font-size:.875rem;line-height:1.3;position:relative}
+#cs-gold .lp-opt b{font-weight:700;font-size:1rem;min-width:3.2em;color:#16121A}
+#cs-gold .lp-opt span{flex:1;color:#16121A}
+#cs-gold .lp-opt small{display:block;margin-top:4px;font-size:.75rem;color:#4A4350}
+#cs-gold .lp-opt small i{font-style:normal;background:#EEF3FF;border:1px solid #C9D6FB;border-radius:6px;padding:1px 6px;white-space:nowrap}
+#cs-gold .lp-opt small i + i, #cs-gold .lp-opt small i:last-child{background:#F3FBF6;border-color:#BFE3CC}
+#cs-gold .lp-opt em{font-style:normal;font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:999px;background:#16121A;color:#fff;white-space:nowrap;flex:none}
+#cs-gold .lp-keep{border-color:#16121A;border-width:1.5px}
+#cs-gold .lp-pop{border:1.5px solid #E0116B;background:#FFF3F8;box-shadow:0 0 0 4px rgba(224,17,107,.12)}
+#cs-gold .lp-pop em{background:#E0116B}
+#cs-gold .lp-dim{opacity:.6}
+#cs-gold .lp-r{flex:none;width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(22,18,26,.35)}
+#cs-gold .lp-r.on{border-color:#9B1E7A;box-shadow:inset 0 0 0 3px #fff;background:#9B1E7A}
+#cs-gold .lp-arrow{display:flex;flex-direction:column;align-items:center;gap:6px;color:#FF8DBB;font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;text-align:center;max-width:110px}
+#cs-gold .lp-big{display:block;font-family:var(--ff-display);font-weight:400;font-size:2.2rem;line-height:1;color:#FF8DBB;margin:.55rem 0 .6rem}
+@media (max-width:700px){#cs-gold .lp-flow{grid-template-columns:1fr}
+#cs-gold .lp-arrow{flex-direction:row;max-width:none;justify-content:center}
+#cs-gold .lp-arrow svg{transform:rotate(90deg)}}
+#cs-gold table.dt th .ic{display:inline-flex;align-items:center;gap:6px}
+#cs-gold table.dt th.n .ic{justify-content:flex-end}
+#cs-gold table.dt th svg{width:14px;height:14px;flex:none;color:var(--rose)}
+#cs-gold .dl{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-weight:600;font-size:.8125rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+#cs-gold .dl i{font-style:normal;font-size:.6em;line-height:1}
+#cs-gold .dl.up{color:var(--pop-pos);background:color-mix(in srgb,var(--pop-pos) 13%,transparent)}
+#cs-gold .dl.dn{color:var(--pop-neg);background:color-mix(in srgb,var(--pop-neg) 13%,transparent)}
+#cs-gold .barc{display:inline-flex;align-items:center;justify-content:flex-end;gap:10px;width:100%}
+#cs-gold .barc > span{display:block;height:8px;max-width:110px;flex:0 0 auto;border-radius:4px;background:color-mix(in srgb,var(--rose) 60%,transparent)}
+#cs-gold .barc > b{min-width:3.4em;text-align:right}
+#cs-gold .dt-key{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:.55rem .2rem 0;font-size:.75rem!important;color:var(--ink-3)!important}
+#cs-gold .dt-key .dl{font-size:.6875rem;padding:1px 7px}
+#cs-gold .dt-key + .dt-note{margin-top:.3rem}
+#cs-gold .flip-tile{flex-direction:column;gap:14px}
+#cs-gold .smart{position:relative;width:min(300px,70vw);aspect-ratio:1/2;border-radius:clamp(12px,1.6vw,18px);overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(22,18,26,.08),0 24px 48px -24px rgba(22,18,26,.45)}
+#cs-gold .smart .sb{position:absolute;inset:0;width:100%;height:100%;display:block}
+#cs-gold .smart .sl{position:absolute;display:block;opacity:0;will-change:opacity,transform}
+#cs-gold .smart .sm-l1{transform:translateY(12%);transition:opacity .28s ease,transform .34s cubic-bezier(.2,.8,.2,1)}
+#cs-gold .smart .sm-l2{transform:scale(.55);transform-origin:20% 50%;transition:opacity .2s ease,transform .32s cubic-bezier(.34,1.56,.64,1)}
+#cs-gold .smart .sm-l3{transform:translateX(6%);transition:opacity .3s ease,transform .38s cubic-bezier(.2,.8,.2,1)}
+#cs-gold .smart .sm-l4,#cs-gold .smart .sm-l5{transition:opacity .3s ease}
+#cs-gold .smart.k1 .sm-l1,#cs-gold .smart.k2 .sm-l2,#cs-gold .smart.k3 .sm-l3{opacity:1;transform:none}
+#cs-gold .smart.k3 .sm-l4,#cs-gold .smart.k3 .sm-l5{opacity:1}
+#cs-gold .uf-tile > .uf-lane:first-child{margin-top:0;padding-top:0;border-top:0}
+#cs-gold .flip{position:relative;width:min(300px,70vw);aspect-ratio:1/2;border-radius:clamp(12px,1.6vw,18px);overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(22,18,26,.08),0 24px 48px -24px rgba(22,18,26,.45)}
+#cs-gold .flip img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s ease}
+#cs-gold .flip img.on{opacity:1}
+#cs-gold .flip-dots{display:flex;gap:6px}
+#cs-gold .flip-dots i{width:7px;height:7px;border-radius:50%;background:rgba(22,18,26,.18);transition:background .3s,width .3s}
+#cs-gold .flip-dots i.on{background:#E0116B;width:18px;border-radius:4px}
+#cs-gold .callout{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:1.1rem 1.1rem 1.2rem}
+#cs-gold .callout b{display:block;font-family:var(--ff-display);font-size:2.4rem;line-height:1;font-weight:400;color:var(--rose);letter-spacing:-.02em}
+#cs-gold .callout span{display:block;margin-top:.5rem;font-size:.8125rem;color:var(--ink-2);line-height:1.45}
+#cs-gold .uf-row--cap .uf-or{margin-top:calc(clamp(150px,19vw,190px) - 8px)!important}
+#cs-gold .single-tile .ph{width:min(320px,72vw)}
+#cs-gold .single-tile .ph figcaption{text-align:center}
+#cs-gold .cohorts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:.9rem 0 1rem}
+#cs-gold .co{border-radius:16px;padding:.95rem 1rem 1rem;border:1px solid var(--line-strong);background:var(--paper)}
+#cs-gold .co:nth-child(2){background:color-mix(in srgb,var(--rose) 7%,var(--paper))}
+#cs-gold .co:nth-child(3){background:color-mix(in srgb,var(--rose) 15%,var(--paper))}
+#cs-gold .co:nth-child(4){background:color-mix(in srgb,var(--rose) 26%,var(--paper))}
+#cs-gold .co-k{display:block;font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+#cs-gold .co b{display:block;font-family:var(--ff-display);font-weight:400;font-size:1.75rem;line-height:1.05;color:var(--ink);margin-top:.4rem}
+#cs-gold .co small{display:block;font-size:.8125rem;line-height:1.4;color:var(--ink-2);margin-top:.3rem}
+#cs-gold .co-act{grid-column:2 / 5;border-top:2px solid var(--rose);padding-top:.5rem;font-size:.8125rem;color:var(--ink-2);text-align:center}
+#cs-gold .co-act b{color:var(--ink);font-weight:600}
+@media (max-width:640px){#cs-gold .cohorts{grid-template-columns:1fr 1fr}
+#cs-gold .co-act{grid-column:1 / 3;text-align:left}}
+#cs-gold .chart svg text{font-family:inherit}
+#cs-gold{--pop-bar:#D3CCD1;--pop-neg:#B4235A;--pop-pos:#1F7A4D;--pop-gate:#16121A;--pop-gate-t:#FFFFFF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #cs-gold{--pop-bar:#51485C;--pop-neg:#FF8AB3;--pop-pos:#6FDCA6;--pop-gate:#F4F0F5;--pop-gate-t:#16121A}}
+:root[data-theme="dark"] #cs-gold{--pop-bar:#51485C;--pop-neg:#FF8AB3;--pop-pos:#6FDCA6;--pop-gate:#F4F0F5;--pop-gate-t:#16121A}
+#cs-gold .chart svg .ti{fill:var(--ink)}
+#cs-gold .chart svg .t2{fill:var(--ink-2)}
+#cs-gold .chart svg .t3{fill:var(--ink-3)}
+#cs-gold .chart svg .ax{stroke:var(--line-strong)}
+#cs-gold .chart svg .gl{stroke:var(--line)}
+#cs-gold .chart svg .sk3{stroke:var(--ink-3)}
+#cs-gold .chart svg .bar{fill:var(--pop-bar)}
+#cs-gold .chart svg .acc{fill:var(--rose)}
+#cs-gold .chart svg .acc-s{stroke:var(--rose)}
+#cs-gold .chart svg rect.acc{stroke:var(--rose)}
+#cs-gold .chart svg .card{fill:var(--paper);stroke:var(--line-strong)}
+#cs-gold .chart svg .gate{fill:var(--pop-gate)}
+#cs-gold .chart svg .gate-t{fill:var(--pop-gate-t)}
+#cs-gold .chart svg .on-acc{fill:var(--paper)}
+#cs-gold .chart svg .on-acc2{fill:var(--paper);opacity:.85}
+#cs-gold .badge{color:var(--paper)}
+#cs-gold .cs-tile .uf-lane-t,#cs-gold .cs-tile .ph figcaption b{color:#E0116B}
+@media (prefers-reduced-motion:reduce){#cs-gold .fw-dot{display:none}}
+#cs-gold .chart svg.fw-mob{display:none;min-width:0;max-width:340px;margin:0 auto}
+@media (max-width:640px){#cs-gold .chart svg.fw-desk{display:none}
+#cs-gold .chart svg.fw-mob{display:block}}
+#cs-gold .cs-hero h1{max-width:17ch}
+#cs-gold .cover-phones{aspect-ratio:auto;display:flex;justify-content:center;align-items:flex-start;gap:clamp(10px,3vw,40px);padding:clamp(18px,4vw,48px) clamp(12px,3vw,40px) 0;
+  background:radial-gradient(120% 90% at 85% 0%,color-mix(in srgb,var(--rose) 22%,transparent),transparent 60%),radial-gradient(90% 80% at 0% 100%,color-mix(in srgb,var(--marigold) 20%,transparent),transparent 60%),var(--ground-2);height:clamp(300px,42vw,500px);overflow:hidden}
+#cs-gold .cover-phones .ph{flex:0 0 clamp(108px,20vw,232px)}
+#cs-gold .cover-phones .ph:nth-child(2){margin-top:clamp(14px,3vw,40px)}
+#cs-gold .cover-phones .ph-win{aspect-ratio:1/2.05}
+#cs-gold .ph{margin:0;display:flex;flex-direction:column;gap:.55rem;min-width:0}
+#cs-gold .ph-win{position:relative;aspect-ratio:1/2;overflow:hidden;border-radius:clamp(10px,1.4vw,16px);background:#fff;container-type:inline-size;cursor:zoom-in;
+  box-shadow:0 0 0 1px rgba(22,18,26,.08),0 14px 28px -18px rgba(22,18,26,.4)}
+#cs-gold .ph-win img{position:absolute;left:0;top:calc(var(--k,0) * -100cqw);width:100%;height:auto;display:block;border-radius:0!important}
+#cs-gold .ph-win:focus-visible{outline:2px solid var(--rose);outline-offset:3px}
+#cs-gold .ph figcaption,#cs-gold .ph > span{font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.08em;text-transform:uppercase;color:#847B8F;line-height:1.45;text-align:left}
+#cs-gold .strip-tile{display:block!important;padding:clamp(14px,2.2vw,24px)!important}
+#cs-gold .strip{display:flex;gap:clamp(12px,1.6vw,18px);overflow-x:auto;scroll-snap-type:x proximity;padding:2px 2px 12px;scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent;-webkit-overflow-scrolling:touch}
+#cs-gold .strip .ph{flex:0 0 clamp(150px,20vw,190px);scroll-snap-align:start}
+#cs-gold .strip--wide .ph{flex-basis:clamp(170px,23vw,214px)}
+#cs-gold .strip--dup .ph{flex-basis:clamp(220px,32vw,290px)}
+#cs-gold .hint{font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+#cs-gold .cs-fig img{cursor:zoom-in}
+#cs-gold .annot{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:clamp(1rem,3vw,2rem);align-items:start}
+#cs-gold .annot + .annot{margin-top:1.75rem}
+#cs-gold .annot-tile{display:block!important;padding:clamp(18px,3.4vw,40px)!important}
+#cs-gold .annot-tile .annot + .annot{margin-top:clamp(1.5rem,3vw,2.25rem);padding-top:clamp(1.5rem,3vw,2.25rem);border-top:1px solid rgba(22,18,26,.08)}
+#cs-gold .annot-tile .notes li{color:#4A4350}
+#cs-gold .annot-tile .notes b{color:#16121A}
+#cs-gold .fig--axis .cs-tile{background:#F0F4F7}
+#cs-gold .fig--axis .cs-tile img{border-radius:0!important}
+#cs-gold .uf-tile{display:block!important;padding:clamp(16px,3vw,32px)!important}
+#cs-gold .uf-title{margin:0;font-family:var(--ff-display);font-weight:400;font-size:1.5rem;line-height:1.15;color:#16121A}
+#cs-gold .uf-text{margin:.4rem 0 0;font-size:.875rem!important;line-height:1.5;color:#4A4350!important;max-width:62ch}
+#cs-gold .uf-lane{margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid rgba(22,18,26,.08)}
+#cs-gold .uf-lane-t{display:block;font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rose);margin-bottom:.8rem}
+#cs-gold .uf-row{display:flex;align-items:center;gap:clamp(8px,1.2vw,14px);overflow-x:auto;padding:2px 2px 10px;scrollbar-width:thin;scrollbar-color:rgba(22,18,26,.2) transparent}
+#cs-gold .uf-step{flex:0 0 clamp(150px,19vw,190px)}
+#cs-gold .uf-or{flex:none;margin-top:3.9rem;font-family:var(--ff-mono);font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;color:#847B8F}
+#cs-gold .uf-arrow{flex:none;color:#847B8F;display:grid;place-items:center;margin-top:3.9rem}
+#cs-gold .uf-row--cap{align-items:flex-start}
+#cs-gold .uf-row--cap .uf-arrow{margin-top:calc(clamp(150px,19vw,190px) - 11px)}
+#cs-gold .uf-step .mq-l{display:flex;align-items:flex-end;min-height:3.7rem}
+#cs-gold .pivot{margin:clamp(48px,7vw,88px) 0 clamp(24px,4vw,40px);padding:clamp(24px,4.5vw,56px);border-radius:clamp(18px,2.4vw,28px);background:#16121A;color:#F4EEF2;position:relative;overflow:hidden;isolation:isolate}
+#cs-gold .pivot::before{content:'';position:absolute;right:-12%;top:-30%;width:62%;height:130%;background:radial-gradient(closest-side,rgba(224,17,107,.38),transparent);z-index:-1;pointer-events:none}
+#cs-gold .pivot-eyebrow{font-family:var(--ff-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:#FF8DBB}
+#cs-gold .pivot h3{font-family:var(--ff-display);font-weight:400;font-size:clamp(2.1rem,4.8vw,3.6rem);line-height:1.02;letter-spacing:-.01em;margin:.55rem 0 1.1rem;color:#fff;max-width:16ch}
+#cs-gold .pivot p{color:rgba(244,238,242,.78)!important;font-size:1.0625rem!important;line-height:1.6;max-width:60ch;margin:0 0 .85rem}
+#cs-gold .pivot p.pivot-lead{color:#fff!important;font-size:1.25rem!important;line-height:1.5}
+#cs-gold .pivot-compare{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(12px,2vw,24px);align-items:center;margin-top:clamp(22px,3.2vw,36px)}
+#cs-gold .pivot-compare figure{margin:0;background:#fff;border-radius:14px;padding:12px}
+#cs-gold .pivot-compare img{width:100%;height:auto;display:block;border-radius:6px}
+#cs-gold .pivot-compare figcaption{font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:#4A4350;margin-top:10px}
+#cs-gold .pivot-why{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:1.2rem 0 1.3rem}
+#cs-gold #pop-final{position:relative;padding:clamp(24px,4.5vw,56px)!important;margin-inline:calc(-1*clamp(0px,2.4vw,36px));border-radius:clamp(20px,2.6vw,32px);background:linear-gradient(160deg,#FCE9F1 0%,#F5ECFB 52%,#ECF0FB 100%);border:1px solid rgba(224,17,107,.16);box-shadow:0 30px 80px -40px rgba(224,17,107,.35)}
+#cs-gold #pop-final>.eyebrow{display:inline-flex;align-items:center;gap:8px;background:#E0116B;color:#fff!important;padding:7px 14px;border-radius:999px;width:fit-content;max-width:max-content;align-self:flex-start;justify-self:start}
+#cs-gold #pop-final>.eyebrow .dot{background:#fff}
+#cs-gold #pop-final>h2{color:#16121A}
+@media (prefers-color-scheme:dark){#cs-gold #pop-final{background:linear-gradient(160deg,rgba(224,17,107,.20) 0%,rgba(124,77,255,.14) 55%,rgba(60,90,200,.12) 100%);border-color:rgba(255,141,187,.25)}
+#cs-gold #pop-final>h2{color:inherit}}
+:root[data-theme="dark"] #cs-gold #pop-final{background:linear-gradient(160deg,rgba(224,17,107,.20) 0%,rgba(124,77,255,.14) 55%,rgba(60,90,200,.12) 100%);border-color:rgba(255,141,187,.25)}
+:root[data-theme="dark"] #cs-gold #pop-final>h2{color:inherit}
+@media (max-width:700px){#cs-gold #pop-final{margin-inline:0}}
+#cs-gold .ovp{display:block!important;text-align:left;padding:clamp(18px,3.4vw,40px)!important}
+#cs-gold .ovp-k{display:block;font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:#847B8F;margin-bottom:6px;line-height:1.6;max-width:70ch}
+#cs-gold .ovp-row{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(18px,3vw,40px);align-items:center;padding:clamp(16px,2.4vw,24px) 0;border-top:1px solid rgba(22,18,26,.08)}
+#cs-gold .ovp-row:first-of-type{border-top:0}
+#cs-gold .ovp-pair{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:end}
+#cs-gold .ovp-cl{display:block;font-family:var(--ff-mono);font-size:.5625rem;letter-spacing:.14em;text-transform:uppercase;color:#847B8F;margin-bottom:6px}
+#cs-gold .ovp-img{position:relative;border-radius:12px;overflow:hidden;border:1px solid rgba(22,18,26,.1);background:#fff}
+#cs-gold .ovp-img img{display:block;width:100%;height:auto}
+#cs-gold .ovp-tagline{position:absolute;left:6px;top:6px;font-size:.6875rem;font-weight:700;padding:3px 8px;border-radius:999px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.14);color:#4A4350}
+#cs-gold .ovp-tagline.good{color:#067647}
+#cs-gold .ovp-tagline.violet{color:#5B3CC4}
+#cs-gold .ovp-tagline.amber{color:#B54708}
+#cs-gold .ovp-vs{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;font-size:.6875rem;color:#847B8F;align-self:center}
+#cs-gold .ovp-vs{gap:4px!important}
+#cs-gold .ovp-vs b{font-size:.875rem;white-space:nowrap;padding:3px 9px;border-radius:999px}
+#cs-gold .ovp-vs b.up{color:#067647;background:#E7F6EC}
+#cs-gold .ovp-vs b.down{color:#B42318;background:#FDECEC}
+#cs-gold .ovp-vs b.eq{color:#4A4350;background:#F1EEF3}
+#cs-gold .ovp-note{font-size:.8125rem!important;line-height:1.5;color:#4A4350!important;margin:.6rem 0 0!important}
+#cs-gold .ovp-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+#cs-gold .ovp-chip{font-size:.75rem;font-weight:600;padding:4px 9px;border-radius:999px;white-space:nowrap}
+#cs-gold .ovp-chip.g{background:#E7F6EC;color:#067647}
+#cs-gold .ovp-chip.a{background:#FEF3E2;color:#B54708}
+#cs-gold .ovp-chip.x{background:#FDECEC;color:#B42318}
+#cs-gold .ovp-n{display:block;font-family:var(--ff-display);font-weight:400;font-size:2.2rem;line-height:1;color:#16121A;margin-bottom:8px}
+#cs-gold .ovp-n small{font-size:.75rem;color:#847B8F;font-family:var(--ff-mono);letter-spacing:.06em}
+#cs-gold .ovp-dots{display:grid;grid-template-columns:repeat(50,1fr);gap:3px}
+#cs-gold .ovp-dots i{display:block;aspect-ratio:1;border-radius:50%;background:#E9E5EC}
+#cs-gold .ovp-dots i.r1{background:#E0116B}
+#cs-gold .ovp-dots i.r2{background:#7C4DFF}
+#cs-gold .ovp-dots i.r3{background:#F59E0B}
+#cs-gold .ovp-row.r1 .ovp-n{color:#E0116B}
+#cs-gold .ovp-row.r2 .ovp-n{color:#5B3CC4}
+#cs-gold .ovp-row.r3 .ovp-n{color:#B54708}
+@media (max-width:760px){#cs-gold .ovp-row{grid-template-columns:1fr}
+#cs-gold .ovp-dots{grid-template-columns:repeat(25,1fr);gap:4px}}
+#cs-gold .pivot-why>div{border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:16px 18px;background:rgba(255,255,255,.045)}
+#cs-gold .pivot-why h4{color:#fff;font-size:1rem;font-weight:600;line-height:1.3;margin:0 0 .45rem}
+#cs-gold .pivot .pivot-why p{font-size:.9375rem!important;line-height:1.55;margin:0;color:rgba(244,238,242,.72)!important}
+@media (max-width:700px){#cs-gold .pivot-why{grid-template-columns:1fr}}
+#cs-gold .pivot-arrow{color:#FF8DBB;display:grid;place-items:center}
+@media (max-width:700px){#cs-gold .pivot-compare{grid-template-columns:1fr}
+#cs-gold .pivot-arrow{transform:rotate(90deg)}}
+#cs-gold .dup-tile{display:block!important;padding:clamp(16px,3vw,32px)!important}
+#cs-gold .dup-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,3.4vw,36px);align-items:start}
+#cs-gold .dup-col{display:flex;flex-direction:column;gap:.55rem}
+#cs-gold .dup-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#cs-gold .dup-col img{box-shadow:0 0 0 1px rgba(22,18,26,.08)}
+#cs-gold .dup-note{font-size:.8125rem!important;line-height:1.45;color:#4A4350!important;margin:0}
+@media (max-width:640px){#cs-gold .dup-grid{grid-template-columns:1fr}}
+#cs-gold .pnotes li::before{content:'';width:7px;height:7px;top:.62em;left:.3rem;border-radius:50%;background:var(--rose)}
+#cs-gold .pnotes li{padding-left:1.65rem}
+#cs-gold .pnotes li > i{position:absolute;left:0;top:.1em;min-width:2rem;height:1.35rem;padding:0 .35rem;border-radius:999px;background:var(--rose);color:#fff;font:500 .6875rem/1 var(--ff-mono);display:grid;place-items:center;font-style:normal}
+#cs-gold .pnotes .hmw{display:block;margin-top:.3rem;font-size:.8125rem;line-height:1.45;color:#847B8F}
+#cs-gold .cs-jnotes--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:700px){#cs-gold .cs-jnotes--3{grid-template-columns:1fr}}
+#cs-gold .annot .ph{max-width:220px}
+@media (max-width:560px){#cs-gold .annot{grid-template-columns:1fr}
+#cs-gold .annot .ph{max-width:200px}}
+#cs-gold .notes{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.7rem;counter-reset:n}
+#cs-gold .notes li{position:relative;padding-left:2.5rem;color:var(--ink-2);line-height:1.5;font-size:.9375rem}
+#cs-gold .notes li::before{counter-increment:n;content:counter(n);position:absolute;left:0;top:.05em;width:1.35rem;height:1.35rem;border-radius:50%;background:var(--rose);color:#fff;font-family:var(--ff-mono);font-size:.6875rem;display:grid;place-items:center}
+#cs-gold .notes b{color:var(--ink);font-weight:600}
+#cs-gold .cs-cards .cs-card p{color:var(--ink-2)}
+#cs-gold .cs-card .tag{font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--rose)}
+#cs-gold .rules{width:100%;border-collapse:collapse;font-size:.8125rem;min-width:640px}
+#cs-gold .strip-tile{padding-right:0!important;overflow:hidden}
+#cs-gold .uf-tile{overflow:hidden}
+#cs-gold .uf-row{margin-right:calc(-1 * clamp(16px,3vw,32px))}
+#cs-gold .strip::after,#cs-gold .uf-row::after,#cs-gold .vks::after{content:'';flex:0 0 clamp(10px,1.8vw,22px);align-self:stretch}
+#cs-gold .rules-wrap{overflow-x:auto;border:1px solid var(--line-strong);border-radius:16px;background:var(--paper)}
+#cs-gold .rules th,#cs-gold .rules td{padding:.6rem .75rem;text-align:left;vertical-align:top;border-top:1px solid var(--line);color:var(--ink-2);line-height:1.4}
+#cs-gold .rules thead th{border-top:0;font-family:var(--ff-mono);font-size:.5625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+#cs-gold .rules tbody th{color:var(--ink);font-weight:600;width:24%}
+#cs-gold .rules td.off{color:var(--ink-3)}
+#cs-gold .chart{display:block;width:100%;height:auto}
+#cs-gold .chart text{font-family:var(--ff-body)}
+#cs-gold .flowsvg{display:block;width:100%;height:auto}
+#cs-gold .todo{border:1.5px dashed color-mix(in srgb,var(--rose) 55%,transparent);border-radius:16px;padding:1rem 1.15rem;background:color-mix(in srgb,var(--rose) 5%,var(--paper));color:var(--ink-2);font-size:.9375rem;line-height:1.55}
+#cs-gold .todo b{color:var(--rose);font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:.3rem;font-weight:500}
+#cs-gold .cs-fact b.pending{color:var(--rose)}
+#cs-gold .optrow{display:flex;flex-direction:column;gap:1rem}
+#cs-gold .optrow + .optrow{margin-top:2.25rem;padding-top:2rem;border-top:1px solid var(--line)}
+#cs-gold .proscons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+@media (max-width:640px){#cs-gold .proscons{grid-template-columns:1fr}}
+#cs-gold .proscons h4{font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin:0 0 .45rem}
+#cs-gold .proscons .cs-list li{font-size:.9rem}
+#cs-gold .cons .cs-list li::before{background:var(--ink-3)}
+#cs-gold dialog.lb{max-width:min(96vw,1700px);max-height:94vh;width:auto;padding:0;border:0;border-radius:18px;background:var(--paper);box-shadow:0 30px 80px -20px rgba(0,0,0,.5);overflow:auto}
+#cs-gold dialog.lb::backdrop{background:rgba(16,13,21,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+#cs-gold dialog.lb img{display:block;height:auto;max-width:none}
+#cs-gold .lb-x{position:sticky;top:10px;float:right;margin:10px 10px -46px 0;z-index:2;border:1px solid var(--line-strong);background:var(--paper);color:var(--ink);border-radius:999px;padding:.4rem .8rem;font:500 .8125rem var(--ff-body);cursor:pointer}
+#cs-gold .lb-cap{padding:.75rem 1rem;font-family:var(--ff-mono);font-size:.6875rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+#cs-gold .cs-sec h3.grp{margin-top:.75rem}
+#cs-gold .vks{display:flex;gap:clamp(16px,2.4vw,28px);overflow-x:auto;scroll-snap-type:x proximity;padding:2px 2px 14px;scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent;align-items:flex-start}
+#cs-gold .vk{flex:0 0 clamp(200px,27vw,250px);display:flex;flex-direction:column;gap:.7rem;scroll-snap-align:start}
+#cs-gold .vk--pair{flex-basis:calc(2 * clamp(200px,27vw,250px) + 14px)}
+#cs-gold .vk-head{display:flex;flex-direction:column;align-items:flex-start;gap:.4rem;min-height:4.6rem}
+#cs-gold .vk-n{font-family:var(--ff-display);font-size:1.7rem;line-height:1;letter-spacing:-.01em;color:var(--ink)}
+#cs-gold .vk-chip{display:inline-block;font-size:.75rem;font-weight:600;line-height:1.3;padding:.32rem .6rem;border-radius:8px;color:var(--ink);border:1px solid var(--line)}
+#cs-gold .vk-chip.t1{background:color-mix(in srgb,#12A05A 16%,var(--paper))}
+#cs-gold .vk-chip.t2{background:color-mix(in srgb,#F5B800 22%,var(--paper))}
+#cs-gold .vk-chip.t3{background:color-mix(in srgb,#3D7BEA 16%,var(--paper))}
+#cs-gold .vk-chip.t4{background:color-mix(in srgb,var(--rose) 14%,var(--paper))}
+#cs-gold .vk-chip.t5,#cs-gold .vk-chip.t6{background:color-mix(in srgb,var(--violet) 14%,var(--paper))}
+#cs-gold .vk--pair .vk-head{align-items:stretch}
+#cs-gold .vk--pair .vk-chip{display:block;width:100%}
+#cs-gold .vk-phones{display:flex;gap:14px}
+#cs-gold .vk-phones .ph{flex:1 1 0;min-width:0}
+#cs-gold .mqrow .ph{flex:0 0 clamp(158px,21vw,196px);scroll-snap-align:start;gap:.5rem}
+#cs-gold .oirow{justify-content:flex-start}
+#cs-gold .oirow .ph{flex:0 0 clamp(170px,24vw,228px)}
+#cs-gold .mq-l{display:block;min-height:2.9em;font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);line-height:1.45}
+#cs-gold .vk-rule{font-size:.8125rem!important;line-height:1.45;color:var(--ink-2)!important;margin:0}
+#cs-gold .ph-win img.ph-bar{top:auto;bottom:0;z-index:1;pointer-events:none}
+#cs-gold .strip--big .ph{flex-basis:clamp(240px,34vw,320px)!important}
+#cs-gold .uf-row{align-items:flex-start!important}
+#cs-gold .uf-step .mq-l{min-height:4.6em!important;align-items:flex-end}
+#cs-gold .uf-row .uf-arrow,#cs-gold .uf-row .uf-or{align-self:center;margin-top:4.6em!important}
+#cs-gold .vk-key{position:relative;padding:clamp(20px,3vw,32px) clamp(20px,3.4vw,36px);border-radius:clamp(16px,2vw,24px);background:linear-gradient(135deg,color-mix(in srgb,var(--rose) 12%,var(--paper)),color-mix(in srgb,var(--marigold) 9%,var(--paper)));border:1px solid color-mix(in srgb,var(--rose) 28%,transparent);box-shadow:0 20px 50px -34px rgba(224,17,107,.45)}
+#cs-gold .vk-key-k{display:inline-flex;align-items:center;gap:.45rem;font-family:var(--ff-mono);font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--rose);padding:.3rem .7rem;border-radius:999px}
+#cs-gold .vk-key-h{font-family:var(--ff-display);font-size:clamp(1.6rem,3.2vw,2.3rem)!important;line-height:1.12!important;color:var(--ink)!important;margin:.8rem 0 .6rem!important;letter-spacing:-.01em}
+#cs-gold .vk-key--sm .vk-key-h{font-size:clamp(1.3rem,2.4vw,1.75rem)!important}
+#cs-gold .vk-key-h b{font-weight:400;color:var(--rose);font-style:italic}
+#cs-gold .vk-key p+p{margin-top:.7rem!important}
+#cs-gold .vk-key p b{color:var(--ink);font-weight:600}
+#cs-gold .vk-key p:last-child{color:var(--ink-2);font-size:1.0625rem;line-height:1.6;max-width:62ch;margin:0}
+#cs-gold dialog.lb .lb-ph{position:relative;margin:0 auto}
+#cs-gold dialog.lb .lb-ph img{display:block;width:100%;max-width:none}
+#cs-gold dialog.lb .lb-top{position:sticky;top:0;z-index:2}
+#cs-gold dialog.lb .lb-x{z-index:3}
+#cs-gold dialog.lb .lb-bar{position:sticky;bottom:0;z-index:2;box-shadow:0 -6px 12px -8px rgba(22,18,26,.25)}
+#cs-gold dialog.lb .lb-ph img[hidden]{display:none}
+#cs-gold .ph-win img.ph-top{top:0;z-index:1;pointer-events:none;box-shadow:0 1px 0 rgba(22,18,26,.08),0 4px 8px -6px rgba(22,18,26,.25)}
+#cs-gold .ph-win > img:first-child{top:calc((var(--t,0) - var(--k,0)) * 100cqw)}
+#cs-gold .cs-tile .vk-n{color:#16121A}
+#cs-gold .cs-tile .vk-chip{color:#16121A;border-color:rgba(22,18,26,.085)}
+#cs-gold .cs-tile .vk-chip.t1{background:color-mix(in srgb,#12A05A 16%,#fff)}
+#cs-gold .cs-tile .vk-chip.t2{background:color-mix(in srgb,#F5B800 22%,#fff)}
+#cs-gold .cs-tile .vk-chip.t3{background:color-mix(in srgb,#3D7BEA 16%,#fff)}
+#cs-gold .cs-tile .vk-chip.t4{background:color-mix(in srgb,#E0116B 14%,#fff)}
+#cs-gold .cs-tile .vk-chip.t5,#cs-gold .cs-tile .vk-chip.t6{background:color-mix(in srgb,#6B4BE8 14%,#fff)}
+#cs-gold .cs-tile .vk-rule{color:#4A4350!important}
+#cs-gold .cs-tile .mq-l,#cs-gold .cs-tile .hint{color:#847B8F}
+#cs-gold .strip .uf-arrow{flex:none;align-self:center;margin-top:0;color:#847B8F}
+#cs-gold .strip--wide{align-items:flex-start}
+#cs-gold .strip .uf-arrow{margin-top:calc(clamp(170px,23vw,214px) - 11px)}
+
+.gd-cover{margin:1.75rem 0 1.5rem;position:relative;overflow:hidden;isolation:isolate;border-radius:22px;background:#16121A;color:#F4EEF2;padding:clamp(24px,5vw,64px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,3vw,40px);align-items:start}
+.gd-cover::before{content:'';position:absolute;right:-10%;top:-40%;width:65%;height:150%;background:radial-gradient(closest-side,rgba(224,17,107,.42),transparent);z-index:-1}
+.gd-cover::after{content:'';position:absolute;left:-15%;bottom:-60%;width:55%;height:120%;background:radial-gradient(closest-side,rgba(255,176,59,.22),transparent);z-index:-1}
+.gd-pill{grid-column:1/-1;justify-self:start;font-family:var(--ff-mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;padding:.4rem .8rem;border-radius:999px;background:linear-gradient(90deg,#B8862B,#F2C76B);color:#2A1B05;font-weight:500}
+.gd-cover-n b{display:block;font-family:var(--ff-display);font-weight:400;font-size:clamp(3.2rem,10vw,7rem);line-height:.9;letter-spacing:-.02em;color:#fff}
+.gd-cover-n span{display:block;margin-top:.6rem;font-size:.95rem;line-height:1.4;color:rgba(244,238,242,.78);max-width:26ch}
+.gd-cover-n--dim b{color:rgba(244,238,242,.38)}
+.gd-cover-q{grid-column:1/-1;margin:0;padding-top:clamp(16px,2.4vw,24px);border-top:1px solid rgba(255,255,255,.14);font-family:var(--ff-display);font-style:italic;font-size:clamp(1.15rem,2.2vw,1.5rem);line-height:1.3;color:#fff;max-width:56ch}
+.gd-cover-q span{display:block;margin-top:.45rem;font-family:var(--ff-body);font-style:normal;font-size:.875rem;color:rgba(244,238,242,.65)}
+@media (max-width:640px){.gd-cover{grid-template-columns:1fr}}
+.gd-todo{display:inline-block;font-family:var(--ff-mono);font-size:.6875rem;letter-spacing:.04em;line-height:1.45;font-weight:500;padding:.18rem .5rem;border-radius:6px;border:1px dashed #C99A1E;background:#FFF6D6;color:#6B4B00;vertical-align:middle}
+.ph-win.ph-todo{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:.5rem;text-align:center;padding:1rem;cursor:default;border:1.5px dashed var(--line-strong);background:repeating-linear-gradient(135deg,var(--ground-2) 0 10px,var(--paper) 10px 20px)!important}
+.ph-todo-k{font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rose)}
+.ph-todo-f{font-size:.75rem;line-height:1.4;color:var(--ink-2)}
+#cs-gold .cs-card .watch{margin-top:.7rem;padding-top:.6rem;border-top:1px dashed var(--line-strong);font-size:.875rem;color:var(--ink-2)}
+#cs-gold .cs-card .watch b{display:block;font-family:var(--ff-mono);font-weight:500;font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.2rem}
+#cs-gold .gd-no .tag{color:var(--ink-3)}
+#cs-gold .gd-yes{outline:1.5px solid var(--rose);outline-offset:-1.5px}
+#cs-gold table.dt--funnel thead th{white-space:normal!important;min-width:8.5rem;line-height:1.35;vertical-align:bottom}#cs-gold table.dt--funnel .colhi{background:rgba(224,17,107,.07)}#cs-gold table.dt--funnel thead th.colhi{color:var(--rose)}#cs-gold table.dt--funnel thead th:first-child{min-width:7rem}
+#cs-gold .callout{margin-top:1.5rem}#cs-gold .gd-pivot{margin:2rem 0 1rem}#cs-gold .gd-pivot-h{margin:.6rem 0 0;font-family:var(--ff-display);font-weight:400;font-size:clamp(1.8rem,3.6vw,2.6rem);line-height:1.05;color:#F4EEF2}#cs-gold .gd-pivot-p{margin:.8rem 0 0;max-width:62ch;color:rgba(244,238,242,.8);font-size:1rem;line-height:1.55}#cs-gold .cover-phones .ph figcaption{display:none}#cs-gold table.dt--exp th.colpre,#cs-gold table.dt--exp td:last-child{color:var(--ink-3)}#cs-gold table.dt--exp td:first-child::first-letter{text-transform:uppercase}#cs-gold table.dt--simple{max-width:640px}#cs-gold table.dt--exp th{white-space:normal!important;line-height:1.3;vertical-align:bottom}
+#cs-gold .cs-body{grid-template-columns:minmax(0,200px) minmax(0,1fr)}@media (max-width:900px){#cs-gold .cs-body{grid-template-columns:minmax(0,1fr)}}#cs-gold .cs-main,#cs-gold .cs-toc,#cs-gold .cs-cols>*{min-width:0}
+.gd-snd .i-on{display:none}.gd-snd.on .i-on{display:block}.gd-snd.on .i-off{display:none}#cs-gold .cs-vbtn svg{fill:currentColor}
+#cs-gold .gd-oi{margin:1rem 0 0}#cs-gold .gd-oi-tile{display:block!important;background:#F5EDE2!important;padding:14px 0 14px 14px;height:auto!important;aspect-ratio:auto!important}@media (prefers-color-scheme:dark){:root:not([data-theme=light]) #cs-gold .gd-oi-tile{background:color-mix(in srgb,var(--ink) 8%,var(--paper))!important}}#cs-gold .gd-oi-k{display:block;font-family:var(--ff-mono);font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rose);margin:0 0 10px}#cs-gold .gd-oi-row{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-right:14px}#cs-gold .gd-oi-row img{display:block;height:460px;width:auto;max-width:none;filter:drop-shadow(0 2px 6px rgba(22,18,26,.14))}@media (max-width:640px){#cs-gold .gd-oi-row img{height:340px}}#cs-gold .gd-oi-l{margin:14px 14px 2px 0;font-size:.9375rem;line-height:1.55;color:var(--ink-2);max-width:72ch}#cs-gold .gd-oi-l b{display:block;font-family:var(--ff-mono);font-weight:500;font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rose);margin-bottom:.3rem}
+#cs-gold .gd-dec{display:grid;grid-template-columns:repeat(5,minmax(142px,1fr));gap:clamp(14px,2vw,26px);margin-top:1.6rem;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}#cs-gold .gd-dec-c .ph{margin:0 0 .9rem}#cs-gold .gd-dec-c .ph figcaption{display:none}#cs-gold .gd-dec-c .tag{display:inline-block;font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rose)}#cs-gold .gd-k{margin:.7rem 0 .15rem;font-family:var(--ff-mono);font-size:.5625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}#cs-gold .gd-k--d{color:var(--rose);padding-top:.6rem;border-top:1px dashed var(--line-strong)}#cs-gold .gd-prob{color:var(--ink-2)}#cs-gold .gd-dec-c h4{margin:.1rem 0 .3rem;font-size:1rem;line-height:1.3}#cs-gold .gd-dec-c p{font-size:.875rem;line-height:1.5;color:var(--ink-2)}
+#cs-gold .ph-win.ph-vid{cursor:default}#cs-gold .ph-win.ph-vid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+#cs-gold .gd-steps{margin-top:1.8rem;display:flex;flex-direction:column;gap:clamp(18px,2.4vw,28px)}#cs-gold .gd-step{display:grid;grid-template-columns:minmax(120px,190px) minmax(0,1fr);gap:clamp(16px,3vw,36px);align-items:center;padding-bottom:clamp(18px,2.4vw,28px);border-bottom:1px solid var(--line)}#cs-gold .gd-step:last-child{border-bottom:0}#cs-gold .gd-step-ph .ph{margin:0}#cs-gold .gd-step-ph figcaption{display:none}#cs-gold .gd-step-n{margin:0 0 .8rem;font-family:var(--ff-display);font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.1;color:var(--ink)}#cs-gold .gd-step-pd{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}#cs-gold .gd-step-b{padding:14px 16px;border-radius:14px;background:var(--paper);border:1px solid var(--line)}#cs-gold .gd-step-b p{margin:0;font-size:.9375rem;line-height:1.5;color:var(--ink-2)}#cs-gold .gd-step-b--d{border-color:color-mix(in srgb,var(--rose) 35%,var(--line));background:color-mix(in srgb,var(--rose) 5%,var(--paper))}#cs-gold .gd-step-b h4{margin:.1rem 0 .3rem;font-size:1rem}#cs-gold .gd-step-b .gd-k{margin:0 0 .35rem}#cs-gold .gd-step-b--d .gd-k--d{border:0;padding:0}@media (max-width:640px){#cs-gold .gd-step{grid-template-columns:110px minmax(0,1fr);align-items:start}#cs-gold .gd-step-pd{grid-template-columns:1fr}}
+#cs-gold .gd-swatches{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(16px,3vw,40px);margin:1.4rem 0 1rem}#cs-gold .gd-sw-row{display:flex;flex-wrap:wrap;gap:14px}#cs-gold .gd-sw{display:flex;flex-direction:column;gap:4px;font-size:.8125rem}#cs-gold .gd-sw span{width:92px;height:56px;border-radius:14px;box-shadow:inset 0 0 0 1px rgba(22,18,26,.08)}#cs-gold .gd-sw b{font-weight:600;color:var(--ink)}#cs-gold .gd-sw i{font-style:normal;font-family:var(--ff-mono);font-size:.6875rem;color:var(--ink-3)}#cs-gold .gd-flat{margin-top:1.2rem}#cs-gold .gd-flat-t{display:block!important;height:auto!important;aspect-ratio:auto!important;padding:0!important;overflow:hidden}#cs-gold .gd-flat-t img{display:block;width:100%;height:auto}@media (max-width:640px){#cs-gold .gd-swatches{grid-template-columns:1fr}}
+#cs-gold .gd-pg-tile{display:block!important;height:auto!important;aspect-ratio:auto!important;background:#F5EDE2!important;padding:22px!important;overflow-x:auto}#cs-gold .gd-pg-old{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px dashed rgba(22,18,26,.18)}#cs-gold .gd-pg{display:grid;grid-template-columns:120px repeat(5,minmax(96px,1fr));gap:14px 12px;align-items:center;min-width:640px}#cs-gold .gd-pg-h{font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:#6B6275}#cs-gold .gd-pg-r b{display:block;font-size:.875rem;color:#16121A}#cs-gold .gd-pg-r i{font-style:normal;font-family:var(--ff-mono);font-size:.6875rem;color:#6B6275}#cs-gold .gd-pill{text-transform:none;display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 13px 0 10px;border-radius:15px;border:2px solid #fff;box-shadow:0 2px 8px rgba(33,17,10,.18);font-family:var(--ff-body);font-size:15px;line-height:1}#cs-gold .gd-pill svg{width:13px;height:13px;fill:currentColor}#cs-gold .gd-pill b{font-weight:700;letter-spacing:-.01em}#cs-gold .gd-pill--grad b,#cs-gold .gd-pill--grad svg{color:transparent}#cs-gold .gd-pill--grad{background-clip:padding-box}#cs-gold .gd-pill--grad b{background:linear-gradient(90deg,#BD9F48,#FAD25F 16%,#BE9A35 25%,#FFE399 50%,#C49D37 64%,#EDC65A 94%,#B39030);-webkit-background-clip:text;background-clip:text}#cs-gold .gd-pill--grad svg{fill:#E1BC54}#cs-gold .gd-brand-2{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:20px;align-items:start;margin-top:1.2rem}#cs-gold .gd-brand-2 .gd-flat{margin-top:0}#cs-gold .gd-pal{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 14px}#cs-gold .gd-pal .gd-sw span{width:100%;height:64px}#cs-gold .gd-sw em{font-style:normal;font-size:.75rem;color:var(--ink-3)}@media (max-width:760px){#cs-gold .gd-brand-2{grid-template-columns:1fr}#cs-gold .gd-pal{grid-template-columns:repeat(2,minmax(0,1fr))}}
+#cs-gold .ph-win.ph-tb > img:first-child{top:calc((var(--t,0) - var(--k,0)) * 100cqw)}#cs-gold .ph-win img.ph-top{top:0!important;z-index:1;pointer-events:none;box-shadow:0 1px 0 rgba(22,18,26,.08),0 4px 8px -6px rgba(22,18,26,.25)}#cs-gold .ph-win img.ph-bar{top:auto!important;bottom:0;z-index:1;pointer-events:none;box-shadow:0 -1px 0 rgba(22,18,26,.06)}
+#cs-gold .gd-src{margin:1rem 0 0;padding:12px 16px;border-left:3px solid var(--rose);background:color-mix(in srgb,var(--rose) 5%,var(--paper));border-radius:0 12px 12px 0;font-size:.9375rem;line-height:1.5;color:var(--ink-2)}#cs-gold .gd-src b{display:block;font-family:var(--ff-mono);font-weight:500;font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rose);margin-bottom:.25rem}
+#cs-gold .gd-dir{display:flex;flex-direction:column;gap:18px;margin-top:1.4rem}#cs-gold .gd-dir-c{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(16px,3vw,32px);align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:16px}#cs-gold .gd-dir-c.gd-yes{border-color:var(--rose);box-shadow:0 0 0 1px var(--rose) inset}#cs-gold .gd-dir-img{height:440px;border-radius:14px;background:#F5EDE2;display:flex;align-items:center;justify-content:center;gap:14px;overflow:hidden;padding:18px}#cs-gold .gd-dir-img img{max-height:100%;max-width:100%;width:auto;height:auto;border-radius:10px;box-shadow:0 2px 10px rgba(22,18,26,.14)}#cs-gold .gd-dir-logos img{max-width:44%;box-shadow:none;border-radius:8px}#cs-gold .gd-dir-logos span{color:var(--ink-3);font-size:1.6rem}#cs-gold .gd-dir-tx{display:flex;flex-direction:column;gap:.5rem;align-items:flex-start}#cs-gold .gd-dir-c h4{margin:.2rem 0 .1rem;font-size:1.35rem;font-family:var(--ff-display);font-weight:400}#cs-gold .gd-dir-eg{margin:0;font-size:.875rem;color:var(--ink-3)}#cs-gold .gd-dir-c p{font-size:1rem;line-height:1.55;color:var(--ink-2);align-self:start}#cs-gold .gd-dir-c.gd-no .tag{color:var(--ink-3)}@media (max-width:860px){#cs-gold .gd-dir-c{grid-template-columns:1fr}#cs-gold .gd-dir-img{height:360px}}
+#cs-gold .gd-prio{margin:1.4rem 0 .4rem;padding:18px 20px;border-radius:18px;border:1px solid color-mix(in srgb,var(--rose) 35%,var(--line));background:color-mix(in srgb,var(--rose) 5%,var(--paper))}#cs-gold .gd-prio .gd-k--d{border:0;padding:0;margin:0 0 .3rem}#cs-gold .gd-prio h3{margin:0 0 .8rem;font-family:var(--ff-display);font-weight:400;font-size:clamp(1.4rem,2.4vw,1.8rem);line-height:1.15}#cs-gold .gd-prio-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}#cs-gold .gd-prio-g b{display:block;font-size:.9375rem;margin-bottom:.2rem}#cs-gold .gd-prio-g p{margin:0;font-size:.9375rem;line-height:1.5;color:var(--ink-2)}@media (max-width:640px){#cs-gold .gd-prio-g{grid-template-columns:1fr}}
+.gd-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:1.1rem}
+.gd-top .brand{display:inline-flex;align-items:center;gap:.6rem;text-decoration:none;color:var(--ink);font-weight:600}
+
+#cs-gold .gd-swatches .gd-k--d{border:0;padding-top:0}
+#cs-gold .gd-swatches .gd-sw-g + .gd-sw-g{padding-left:clamp(16px,3vw,40px);border-left:1px dashed var(--line-strong)}
+@media (max-width:640px){#cs-gold .gd-swatches .gd-sw-g + .gd-sw-g{padding-left:0;border-left:0;padding-top:.9rem;border-top:1px dashed var(--line-strong)}}
+#cs-gold .gd-dir-c.gd-yes .tag{background:var(--rose);border:1px solid var(--rose);color:#fff;font-weight:600}
+#cs-gold .gd-learn{grid-template-columns:repeat(3,minmax(0,1fr))}
+#cs-gold .gd-why{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:1rem 0 1.4rem;counter-reset:w}
+#cs-gold .gd-why-i{position:relative;padding:1rem 1.05rem 1.1rem;border-radius:16px;background:var(--paper);border:1px solid var(--line-strong)}
+#cs-gold .gd-why-i:not(:last-child)::after{content:"→";position:absolute;right:-13px;top:50%;translate:0 -50%;z-index:1;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;background:var(--ground);color:var(--ink-3);border:1px solid var(--line-strong)}
+#cs-gold .gd-why-k{display:block;font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.45rem}
+#cs-gold .gd-why-i p{margin:0;font-size:.9375rem;line-height:1.45;color:var(--ink)}
+#cs-gold .gd-why-i--do{background:#16121A;border-color:#16121A}
+#cs-gold .gd-why-i--do .gd-why-k{color:#FF8DBB}
+#cs-gold .gd-why-i--do p{color:#F4EEF2}
+@media (max-width:820px){#cs-gold .gd-why{grid-template-columns:1fr 1fr}#cs-gold .gd-why-i:nth-child(2)::after{display:none}}
+@media (max-width:520px){#cs-gold .gd-why{grid-template-columns:1fr}#cs-gold .gd-why-i:not(:last-child)::after{right:auto;left:50%;top:auto;bottom:-13px;translate:-50% 0;content:"↓"}#cs-gold .gd-why-i:nth-child(2)::after{display:grid}}
+@media (max-width:700px){#cs-gold .gd-card-key{grid-template-columns:1fr}}
+#cs-gold .gd-card-key{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem 2rem;grid-column:1/-1;border-color:color-mix(in srgb,var(--rose) 45%,transparent);background:linear-gradient(135deg,color-mix(in srgb,#E9C46A 16%,var(--paper)),var(--paper))}
+#cs-gold .gd-ai{position:relative;margin:1.5rem 0 1.75rem;padding:clamp(22px,3.2vw,34px) clamp(20px,3.4vw,36px);border-radius:clamp(16px,2vw,24px);overflow:hidden;isolation:isolate;background:radial-gradient(110% 140% at 100% 0%,rgba(224,17,107,.32),transparent 55%),radial-gradient(80% 120% at 0% 100%,rgba(255,138,61,.16),transparent 60%),#16121A;color:#F4EEF2;box-shadow:0 22px 44px -24px rgba(22,18,26,.65)}
+#cs-gold .gd-ai-k{display:inline-flex;align-items:center;gap:.45rem;font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:#FF8DBB;padding:.32rem .7rem;border:1px solid rgba(255,141,187,.45);border-radius:999px;background:rgba(255,141,187,.08)}
+#cs-gold .gd-ai h3{color:#fff;margin:.85rem 0 .55rem;font-family:var(--ff-display);font-weight:400;font-size:clamp(1.45rem,2.6vw,1.9rem);line-height:1.15;letter-spacing:-.015em}
+#cs-gold .gd-ai > p{color:rgba(244,238,242,.82);margin-bottom:1rem;max-width:62ch}
+#cs-gold .gd-ai .notes li{color:rgba(244,238,242,.78)}
+#cs-gold .gd-ai .notes b{color:#fff}
+@media (max-width:820px){#cs-gold .gd-learn{grid-template-columns:1fr}}
+#cs-gold table.dt tr.sub td{font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:500;padding:1.05rem 0 .4rem}
+#cs-gold table.dt tr.hi + tr.hi td{border-top-color:color-mix(in srgb,var(--rose) 14%,transparent)}
+/* name-change exercise: warm tile, gold gradient for Gold, dusty tints for the rest */
+#cs-gold .gd-name{--gn0:linear-gradient(90deg,#3F1F11,#7A4A22 55%,#C8912F);--gn1:#C3A2B3;--gn2:#A9ACCB;--gn3:#DCC5A4;--gnt:#E9DED3;--gtile:linear-gradient(155deg,#F6ECE0,#FBF6F0 60%,#F8EFE4);
+  display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:start;gap:14px;margin:1rem 0 1.4rem;padding:clamp(12px,1.6vw,18px);border-radius:24px;background:var(--gtile)}
+:root[data-theme="dark"] #cs-gold .gd-name{--gn0:linear-gradient(90deg,#8A5A22,#C8912F 55%,#F0CB75);--gn1:#8C6B7C;--gn2:#6F7398;--gn3:#8C7558;--gnt:rgba(255,255,255,.07);--gtile:linear-gradient(155deg,#241B15,#1B1612 60%,#211912)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #cs-gold .gd-name{--gn0:linear-gradient(90deg,#8A5A22,#C8912F 55%,#F0CB75);--gn1:#8C6B7C;--gn2:#6F7398;--gn3:#8C7558;--gnt:rgba(255,255,255,.07);--gtile:linear-gradient(155deg,#241B15,#1B1612 60%,#211912)}}
+#cs-gold .gd-name-c{background:var(--paper);border-radius:18px;padding:1.15rem 1.25rem 1.2rem;min-width:0;box-shadow:0 1px 2px rgba(63,31,17,.06),0 16px 34px -24px rgba(63,31,17,.4)}
+#cs-gold .gd-name-c > .gd-k{margin:0 0 .9rem}
+#cs-gold .gd-nb{list-style:none;margin:0;padding:0;display:grid;gap:.35rem}
+#cs-gold .gd-nb li{display:grid;grid-template-columns:8.4rem minmax(0,1fr) 4.4rem;align-items:center;gap:.75rem;margin:0;padding:.45rem .6rem;border-radius:12px}
+#cs-gold .gd-nb-l{font-family:var(--ff-display);font-size:1.25rem;line-height:1.1;color:var(--ink)}
+#cs-gold .gd-nb-l i{display:block;font-family:var(--ff-body);font-style:normal;font-size:.75rem;color:var(--ink-3);margin-top:.15rem}
+#cs-gold .gd-nb-t{height:10px;border-radius:999px;background:var(--gnt);overflow:hidden}
+#cs-gold .gd-nb-t span{display:block;height:100%;width:calc(var(--v) / 30 * 100%);border-radius:inherit;background:var(--gn1);opacity:.9}
+#cs-gold .gd-nb b{font-family:var(--ff-display);font-weight:400;font-size:1.25rem;color:var(--ink-2);text-align:right;font-variant-numeric:tabular-nums}
+#cs-gold .gd-nb li.is-gold{background:color-mix(in srgb,#C8912F 13%,var(--paper));box-shadow:inset 0 0 0 1px color-mix(in srgb,#C8912F 35%,transparent)}
+#cs-gold .gd-nb li.is-gold .gd-nb-t{height:14px}
+#cs-gold .gd-nb li.is-gold .gd-nb-t span{background:var(--gn0);opacity:1}
+#cs-gold .gd-nb li.is-gold b{color:var(--ink);font-size:1.5rem}
+#cs-gold .gd-nb-top{display:inline-block;margin-top:.3rem;font-family:var(--ff-mono);font-style:normal;font-size:.5625rem;letter-spacing:.12em;text-transform:uppercase;color:#FBE7B5;background:#3F1F11;padding:.2rem .5rem;border-radius:999px}
+#cs-gold .gd-mc-key{display:flex;flex-wrap:wrap;gap:.4rem;margin:0 0 .9rem!important;font-size:.75rem!important;color:var(--ink-2)!important}
+#cs-gold .gd-mc-key span{display:inline-flex;align-items:center;gap:.4rem;padding:.25rem .6rem .25rem .45rem;border-radius:999px;background:var(--gnt)}
+#cs-gold .gd-mc-key i{width:10px;height:10px;border-radius:50%;display:inline-block}
+#cs-gold .gd-name i.s0{background:var(--gn0)}#cs-gold .gd-name i.s1{background:var(--gn1)}#cs-gold .gd-name i.s2{background:var(--gn2)}#cs-gold .gd-name i.s3{background:var(--gn3)}
+#cs-gold .gd-mc{position:relative;--lw:9.6rem;--gap:.75rem}
+#cs-gold .gd-mc-grid{position:absolute;top:0;bottom:1.3rem;left:calc(var(--lw) + var(--gap));right:0;background:repeating-linear-gradient(to right,color-mix(in srgb,var(--ink) 9%,transparent) 0 1px,transparent 1px calc(100% * 10 / 45));pointer-events:none}
+#cs-gold .gd-mc-r{position:relative;display:grid;grid-template-columns:var(--lw) minmax(0,1fr);gap:var(--gap);align-items:center;padding:.38rem 0}
+#cs-gold .gd-mc-l{font-size:.8125rem;line-height:1.25;color:var(--ink-2)}
+#cs-gold .gd-mc-b{display:grid;gap:2px}
+#cs-gold .gd-mc-b i{display:block;height:6px;width:calc(var(--v) / 45 * 100%);border-radius:999px}
+#cs-gold .gd-mc-r--is{margin:0 -.6rem .3rem;padding:.6rem;border-radius:12px;background:color-mix(in srgb,#C8912F 13%,var(--paper));box-shadow:inset 0 0 0 1px color-mix(in srgb,#C8912F 35%,transparent)}
+#cs-gold .gd-mc-r--is .gd-mc-l{color:var(--ink);font-weight:600}
+#cs-gold .gd-mc-r--is .gd-mc-l em{display:inline-block;margin-top:.3rem;font-family:var(--ff-mono);font-style:normal;font-weight:400;font-size:.5625rem;letter-spacing:.12em;text-transform:uppercase;color:#FBE7B5;background:#3F1F11;padding:.2rem .5rem;border-radius:999px}
+#cs-gold .gd-mc-ax{padding:.25rem 0 0}
+#cs-gold .gd-mc-ax .gd-mc-b{position:relative;height:1rem;display:block}
+#cs-gold .gd-mc-ax em{position:absolute;left:calc(var(--x) / 45 * 100%);translate:-50% 0;font-style:normal;font-family:var(--ff-mono);font-size:.625rem;color:var(--ink-3)}
+#cs-gold .gd-mc-ax em:first-child{translate:0 0}
+#cs-gold .gd-name-c .dt-note{margin:.8rem 0 0}
+#cs-gold .gd-name-key{margin-top:0}
+@media (max-width:900px){#cs-gold .gd-name{grid-template-columns:1fr}}
+@media (max-width:520px){#cs-gold .gd-nb li{grid-template-columns:6.4rem minmax(0,1fr) 3.6rem;gap:.5rem;padding:.4rem .45rem}#cs-gold .gd-mc{--lw:6.6rem;--gap:.5rem}#cs-gold .gd-mc-l{font-size:.75rem}#cs-gold .gd-name-c{padding:.95rem .85rem 1rem}#cs-gold .gd-nb li.is-gold b{font-size:1.35rem}}
+/* awareness vs understanding: two stat cards */
+#cs-gold .gd-aw{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:1rem 0 0}
+#cs-gold .gd-aw-c{padding:1.15rem 1.3rem 1.25rem;border-radius:18px;background:var(--paper);border:1px solid var(--line)}
+#cs-gold .gd-aw-c > .gd-k{margin:0 0 .8rem}
+#cs-gold .gd-aw-r{display:grid;grid-template-columns:5.2rem minmax(0,1fr);grid-template-rows:auto auto;column-gap:1rem;align-items:center;padding:.5rem 0}
+#cs-gold .gd-aw-r + .gd-aw-r{border-top:1px solid var(--line)}
+#cs-gold .gd-aw-r b{grid-row:1/3;font-family:var(--ff-display);font-weight:400;font-size:2.4rem;line-height:1;color:var(--ink)}
+#cs-gold .gd-aw-t{height:8px;border-radius:999px;background:color-mix(in srgb,var(--ink) 7%,transparent);overflow:hidden}
+#cs-gold .gd-aw-t span{display:block;height:100%;width:calc(var(--v) * 1%);border-radius:inherit;background:var(--ink-3)}
+#cs-gold .gd-aw-w{font-size:.8125rem;color:var(--ink-3);margin-top:.35rem}
+#cs-gold .gd-aw-c--hi{border-color:color-mix(in srgb,var(--rose) 35%,transparent);background:color-mix(in srgb,var(--rose) 6%,var(--paper))}
+#cs-gold .gd-aw-c--hi .gd-aw-r b{color:var(--rose)}
+#cs-gold .gd-aw-c--hi .gd-aw-t span{background:var(--rose)}
+@media (max-width:640px){#cs-gold .gd-aw{grid-template-columns:1fr}}
+/* initiatives before the explorations */
+#cs-gold #gd-decisions .gd-step-pd{grid-template-columns:minmax(0,1fr);max-width:40rem}
+#cs-gold #gd-decisions .gd-step-b p:not(.gd-k){font-size:1.0625rem;line-height:1.55;color:var(--ink)}
+/* the funnel as a dark block */
+#cs-gold .gd-fun{margin:1.2rem 0 1rem;position:relative;overflow:hidden;isolation:isolate;border-radius:22px;background:#16121A;color:#F4EEF2;padding:clamp(20px,3.6vw,40px)}
+#cs-gold .gd-fun::before{content:'';position:absolute;left:-12%;top:-50%;width:60%;height:150%;background:radial-gradient(closest-side,rgba(224,17,107,.34),transparent);z-index:-1}
+#cs-gold .gd-fun::after{content:'';position:absolute;right:-12%;bottom:-70%;width:55%;height:130%;background:radial-gradient(closest-side,rgba(255,176,59,.16),transparent);z-index:-1}
+#cs-gold .gd-fun-h{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem 1.2rem;margin-bottom:1.1rem}
+#cs-gold .gd-fun-t{margin:0!important;font-family:var(--ff-mono);font-size:.6875rem!important;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,238,242,.6)!important}
+#cs-gold .gd-fun-key{display:flex;gap:1rem;margin:0!important;font-size:.8125rem!important;color:rgba(244,238,242,.78)!important}
+#cs-gold .gd-fun-key span{display:inline-flex;align-items:center;gap:.4rem}
+#cs-gold .gd-fun-key i{width:10px;height:10px;border-radius:50%;display:inline-block}
+#cs-gold .gd-fun i.g{background:linear-gradient(90deg,#C8912F,#F0CB75)}
+#cs-gold .gd-fun i.p{background:rgba(244,238,242,.28)}
+#cs-gold .gd-fun-s{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0 10px;position:relative}
+#cs-gold .gd-fun-zone{grid-column:1/4;grid-row:1;margin-bottom:.5rem;display:flex;align-items:center;gap:.6rem;font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:#FF8DBB}
+#cs-gold .gd-fun-zone::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(255,141,187,.6),rgba(255,141,187,0))}
+#cs-gold .gd-fun-i{grid-row:2;display:flex;flex-direction:column;gap:.45rem;padding:1rem .95rem 1.05rem;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);min-width:0}
+#cs-gold .gd-fun-i.is-hi{background:rgba(224,17,107,.13);border-color:rgba(255,141,187,.32)}
+#cs-gold .gd-fun-k{margin:0!important;min-height:2.6em;font-family:var(--ff-mono);font-size:.625rem!important;letter-spacing:.1em;text-transform:uppercase;line-height:1.45!important;color:rgba(244,238,242,.7)!important}
+#cs-gold .gd-fun-i b{font-family:var(--ff-display);font-weight:400;font-size:clamp(1.7rem,2.5vw,2.2rem);line-height:1;color:rgba(244,238,242,.88);font-variant-numeric:tabular-nums;white-space:nowrap}
+#cs-gold .gd-fun-i.is-hi b{color:#FF8DBB}
+#cs-gold .gd-fun-i b .tri{font-size:.5em;vertical-align:.3em;margin-right:.2em}
+#cs-gold .gd-fun-vs{font-family:var(--ff-mono);font-size:.5625rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,238,242,.5);margin-top:-.15rem}
+#cs-gold .gd-fun-p{display:flex;flex-direction:column;gap:.2rem;margin-top:auto;font-size:.75rem;white-space:nowrap;color:rgba(244,238,242,.68);font-variant-numeric:tabular-nums}
+#cs-gold .gd-fun-p span{display:inline-flex;align-items:center;gap:.4rem}
+#cs-gold .gd-fun-p i{width:8px;height:8px;border-radius:50%;display:inline-block}
+#cs-gold .gd-fun-p span:first-child{color:#F0CB75}
+#cs-gold .gd-fun-bars{display:grid;gap:3px;margin:.2rem 0 .15rem}
+#cs-gold .gd-fun-bars i{display:block;height:6px;border-radius:999px;width:calc(var(--v) * 1%);min-width:4px}
+#cs-gold .gd-fun-d{align-self:flex-start;justify-self:start;white-space:nowrap;margin-top:auto;font-size:.8125rem;font-weight:600;color:#FF8DBB;background:rgba(224,17,107,.2);padding:.22rem .6rem;border-radius:999px;font-variant-numeric:tabular-nums}
+#cs-gold .gd-fun-d em{font-style:normal;font-weight:400;color:rgba(255,141,187,.75)}
+#cs-gold .gd-fun-i:not(.is-hi) .gd-fun-d{color:rgba(244,238,242,.75);background:rgba(255,255,255,.08)}
+#cs-gold .gd-fun-i:not(.is-hi) .gd-fun-d em{color:rgba(244,238,242,.5)}
+#cs-gold .gd-fun-n{margin:1.1rem 0 0!important;padding-top:1rem;border-top:1px solid rgba(255,255,255,.12);font-size:.875rem!important;line-height:1.5;color:rgba(244,238,242,.68)!important;max-width:70ch}
+@media (max-width:860px){#cs-gold .gd-fun-s{grid-template-columns:1fr;gap:8px}#cs-gold .gd-fun-zone{grid-column:auto;grid-row:auto;margin-bottom:0}#cs-gold .gd-fun-i{grid-row:auto;display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:1rem;row-gap:.35rem;align-items:center}#cs-gold .gd-fun-k{grid-column:1/-1;min-height:0}#cs-gold .gd-fun-i b{grid-column:1;font-size:2.1rem}#cs-gold .gd-fun-vs{grid-column:1;grid-row:3}#cs-gold .gd-fun-p{grid-column:2;grid-row:2/4;text-align:right;align-items:flex-end;margin:0}#cs-gold .gd-fun-bars{grid-column:1/-1}#cs-gold .gd-fun-i:nth-child(5){margin-bottom:.6rem}}
+#cs-gold .gd-nl{display:inline-block;margin-left:.35rem;font-family:var(--ff-mono);font-size:.5625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);border:1px solid var(--line-strong);padding:.12rem .45rem;border-radius:999px;vertical-align:.1em;white-space:nowrap}
+#cs-gold .gd-role{margin-top:1.6rem;padding-top:1.3rem;border-top:1px dashed var(--line-strong)}
+#cs-gold .gd-role > .gd-k{margin:0 0 .8rem}
+#cs-gold .gd-role-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#cs-gold .gd-role-i{padding:.9rem 1rem 1rem;border-radius:14px;background:var(--paper);border:1px solid var(--line)}
+#cs-gold .gd-role-i span{display:block;font-family:var(--ff-mono);font-size:.5625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rose);margin-bottom:.4rem}
+#cs-gold .gd-role-i p{margin:0;font-size:.875rem;line-height:1.45;color:var(--ink)}
+@media (max-width:980px){#cs-gold .gd-role-g{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){#cs-gold .gd-role-g{grid-template-columns:1fr}}
+#cs-gold .gd-ini .gd-ini-s.gd-ini-s--wide{grid-template-columns:clamp(300px,48vw,540px) minmax(0,1fr)}
+#cs-gold .gd-ini-old.gd-ini-old--2{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:534px}
+@media (max-width:760px){#cs-gold .gd-ini .gd-ini-s.gd-ini-s--wide{grid-template-columns:1fr}#cs-gold .gd-ini-old--2{max-width:360px}}
+#cs-gold .gd-me-l{display:flex;align-items:baseline;gap:.6rem;margin:.2rem 0 1.1rem!important;font-size:.9375rem!important;line-height:1.5;color:var(--ink)!important}
+#cs-gold .gd-me{flex:none;font-family:var(--ff-mono);font-size:.5625rem;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--rose);padding:.22rem .55rem;border-radius:999px;transform:translateY(-.1em)}
+#cs-gold .gd-prio .gd-me-l{margin:1rem 0 0!important;padding-top:.85rem;border-top:1px dashed color-mix(in srgb,var(--rose) 35%,transparent)}
+#cs-gold .gd-ini{position:relative;display:grid;gap:0;margin-top:1.2rem}
+#cs-gold .gd-ini-s{display:grid;grid-template-columns:clamp(220px,22vw,270px) minmax(0,1fr);gap:1.4rem;padding:1.3rem 0;border-top:1px dashed var(--line-strong)}
+#cs-gold .gd-ini-s:first-child{border-top:0;padding-top:.2rem}
+#cs-gold .gd-ini-h{position:sticky;top:5.5rem;align-self:start}
+#cs-gold .gd-ini-n{display:block;font-family:var(--ff-display);font-size:2.6rem;line-height:1;color:var(--rose)}
+#cs-gold .gd-ini-h h4{margin:.35rem 0 .5rem;font-size:1.125rem}
+#cs-gold .gd-ini-o{display:inline-block;font-family:var(--ff-mono);font-size:.5625rem;letter-spacing:.12em;text-transform:uppercase;color:#FBE7B5;background:#3F1F11;padding:.28rem .6rem;border-radius:999px}
+#cs-gold .gd-ini-old{margin-top:1.1rem;width:100%;max-width:260px}
+#cs-gold .gd-ini-old .ph{margin:0}
+#cs-gold .gd-ini-old figcaption{font-family:var(--ff-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:.5rem;text-align:center}
+#cs-gold .gd-ini-plan{min-width:0}
+#cs-gold .gd-ini-plan > .gd-k{margin:0 0 .6rem}
+#cs-gold .gd-ini-plan .gd-ini-g{grid-template-columns:repeat(auto-fill,minmax(14rem,1fr))}
+@media (max-width:760px){#cs-gold .gd-ini-old{flex-basis:100%;max-width:240px;margin-top:.6rem}}
+#cs-gold .gd-ini-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(15.5rem,1fr));gap:12px}
+#cs-gold .gd-ini-c{position:relative;padding:1rem 1.1rem 1.1rem;border-radius:16px;background:var(--paper);border:1px solid var(--line);box-shadow:0 12px 28px -24px rgba(22,18,26,.45)}
+#cs-gold .gd-ini-c h5{margin:0 0 .45rem;font-size:1rem;font-weight:600;color:var(--ink);line-height:1.3}
+#cs-gold .gd-ini-c p{margin:0;font-size:.9rem;line-height:1.5;color:var(--ink-2)}
+#cs-gold .gd-ini-k{display:block;font-family:var(--ff-mono);font-size:.5625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rose);margin-bottom:.3rem}
+@media (max-width:760px){#cs-gold .gd-ini-s{grid-template-columns:1fr;gap:.8rem}#cs-gold .gd-ini-h{position:static;display:flex;align-items:baseline;flex-wrap:wrap;gap:.3rem .7rem}#cs-gold .gd-ini-n{font-size:1.8rem}#cs-gold .gd-ini-h h4{margin:0}}
+/* prioritisation now has three reasons; Tata CLiQ logo is a transparent PNG */
+#cs-gold .gd-prio-g{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:820px){#cs-gold .gd-prio-g{grid-template-columns:1fr}}
+#cs-gold .gd-dir-logos img.gd-logo-png{border-radius:0;background:none}
+
+/* ---- end Gold case ---- */
+
 /* ---- zoom gallery ---- */
 .zg{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;background:rgba(16,13,21,.9);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .zg[hidden]{display:none}
@@ -2279,30 +2834,36 @@ body.is-case{padding-bottom:0}
       <span class="case-cta" aria-hidden="true"><span>Read the case study<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
     </a>
 
-    <a class="case case--vid case--img" href="#case/hevo" style="--pbg:#faf8f6" aria-label="Connecting data sources, faster, case study">
-      <div class="thumb"><img src="images/card16-hevo.938a2d4f.webp" data-file="images/card16-hevo.webp" alt="Hevo — Redesigning authentication experience in SaaS" loading="lazy" decoding="async"></div>
-      <video class="case-vid" data-src="images/cases/hevo-hero.5ef556d3.mp4" muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true"></video>
+    <a class="case case--vid case--img" href="#case/gold" style="--pbg:#faf8f6" aria-label="Gold: getting first-time shoppers to trust a higher price, case study">
+      <div class="thumb"><img src="images/card16-gold.a0ccd72e.webp" data-file="images/card16-gold.webp" alt="Higher price? Now you see why. Meesho Gold pill joined to the rating" loading="lazy" decoding="async"></div>
+      <video class="case-vid" data-src="images/cases/gold-hero.5e42960e.mp4" muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true"></video>
       <span class="case-cta" aria-hidden="true"><span>Read the case study<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
     </a>
-
-    <a class="case case--vid case--img" hidden href="#case/whatsapp" style="--pbg:#faf8f6" aria-label="WhatsApp shopping, redesigned, case study">
-      <div class="thumb"><img src="images/card16-whatsapp.705aa87e.webp" data-file="images/card16-whatsapp.webp" alt="WhatsApp Shopping Experience Redesign — Razorpay Design Challenge" loading="lazy" decoding="async"></div>
-      <video class="case-vid" data-src="images/cases/wa-hero.67063fd9.mp4" muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true"></video>
-      <span class="case-cta" aria-hidden="true"><span>Read the case study<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
-    </a>
-
     <a class="case case--vid case--img" hidden href="#case/parking" style="--pbg:#faf8f6" aria-label="Find and book parking (Meesho hiring assignment), case study">
       <div class="thumb"><img src="images/card16-parking.258a874a.webp" data-file="images/card16-parking.webp" alt="Meesho Parking — discover, decide and book parking spaces" loading="lazy" decoding="async"></div>
       <video class="case-vid" data-src="images/cases/park-hero.1c9c2496.mp4" muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true"></video>
       <span class="case-cta" aria-hidden="true"><span>Read the case study<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
     </a>
 
-    <a class="case case--vid case--img" hidden href="#case/gw" data-old="https://yourpraharsh1.notion.site/GoodWorker-Designing-portal-to-manage-candidates-and-employees-6df9cf593fbc42a1b8975fcf902cb6a3" style="--pbg:#faf8f6" aria-label="GoodWorker, a portal for team leaders, case study">
+    </div>
+  <div class="work-more"><button type="button" class="btn btn--ghost work-more-btn" aria-expanded="false" aria-controls="work-intern"><span class="wm-label">See Previous Work (2020–2022)</span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+  <div class="work-grid work-intern" id="work-intern" hidden>
+    <a class="case case--vid case--img" href="#case/hevo" style="--pbg:#faf8f6" aria-label="Connecting data sources, faster, case study">
+      <div class="thumb"><img src="images/card16-hevo.938a2d4f.webp" data-file="images/card16-hevo.webp" alt="Hevo — Redesigning authentication experience in SaaS" loading="lazy" decoding="async"></div>
+      <video class="case-vid" data-src="images/cases/hevo-hero.5ef556d3.mp4" muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true"></video>
+      <span class="case-cta" aria-hidden="true"><span>Read the case study<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+    </a>
+    <a class="case case--vid case--img" href="#case/gw" data-old="https://yourpraharsh1.notion.site/GoodWorker-Designing-portal-to-manage-candidates-and-employees-6df9cf593fbc42a1b8975fcf902cb6a3" style="--pbg:#faf8f6" aria-label="GoodWorker, a portal for team leaders, case study">
       <div class="thumb"><img src="images/card16-gw.b8d4e602.webp" data-file="images/card16-gw.webp" alt="500 candidates a day. No spreadsheets. GoodWorker enterprise hiring dashboard" loading="lazy" decoding="async"></div>
       <video class="case-vid" data-src="images/cases/gw-hero.21c2c0f7.mp4" muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true"></video>
       <span class="case-cta" aria-hidden="true"><span>Read the case study<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
     </a>
-    </div>
+    <a class="case case--vid case--img" href="#case/whatsapp" style="--pbg:#faf8f6" aria-label="WhatsApp shopping, redesigned, case study">
+      <div class="thumb"><img src="images/card16-whatsapp.705aa87e.webp" data-file="images/card16-whatsapp.webp" alt="WhatsApp Shopping Experience Redesign — Razorpay Design Challenge" loading="lazy" decoding="async"></div>
+      <video class="case-vid" data-src="images/cases/wa-hero.67063fd9.mp4" muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true"></video>
+      <span class="case-cta" aria-hidden="true"><span>Read the case study<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+    </a>
+  </div>
 </section>
 
 <div class="rule"><i></i></div>
@@ -2430,8 +2991,8 @@ body.is-case{padding-bottom:0}
 
   <div class="tool-grid">
 
-    <a class="card-glass tool" href="https://yourpraharsh.github.io/meesho-prototype/" target="_blank" rel="noopener">
-      <div class="tool-shot"><img src="images/tools/tool-6.a86e0a3f.webp" data-file="images/tools/tool-6.webp" width="960" height="600" alt="Meesho research prototype on an unfolded iPhone Duo, home feed for PIN 440027" loading="lazy" decoding="async"></div>
+    <a class="card-glass tool" data-vid="duo" data-once href="https://yourpraharsh.github.io/meesho-prototype/" target="_blank" rel="noopener">
+      <div class="tool-shot"><img src="images/tools/tool-6.7c7be414.webp" data-file="images/tools/tool-6.webp" width="960" height="600" alt="Meesho research prototype on an unfolded iPhone Duo, home feed for PIN 440027" loading="lazy" decoding="async"><video class="tool-vid" data-src="images/tools/vid-duo.1d7c5b9d.mp4" muted playsinline disablepictureinpicture preload="none" aria-hidden="true"></video></div>
       <div class="tool-body">
       <span class="head"><h3>Meesho research prototype</h3></span>
       <p class="what">A working Meesho app for usability tests. Participants pick their PIN code and how they usually pay, then shop a home feed with UPI and COD prices, on Android, iOS or iPhone Duo.</p>
@@ -2439,8 +3000,8 @@ body.is-case{padding-bottom:0}
       <span class="host">yourpraharsh.github.io/meesho-prototype <span aria-hidden="true">↗</span></span>
       </div>
     </a>
-    <a class="card-glass tool" href="https://pointsforflights.netlify.app/" target="_blank" rel="noopener">
-      <div class="tool-shot"><img src="images/tools/tool-3.c6b8e8e6.webp" data-file="images/tools/tool-3.webp" width="960" height="600" alt="Award Trip Planner, landing page" loading="lazy" decoding="async"></div>
+    <a class="card-glass tool" data-vid="atp" href="https://pointsforflights.netlify.app/" target="_blank" rel="noopener">
+      <div class="tool-shot"><img src="images/tools/tool-3.40574ede.webp" data-file="images/tools/tool-3.webp" width="960" height="600" alt="Award Trip Planner, landing page" loading="lazy" decoding="async"><video class="tool-vid" data-src="images/tools/vid-atp.874364b8.mp4" muted playsinline disablepictureinpicture preload="none" aria-hidden="true"></video></div>
       <div class="tool-body">
       <span class="head"><h3>Award Trip Planner</h3></span>
       <p class="what">Turns Indian credit card points into actual flights — transfer ratios, redemption caps, the taxes nobody warns you about, and the order to do it in.</p>
@@ -2449,8 +3010,8 @@ body.is-case{padding-bottom:0}
       </div>
     </a>
 
-    <a class="card-glass tool" href="https://yourpraharsh.github.io/reclaim/" target="_blank" rel="noopener">
-      <div class="tool-shot"><img src="images/tools/tool-5.af0e0066.webp" data-file="images/tools/tool-5.webp" width="960" height="600" alt="Reclaim, office lost and found, search screen" loading="lazy" decoding="async"></div>
+    <a class="card-glass tool" data-vid="reclaim" href="https://yourpraharsh.github.io/reclaim/" target="_blank" rel="noopener">
+      <div class="tool-shot"><img src="images/tools/tool-5.76cbcba0.webp" data-file="images/tools/tool-5.webp" width="960" height="600" alt="Reclaim, office lost and found, search screen" loading="lazy" decoding="async"><video class="tool-vid" data-src="images/tools/vid-reclaim.92d473f0.mp4" muted playsinline disablepictureinpicture preload="none" aria-hidden="true"></video></div>
       <div class="tool-body">
       <span class="head"><h3>Reclaim</h3></span>
       <p class="what">An office lost and found. Search by details or by photo for what you lost, report what you found, and collect it from the security desk.</p>
@@ -2459,8 +3020,8 @@ body.is-case{padding-bottom:0}
       </div>
     </a>
 
-    <a class="card-glass tool" href="https://getbackhealth.netlify.app/" target="_blank" rel="noopener">
-      <div class="tool-shot"><img src="images/tools/tool-1.fc7708fc.webp" data-file="images/tools/tool-1.webp" width="960" height="600" alt="Ember, home screen" loading="lazy" decoding="async"></div>
+    <a class="card-glass tool" data-vid="ember" href="https://getbackhealth.netlify.app/" target="_blank" rel="noopener">
+      <div class="tool-shot"><img src="images/tools/tool-1.37d7a46a.webp" data-file="images/tools/tool-1.webp" width="960" height="600" alt="Ember, home screen" loading="lazy" decoding="async"><video class="tool-vid" data-src="images/tools/vid-ember.fbf16b13.mp4" muted playsinline disablepictureinpicture preload="none" aria-hidden="true"></video></div>
       <div class="tool-body">
       <span class="head"><h3>Ember</h3></span>
       <p class="what">A deficit and streak tracker — calories, protein, workouts and sleep in one screen, with a streak that makes skipping a day feel expensive.</p>
@@ -2469,8 +3030,8 @@ body.is-case{padding-bottom:0}
       </div>
     </a>
 
-    <a class="card-glass tool" href="https://yourpraharsh.github.io/miles-command-center/" target="_blank" rel="noopener">
-      <div class="tool-shot"><img src="images/tools/tool-4.b98548d9.webp" data-file="images/tools/tool-4.webp" width="960" height="600" alt="Miles Command Center: trips to fund, points short and card balances" loading="lazy" decoding="async"></div>
+    <a class="card-glass tool" data-vid="mcc" href="https://yourpraharsh.github.io/miles-command-center/" target="_blank" rel="noopener">
+      <div class="tool-shot"><img src="images/tools/tool-4.d4d48199.webp" data-file="images/tools/tool-4.webp" width="960" height="600" alt="Miles Command Center: trips to fund, points short and card balances" loading="lazy" decoding="async"><video class="tool-vid" data-src="images/tools/vid-mcc.f049f545.mp4" muted playsinline disablepictureinpicture preload="none" aria-hidden="true"></video></div>
       <div class="tool-body">
       <span class="head"><h3>Miles Command Center</h3></span>
       <p class="what">Every card’s points, matched to the trips they’re meant to fund: what each trip still needs, which transfer caps are full, and when to move points.</p>
@@ -2478,8 +3039,8 @@ body.is-case{padding-bottom:0}
       <span class="host">yourpraharsh.github.io/miles-command-center <span aria-hidden="true">↗</span></span>
       </div>
     </a>
-    <a class="card-glass tool" href="https://bagsofpraharsh.netlify.app/" target="_blank" rel="noopener">
-      <div class="tool-shot"><img src="images/tools/tool-2.11b59ab6.webp" data-file="images/tools/tool-2.webp" width="960" height="600" alt="Bags of Praharsh, home screen" loading="lazy" decoding="async"></div>
+    <a class="card-glass tool" data-vid="bags" href="https://bagsofpraharsh.netlify.app/" target="_blank" rel="noopener">
+      <div class="tool-shot"><img src="images/tools/tool-2.7d7bfaaa.webp" data-file="images/tools/tool-2.webp" width="960" height="600" alt="Bags of Praharsh, home screen" loading="lazy" decoding="async"><video class="tool-vid" data-src="images/tools/vid-bags.14ceeccd.mp4" muted playsinline disablepictureinpicture preload="none" aria-hidden="true"></video></div>
       <div class="tool-body">
       <span class="head"><h3>Bags of Praharsh</h3></span>
       <p class="what">Eleven bags and pouches, each matched to how I move: car or bike to office, café sessions, short work trips, long trips home and international travel.</p>
@@ -2767,7 +3328,308 @@ body.is-case{padding-bottom:0}
 
 
 <div class="cs-progress" aria-hidden="true"><i></i></div>
-<div class="cs-root" id="cs-root" hidden>
+<div class="cs-root" id="cs-root" hidden><article class="cs" id="cs-gold" data-case="gold" data-title="Gold redesign" hidden>
+<div class="cs-hero wrap">
+<a class="cs-back" href="#work">← All work</a>
+<span class="eyebrow"><span class="dot"></span>Meesho · product design case study</span>
+<h1>Gold: getting first-time shoppers to <em>trust</em> a higher price</h1>
+<p class="cs-dek">Gold is Meesho’s premium product programme: better-rated products at a higher price. On the app, a Gold product looked like any other listing, with only a small Gold tag, so shoppers saw only the bigger number. <strong>I redesigned the journey from listing to order confirmation so Gold is noticed, understood and trusted, and Gold’s share of orders doubled in a one-month experiment.</strong></p>
+<div class="cs-cover cs-cover--video"><div class="cs-vwrap is-paused"><video class="cs-hero-vid gd-vid" data-gsrc="images/cases/gold-hero.5e42960e.mp4" data-gposter="images/cases/gold.6a571a52.jpg" width="1280" height="720" autoplay muted loop playsinline disablepictureinpicture preload="metadata" aria-label="Gold redesign: the case in 33 seconds"></video><div class="cs-vctl"><button type="button" class="cs-vbtn gd-play" aria-label="Pause video"><svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="2.5" width="3" height="11" rx="1"/><rect x="9.5" y="2.5" width="3" height="11" rx="1"/></svg><svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2.8v10.4a.8.8 0 0 0 1.2.7l8.3-5.2a.8.8 0 0 0 0-1.4L5.7 2.1a.8.8 0 0 0-1.2.7Z"/></svg></button><input class="cs-vbar gd-bar" type="range" min="0" max="1000" step="1" value="0" aria-label="Seek video"><span class="cs-vtime gd-time"><b>0:00</b> / <span>0:33</span></span></div></div></div>
+
+<div class="cs-facts">
+  <div class="cs-fact"><span>Role</span><b>Product designer (PD2)</b></div>
+  <div class="cs-fact"><span>Team</span><b>Me, a PM, a front-end engineer, a motion designer and a visual designer</b></div>
+  <div class="cs-fact"><span>Users</span><b>Shoppers buying higher-priced products; fewer than 1% are regular Gold buyers</b></div>
+  <div class="cs-fact"><span>Surface</span><b>Product listing, listing-to-product transition, product page, order confirmation · Meesho app</b></div>
+  <div class="cs-fact"><span>Outcome</span><b>Gold orders grew from 1% to 2% of all orders in a one-month experiment</b></div>
+</div>
+</div>
+
+<div class="cs-body wrap"><nav class="cs-toc" aria-label="Chapters"><a href="#gd-short" data-to="gd-short">The short version</a><a href="#gd-what" data-to="gd-what">What Gold is</a><a href="#gd-data" data-to="gd-data">What the data said</a><a href="#gd-research" data-to="gd-research">What shoppers said</a><a href="#gd-survey" data-to="gd-survey">What the survey said</a><a href="#gd-objectives" data-to="gd-objectives">Objectives</a><a href="#gd-decisions" data-to="gd-decisions">The old journey</a><a href="#gd-outside" data-to="gd-outside">Outside-in</a><a href="#gd-direction" data-to="gd-direction">Direction</a><a href="#gd-brand" data-to="gd-brand">Brand</a><a href="#gd-plan" data-to="gd-plan">Initiatives</a><a href="#gd-explore" data-to="gd-explore">Explorations</a><a href="#gd-final" data-to="gd-final">Final designs</a><a href="#gd-testing" data-to="gd-testing">What testing showed</a><a href="#gd-exp" data-to="gd-exp">Experiments</a><a href="#gd-impact" data-to="gd-impact">Impact</a><a href="#gd-reflect" data-to="gd-reflect">Reflection</a></nav><div class="cs-main">
+
+<section class="cs-sec" id="gd-short"><span class="eyebrow"><span class="dot"></span>The short version</span>
+<h2>Gold products were better and cost more, but nothing on screen said so. We made Gold look and feel different at every step a shopper decides.</h2>
+<div class="cs-cols"><div><h3>What was built</h3><ul class="cs-list">
+<li>A Gold pill joined to the rating on the <b>listing card</b>, so quality and Gold are read together</li>
+<li>A short <b>Gold splash</b> in the gap while the product page loads, so shoppers know they’re entering Gold</li>
+<li>A <b>product page</b> that earns the price: more and better photos, visual product details, value props, seller trust and Gold-relevant ratings <span class="gd-nl">Only the Gold theme went live</span></li>
+<li>An <b>order confirmation</b> that says it was a Gold product, so the next visit starts with recall</li>
+</ul></div>
+<div><h3>What it moved</h3><div class="cs-stats">
+<div class="cs-stat"><b>1→2%</b><span>Gold’s share of all orders, in a one-month experiment</span></div>
+</div></div></div>
+<div class="gd-role"><p class="gd-k">What I drove</p><div class="gd-role-g"><div class="gd-role-i"><span>Research</span><p>Led the user research, wrote the survey questions, and ran the outside-in review of other apps.</p></div><div class="gd-role-i"><span>Priorities</span><p>Set what this cycle would fix with the PM, and what it would leave alone.</p></div><div class="gd-role-i"><span>Strategy</span><p>Made the calls on where in the journey to step in, and how.</p></div><div class="gd-role-i"><span>Explorations</span><p>Sketched wireframe ideas for the explorations, and guided the visual designer on where to explore further.</p></div><div class="gd-role-i"><span>Motion</span><p>Shaped the story with the motion designer, and picked the direction.</p></div><div class="gd-role-i"><span>Alignment</span><p>Aligned stakeholders on the direction, and on what this cycle would and wouldn’t change.</p></div></div></div>
+</section>
+
+<section class="cs-sec" id="gd-what"><span class="eyebrow"><span class="dot"></span>What Gold is</span>
+<h2>Gold is a set of products, not a membership: better-rated, higher-priced, and held to a stricter bar.</h2>
+<div class="cs-cards">
+<div class="cs-card"><span class="tag">Quality</span><h4>High ratings, twice over</h4><p>A product qualifies on both its own rating and its seller’s.</p></div>
+<div class="cs-card"><span class="tag">Price</span><h4>High for its category</h4><p>Priced at the top of its subcategory, for example around ₹800 for a kurti.</p></div>
+<div class="cs-card"><span class="tag">Images</span><h4>Photo guidelines</h4><p>Image standards for Gold listings, still being written at the time.</p></div>
+</div>
+<div class="vk-key vk-key--sm"><span class="vk-key-k">Gold vs high-price</span><p class="vk-key-h">Every Gold product is high-price, but <b>not every high-price product is Gold</b>.</p><p>High-price products are everything priced high for its category. Gold is the part of that set which also clears a strict quality bar.</p></div>
+</section>
+
+<section class="cs-sec" id="gd-data"><span class="eyebrow"><span class="dot"></span>What the data said</span>
+<h2>Gold lost shoppers at every step, and most of them on the product page.</h2>
+<p class="cs-lead">Of shoppers who opened a Gold product, 2.35% tapped Buy Now, against 18.47% across the platform. Gold trails the platform from the very first tap.</p>
+<div class="gd-fun"><div class="gd-fun-h"><p class="gd-fun-t">Step-wise conversion, unique users</p><p class="gd-fun-key"><span><i class="g"></i>Gold</span><span><i class="p"></i>Platform</span></p></div><div class="gd-fun-s" role="list"><div class="gd-fun-zone" aria-hidden="true"><span>Where Gold lost the most</span></div><div class="gd-fun-i is-hi" role="listitem"><p class="gd-fun-k">App → listing</p><b><span class="tri">▼</span>−54%</b><span class="gd-fun-vs">Gold vs platform</span><span class="gd-fun-bars" aria-hidden="true"><i class="p" style="--v:90.91"></i><i class="g" style="--v:41.84"></i></span><span class="gd-fun-p"><span><i class="g"></i>Gold 41.84%</span><span><i class="p"></i>Platform 90.91%</span></span></div><div class="gd-fun-i is-hi" role="listitem"><p class="gd-fun-k">Listing → product page</p><b><span class="tri">▼</span>−58%</b><span class="gd-fun-vs">Gold vs platform</span><span class="gd-fun-bars" aria-hidden="true"><i class="p" style="--v:85.28"></i><i class="g" style="--v:36.17"></i></span><span class="gd-fun-p"><span><i class="g"></i>Gold 36.17%</span><span><i class="p"></i>Platform 85.28%</span></span></div><div class="gd-fun-i is-hi" role="listitem"><p class="gd-fun-k">Product page → Buy Now</p><b><span class="tri">▼</span>−87%</b><span class="gd-fun-vs">Gold vs platform</span><span class="gd-fun-bars" aria-hidden="true"><i class="p" style="--v:18.47"></i><i class="g" style="--v:2.35"></i></span><span class="gd-fun-p"><span><i class="g"></i>Gold 2.35%</span><span><i class="p"></i>Platform 18.47%</span></span></div><div class="gd-fun-i" role="listitem"><p class="gd-fun-k">Buy Now → review order</p><b><span class="tri">▼</span>−14%</b><span class="gd-fun-vs">Gold vs platform</span><span class="gd-fun-bars" aria-hidden="true"><i class="p" style="--v:85.84"></i><i class="g" style="--v:73.62"></i></span><span class="gd-fun-p"><span><i class="g"></i>Gold 73.62%</span><span><i class="p"></i>Platform 85.84%</span></span></div><div class="gd-fun-i" role="listitem"><p class="gd-fun-k">Review order → payment</p><b><span class="tri">▼</span>−13%</b><span class="gd-fun-vs">Gold vs platform</span><span class="gd-fun-bars" aria-hidden="true"><i class="p" style="--v:81.93"></i><i class="g" style="--v:71.11"></i></span><span class="gd-fun-p"><span><i class="g"></i>Gold 71.11%</span><span><i class="p"></i>Platform 81.93%</span></span></div></div><p class="gd-fun-n">Each drop (▼) is Gold’s rate relative to the platform’s. After Buy Now the gap narrows: a shopper who has decided behaves much like anyone else.</p></div>
+<div class="gd-prio"><p class="gd-k gd-k--d">Prioritisation</p><h3>Listing and product page first</h3>
+<div class="gd-prio-g"><div><b>Largest drop-off</b><p>The listing and the product page are where Gold lost the most shoppers, so they got this cycle.</p></div>
+<div><b>Conversion before discovery</b><p>From a journey point of view, conversion had to be solved first, before taking Gold discovery into more places across the app.</p></div>
+<div><b>App → listing, with the ranking pod</b><p>Getting Gold onto shoppers’ listings, the app → listing step, was being solved by a ranking pod, so design took the steps after it.</p></div></div><p class="gd-me-l">I set these priorities with the PM.</p></div>
+</section>
+
+<section class="cs-sec" id="gd-research"><span class="eyebrow"><span class="dot"></span>What shoppers said</span>
+<h2>In our user research sessions, shoppers who’d never bought Gold didn’t know it existed, and didn’t trust a high price without proof.</h2>
+<h3 class="grp">Shoppers who hadn’t noticed or bought Gold, about 99%</h3>
+<div class="cs-quotes">
+<blockquote class="cs-quote">“Gold ke bare mein to nhi suna kabhi.” <span style="font-style:normal;color:var(--ink-3)">I’ve never heard of Gold on Meesho.</span></blockquote>
+<blockquote class="cs-quote">“Saste mein same jaise lagne wale options mil rahe hain, toh wahi le leta hoon.” <span style="font-style:normal;color:var(--ink-3)">I can find similar-looking options for less, so I buy those.</span></blockquote>
+<blockquote class="cs-quote">“Pehle exchange/return mein dikkat aayi thi, ab dubara risk nahi lena chahta.” <span style="font-style:normal;color:var(--ink-3)">I had trouble with a return or exchange before. I don’t want to take that risk again.</span></blockquote>
+<blockquote class="cs-quote">“Agar reviews ya ratings premium quality nahi dikhate, toh bharosa nahi hota.” <span style="font-style:normal;color:var(--ink-3)">If the reviews and ratings don’t show premium quality, I don’t trust the premium tag.</span></blockquote>
+</div>
+<h3 class="grp">Regular Gold buyers, under 1%</h3>
+<div class="cs-quotes">
+<blockquote class="cs-quote">“Gold se kai baar saman mangwaya hai, toh ab pehchanne lag gaya hoon.” <span style="font-style:normal;color:var(--ink-3)">I’ve ordered Gold several times, so now I recognise it easily.</span></blockquote>
+<blockquote class="cs-quote">“Pasand nahi aaya toh wapas kar sakta hoon, ye achha laga.” <span style="font-style:normal;color:var(--ink-3)">I liked that I can send it back if I don’t like it.</span></blockquote>
+<blockquote class="cs-quote">“Main Meesho pe image search karke wo saman dhundta hoon jo dusre site pe mehenga mil raha tha.” <span style="font-style:normal;color:var(--ink-3)">I use image search on Meesho to find cheaper versions of things that cost more on other sites.</span></blockquote>
+</div>
+<h3 class="grp">Two problems</h3>
+<div class="cs-cards cs-cards--2">
+<div class="cs-card"><span class="tag">Recall and comprehension</span><h4>Gold didn’t register</h4><p>Shoppers couldn’t recall what Gold stood for, and a Gold product looked and read like any normally priced one.</p></div>
+<div class="cs-card"><span class="tag">Decision to buy</span><h4>It looked overpriced</h4><p>The page gave the same details as a cheap product, so Gold read as the same item at a higher price. Shoppers could find similar-looking options for less, and past bad experiences with quality or returns made them wary of paying more.</p></div>
+</div>
+<h3 class="grp">What was already working</h3>
+<ul class="cs-list">
+<li><b>Returns lowered the stakes.</b> Knowing they could send it back made shoppers more willing to try.</li>
+<li><b>Repeat buyers recognised Gold</b> and were happy with the quality.</li>
+<li><b>Some shoppers came to Meesho on purpose</b> to find cheaper versions of products they’d seen on premium sites.</li>
+</ul>
+</section>
+
+<section class="cs-sec" id="gd-survey"><span class="eyebrow"><span class="dot"></span>What the survey said</span>
+<h2>Many knew the name. Few knew what it meant.</h2>
+<p class="gd-src"><b>Where the numbers come from</b>I wrote the questions for a TOMA (top-of-mind awareness) survey we sent to shoppers, and we read it alongside purchase numbers. That’s how we got the awareness and comprehension figures below.</p>
+<div class="gd-aw"><div class="gd-aw-c"><p class="gd-k">Knew the name</p><div class="gd-aw-r"><b>60%</b><span class="gd-aw-t"><span style="--v:60"></span></span><span class="gd-aw-w">Gold buyers</span></div><div class="gd-aw-r"><b>50%</b><span class="gd-aw-t"><span style="--v:50"></span></span><span class="gd-aw-w">Never bought Gold</span></div></div><div class="gd-aw-c gd-aw-c--hi"><p class="gd-k">Knew what it meant</p><div class="gd-aw-r"><b>27%</b><span class="gd-aw-t"><span style="--v:27"></span></span><span class="gd-aw-w">Gold buyers</span></div><div class="gd-aw-r"><b>19%</b><span class="gd-aw-t"><span style="--v:19"></span></span><span class="gd-aw-w">Never bought Gold</span></div></div></div>
+<p class="dt-note">From a survey of shoppers who had bought high-priced products on Meesho.</p>
+<div class="vk-key"><span class="vk-key-k">The gap</span><p class="vk-key-h">Knowing the name wasn’t the problem. <b>Knowing what it promised was.</b></p><p>Half or more knew the name, whether or not they had bought Gold. Far fewer knew what it meant, and understanding grew only with repeat orders.</p></div>
+<h3 class="grp">Was the name the problem? We tested six others.</h3>
+<p>If so few understood Gold, a clearer name might have fixed it before any design work. In a name-change exercise, shoppers chose between Gold and six other names, and told us what four of them meant.</p>
+<div class="gd-name"><div class="gd-name-c" role="img" aria-label="Which name shoppers picked: Gold 30.0%, Premium 21.1%, Genuine 16.3%, Deluxe 11.5%, Luxe 9.3%, Elite 8.8%, Assured 6.6%"><p class="gd-k">Which name shoppers picked</p><ol class="gd-nb"><li class="is-gold"><span class="gd-nb-l">Gold <i lang="hi">गोल्ड</i><em class="gd-nb-top">Top pick</em></span><span class="gd-nb-t"><span style="--v:30.0"></span></span><b>30.0%</b></li><li><span class="gd-nb-l">Premium <i lang="hi">प्रीमियम</i></span><span class="gd-nb-t"><span style="--v:21.1"></span></span><b>21.1%</b></li><li><span class="gd-nb-l">Genuine <i lang="hi">जेन्युइन</i></span><span class="gd-nb-t"><span style="--v:16.3"></span></span><b>16.3%</b></li><li><span class="gd-nb-l">Deluxe <i lang="hi">डीलक्स</i></span><span class="gd-nb-t"><span style="--v:11.5"></span></span><b>11.5%</b></li><li><span class="gd-nb-l">Luxe <i lang="hi">लक्स</i></span><span class="gd-nb-t"><span style="--v:9.3"></span></span><b>9.3%</b></li><li><span class="gd-nb-l">Elite <i lang="hi">एलीट</i></span><span class="gd-nb-t"><span style="--v:8.8"></span></span><b>8.8%</b></li><li><span class="gd-nb-l">Assured <i lang="hi">अश्योर्ड</i></span><span class="gd-nb-t"><span style="--v:6.6"></span></span><b>6.6%</b></li></ol></div><div class="gd-name-c" role="img" aria-label="What each name meant to shoppers. For Gold, Premium, Genuine and Deluxe alike, offers, high-quality products and fast delivery came first; Gold was linked to gold coins and jewellery more often than the other names."><p class="gd-k">What each name meant to them</p><p class="gd-mc-key"><span><i class="s0"></i>Gold</span><span><i class="s1"></i>Premium</span><span><i class="s2"></i>Genuine</span><span><i class="s3"></i>Deluxe</span></p><div class="gd-mc"><div class="gd-mc-grid" aria-hidden="true"></div><div class="gd-mc-r gd-mc-r--is"><span class="gd-mc-l">High quality, higher priced<em>What Gold actually is</em></span><span class="gd-mc-b"><i class="s0" style="--v:17.4"></i><i class="s1" style="--v:16.8"></i><i class="s2" style="--v:14.1"></i><i class="s3" style="--v:16.9"></i></span></div><div class="gd-mc-r"><span class="gd-mc-l">Offers</span><span class="gd-mc-b"><i class="s0" style="--v:34.6"></i><i class="s1" style="--v:40.3"></i><i class="s2" style="--v:40.4"></i><i class="s3" style="--v:38.9"></i></span></div><div class="gd-mc-r"><span class="gd-mc-l">High-quality products</span><span class="gd-mc-b"><i class="s0" style="--v:34.4"></i><i class="s1" style="--v:32.9"></i><i class="s2" style="--v:33.8"></i><i class="s3" style="--v:31.0"></i></span></div><div class="gd-mc-r"><span class="gd-mc-l">Fast delivery</span><span class="gd-mc-b"><i class="s0" style="--v:26.6"></i><i class="s1" style="--v:33.6"></i><i class="s2" style="--v:33.4"></i><i class="s3" style="--v:32.1"></i></span></div><div class="gd-mc-r"><span class="gd-mc-l">Cashback</span><span class="gd-mc-b"><i class="s0" style="--v:17.8"></i><i class="s1" style="--v:20.6"></i><i class="s2" style="--v:21.0"></i><i class="s3" style="--v:19.4"></i></span></div><div class="gd-mc-r"><span class="gd-mc-l">Expensive items</span><span class="gd-mc-b"><i class="s0" style="--v:11.0"></i><i class="s1" style="--v:10.1"></i><i class="s2" style="--v:8.8"></i><i class="s3" style="--v:12.6"></i></span></div><div class="gd-mc-r"><span class="gd-mc-l">Gold coins, jewellery</span><span class="gd-mc-b"><i class="s0" style="--v:13.5"></i><i class="s1" style="--v:9.3"></i><i class="s2" style="--v:8.5"></i><i class="s3" style="--v:9.9"></i></span></div><div class="gd-mc-r"><span class="gd-mc-l">Subscription</span><span class="gd-mc-b"><i class="s0" style="--v:8.8"></i><i class="s1" style="--v:9.3"></i><i class="s2" style="--v:6.8"></i><i class="s3" style="--v:6.8"></i></span></div><div class="gd-mc-r"><span class="gd-mc-l">None of the above</span><span class="gd-mc-b"><i class="s0" style="--v:4.6"></i><i class="s1" style="--v:4.8"></i><i class="s2" style="--v:8.4"></i><i class="s3" style="--v:7.8"></i></span></div><div class="gd-mc-r"><span class="gd-mc-l">Other</span><span class="gd-mc-b"><i class="s0" style="--v:4.6"></i><i class="s1" style="--v:5.0"></i><i class="s2" style="--v:6.8"></i><i class="s3" style="--v:5.6"></i></span></div><div class="gd-mc-r gd-mc-ax" aria-hidden="true"><span class="gd-mc-l"></span><span class="gd-mc-b"><em style="--x:0">0</em><em style="--x:10">10%</em><em style="--x:20">20%</em><em style="--x:30">30%</em><em style="--x:40">40%</em></span></div></div><p class="dt-note">Share of shoppers who linked each name to each meaning; a shopper could pick more than one.</p></div></div>
+<div class="vk-key vk-key--sm gd-name-key"><span class="vk-key-k">What we took from it</span><p class="vk-key-h">The name stayed. <b>The screens had to explain it.</b></p><p>Gold was the top pick overall, and in every shopper group we split by. But no name explained itself: only about one in six read Gold as what it actually is, high quality at a higher price, while a third or more read every name as offers. So we kept Gold and made the design say what it stands for.</p></div>
+</section>
+
+<section class="cs-sec" id="gd-objectives"><span class="eyebrow"><span class="dot"></span>Objectives</span>
+<h2>Two jobs, in the order a shopper meets them: understand Gold, and see its price as justified.</h2>
+<div class="cs-cards cs-cards--2">
+<div class="cs-card"><span class="tag">1</span><h4>Recall and comprehension</h4><p>Make Gold recognisable, and make what it promises clear at a glance.</p></div>
+<div class="cs-card"><span class="tag">2</span><h4>Decision to buy</h4><p>Give enough detail and trust on the product page to justify the price.</p></div>
+</div>
+<h3 class="grp">How we got to a solution</h3>
+<ul class="cs-list">
+<li><b>A behavioural study</b> from user research, on how shoppers judge quality and look for alternatives</li>
+<li><b>A comparison of product pages</b> for normal-price, high-price and Gold products: which details they carry and how often they’re filled</li>
+<li><b>An outside-in review</b> of premium shopping elsewhere, including AJIO Luxe, Tata CLiQ Luxury and Nykaa, across home, listing, product page, review, order and tracking</li>
+<li><b>Many explorations we rejected</b> along the way, shown below</li>
+</ul>
+</section>
+
+<section class="cs-sec" id="gd-decisions"><span class="eyebrow"><span class="dot"></span>The old journey</span>
+<h2>At each step of the old journey: what shoppers saw, and what was wrong.</h2>
+<p class="cs-lead">Gold showed up across the whole buying journey, but at every step it looked and read like any other product.</p>
+<div class="gd-steps">
+<div class="gd-step">
+<div class="gd-step-ph"><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Listing: before the redesign" style="--k:0"><img data-gsrc="images/cases/gold.e7f4b169.webp" width="720" height="2751" alt="Listing: before the redesign" decoding="async"></div><figcaption>Listing: before the redesign</figcaption></figure></div>
+<div class="gd-step-tx"><p class="gd-step-n">01 · Listing</p>
+<div class="gd-step-pd"><div class="gd-step-b"><p class="gd-k">Problem</p><p>A small Gold tag in the corner of the image, easy to miss and not tied to quality.</p></div>
+</div></div>
+</div>
+<div class="gd-step">
+<div class="gd-step-ph"><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Transition: before the redesign" style="--k:0"><img data-gsrc="images/cases/gold.f88da8b5.webp" width="514" height="1030" alt="Transition: before the redesign" decoding="async"></div><figcaption>Transition: before the redesign</figcaption></figure></div>
+<div class="gd-step-tx"><p class="gd-step-n">02 · Transition</p>
+<div class="gd-step-pd"><div class="gd-step-b"><p class="gd-k">Problem</p><p>A blank loading screen with the Meesho logo. Nothing said the shopper was entering Gold.</p></div>
+</div></div>
+</div>
+<div class="gd-step">
+<div class="gd-step-ph"><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: Product page: before the redesign" style="--k:0;--t:0"><img data-gsrc="images/cases/gold.0be96268.webp" width="720" height="3386" alt="Product page: before the redesign" decoding="async"><img class="ph-bar" data-gsrc="images/cases/gold.ebb3b690.webp" alt="" aria-hidden="true"></div><figcaption>Product page: before the redesign</figcaption></figure></div>
+<div class="gd-step-tx"><p class="gd-step-n">03 · Product page</p>
+<div class="gd-step-pd"><div class="gd-step-b"><p class="gd-k">Problem</p><p>A thin Gold strip, then the same plain details and generic reviews as any product, so Gold looked overpriced.</p></div>
+</div></div>
+</div>
+<div class="gd-step">
+<div class="gd-step-ph"><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Review and payment: before the redesign" style="--k:0"><img data-gsrc="images/cases/gold.dea80ca9.webp" width="720" height="1441" alt="Review and payment: before the redesign" decoding="async"></div><figcaption>Review and payment: before the redesign</figcaption></figure></div>
+<div class="gd-step-tx"><p class="gd-step-n">04 · Review and payment</p>
+<div class="gd-step-pd"><div class="gd-step-b"><p class="gd-k">Problem</p><p>A tiny Gold tag on the item. By now the shopper has decided and is checking address, final price and discount, so a small tag adds nothing.</p></div>
+</div></div>
+</div>
+<div class="gd-step">
+<div class="gd-step-ph"><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: After the order: before the redesign" style="--k:0"><img data-gsrc="images/cases/gold.e0e196e0.webp" width="720" height="1441" alt="After the order: before the redesign" decoding="async"></div><figcaption>After the order: before the redesign</figcaption></figure></div>
+<div class="gd-step-tx"><p class="gd-step-n">05 · After the order</p>
+<div class="gd-step-pd"><div class="gd-step-b"><p class="gd-k">Problem</p><p>A standard confirmation with a small Gold tag, nothing to remember Gold by.</p></div>
+</div></div>
+</div>
+</div>
+</section>
+
+<section class="cs-sec" id="gd-outside"><span class="eyebrow"><span class="dot"></span>Outside-in</span>
+<h2>Before choosing a direction, we studied how other apps make a premium tier feel different, at every step of the journey.</h2>
+<p class="cs-lead">I reviewed premium tiers across fashion, quick commerce and food delivery, including AJIO Luxe, Tata CLiQ Luxury, Zepto and Swiggy One BLCK, from the home page to order tracking. Scroll each row sideways; the learning from each step is under it.</p>
+<figure class="cs-fig gd-oi"><div class="cs-tile gd-oi-tile"><span class="gd-oi-k">Home</span><div class="gd-oi-row"><img data-gsrc="images/cases/gold.fb27e920.webp" width="3090" height="700" alt="Other apps: Home" decoding="async"></div><p class="gd-oi-l"><b>Learning</b>Premium tiers get their own front door: a store switcher or a Luxury tab (AJIO Luxe, Myntra), and a dark, quiet full-screen splash on the way in.</p></div></figure>
+<figure class="cs-fig gd-oi"><div class="cs-tile gd-oi-tile"><span class="gd-oi-k">Listing</span><div class="gd-oi-row"><img data-gsrc="images/cases/gold.f9db5730.webp" width="2109" height="700" alt="Other apps: Listing" decoding="async"></div><p class="gd-oi-l"><b>Learning</b>Premium shows up as a filter (Zepto’s Premium, Flipkart’s Premium Brands) or a dark label on the card (Myntra). Luxury stores like Zara drop badges and offers and let big product images carry the card.</p></div></figure>
+<figure class="cs-fig gd-oi"><div class="cs-tile gd-oi-tile"><span class="gd-oi-k">Product page</span><div class="gd-oi-row"><img data-gsrc="images/cases/gold.80f05229.webp" width="2100" height="700" alt="Other apps: Product page" decoding="async"></div><p class="gd-oi-l"><b>Learning</b>Images take most of the screen, the premium mark sits in the header (Myntra Luxe, Tata CLiQ Luxury), type gets quieter, buttons go dark or monochrome, and there are fewer offer banners.</p></div></figure>
+<figure class="cs-fig gd-oi"><div class="cs-tile gd-oi-tile"><span class="gd-oi-k">Review order</span><div class="gd-oi-row"><img data-gsrc="images/cases/gold.579b20e1.webp" width="1371" height="700" alt="Other apps: Review order" decoding="async"></div><p class="gd-oi-l"><b>Learning</b>Membership appears as a strip or toggle at checkout (Zepto Super Saver, Swiggy One BLCK), but the checkout steps themselves don’t change.</p></div></figure>
+<figure class="cs-fig gd-oi"><div class="cs-tile gd-oi-tile"><span class="gd-oi-k">Order placed</span><div class="gd-oi-row"><img data-gsrc="images/cases/gold.60ba7d59.webp" width="323" height="700" alt="Other apps: Order placed" decoding="async"></div><p class="gd-oi-l"><b>Learning</b>The confirmation itself is branded: “Your BLCK order is placed!” with the tier’s mark, so the purchase feels like part of the tier.</p></div></figure>
+<figure class="cs-fig gd-oi"><div class="cs-tile gd-oi-tile"><span class="gd-oi-k">Order tracking</span><div class="gd-oi-row"><img data-gsrc="images/cases/gold.89df92a8.webp" width="656" height="700" alt="Other apps: Order tracking" decoding="async"></div><p class="gd-oi-l"><b>Learning</b>The tier carries on after purchase: One BLCK’s tracking card (“Superfast with One BLCK”) reminds the user what they’re getting.</p></div></figure>
+</section>
+
+<section class="cs-sec" id="gd-direction"><span class="eyebrow"><span class="dot"></span>Direction</span>
+<h2>Not a separate app or a store within the app: a different experience inside the journey shoppers already use.</h2>
+<p class="cs-lead">We explored three ways to give Gold its own space, each modelled on how another app does it.</p>
+<div class="gd-dir">
+<div class="gd-dir-c gd-no"><div class="gd-dir-img gd-dir-logos"><img class="gd-logo-png" data-gsrc="images/cases/gold.e57a0286.png" width="600" height="356" alt="Tata CLiQ logo" loading="lazy" decoding="async"><span>→</span><img data-gsrc="images/cases/gold.3bd99317.webp" width="600" height="338" alt="Tata CLiQ Luxury logo" loading="lazy" decoding="async"></div><div class="gd-dir-tx"><span class="tag">Rejected</span><h4>A separate app</h4><p class="gd-dir-eg">Like Tata CLiQ and Tata CLiQ Luxury: two apps</p><p>Strategically it didn’t fit: daily active users are already high on the main app.</p></div></div>
+<div class="gd-dir-c gd-no"><div class="gd-dir-img"><img data-gsrc="images/cases/gold.68290046.webp" width="600" height="1301" alt="AJIO store switcher" loading="lazy" decoding="async"></div><div class="gd-dir-tx"><span class="tag">Rejected</span><h4>An app in the app</h4><p class="gd-dir-eg">Like AJIO’s store switcher: AJIO, AJIO Luxe and AJIOGRAM inside one app</p><p>It could have hurt home page conversion, and when it was tested before, it didn’t deliver.</p></div></div>
+<div class="gd-dir-c gd-yes"><div class="gd-dir-img"><img data-gsrc="images/cases/gold.5ad5f38d.webp" width="1400" height="992" alt="Swiggy One BLCK screens" loading="lazy" decoding="async"></div><div class="gd-dir-tx"><span class="tag">Chosen</span><h4>A different experience in the current app</h4><p class="gd-dir-eg">Like Swiggy One BLCK: the same app, with its own look on every screen</p><p>Gold shows up where shoppers already browse and decide, and looks different there.</p></div></div>
+</div>
+
+</section>
+
+
+
+<section class="cs-sec" id="gd-brand"><span class="eyebrow"><span class="dot"></span>Brand</span>
+<h2>We moved Gold from a light golden yellow to a dark golden brown, so it stands out on an app that’s mostly white.</h2>
+<p class="cs-lead">The light yellow pill had too little contrast against the white space around it. We explored the pill on three shades of brown with white, amber, gold and metallic type, and moved Gold to a dark brown base with gold.</p>
+<div class="gd-swatches">
+<div class="gd-sw-g"><p class="gd-k">Before</p><div class="gd-sw-row"><div class="gd-sw"><span style="background:#FFD182"></span><b>Light gold</b><i>#FFD182</i></div><div class="gd-sw"><span style="background:#DB9B2C"></span><b>Golden yellow</b><i>#DB9B2C</i></div></div></div>
+<div class="gd-sw-g"><p class="gd-k gd-k--d">After</p><div class="gd-sw-row"><div class="gd-sw"><span style="background:#603C2B"></span><b>Brown</b><i>#603C2B</i></div><div class="gd-sw"><span style="background:#3F1F11"></span><b>Dark brown</b><i>#3F1F11</i></div><div class="gd-sw"><span style="background:#21110A"></span><b>Deepest brown</b><i>#21110A</i></div></div></div>
+</div>
+<figure class="cs-fig"><div class="cs-tile gd-pg-tile"><div class="gd-pg-old"><span class="gd-k">Before</span><span class="gd-pill" style="background:#DB9B2C;color:#FFFFFF;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.7 5.6 2.9 8.6 10.5 10.5-7.6 1.9-9.8 4.9-10.5 10.5-.7-5.6-2.9-8.6-10.5-10.5 7.6-1.9 9.8-4.9 10.5-10.5z"/></svg><b>Gold</b></span></div><div class="gd-pg"><div class="gd-pg-h"></div><div class="gd-pg-h">White</div><div class="gd-pg-h">Amber</div><div class="gd-pg-h">Light gold</div><div class="gd-pg-h">Pale gold</div><div class="gd-pg-h">Metallic</div><div class="gd-pg-r"><b>Brown</b><i>#603C2B</i></div><div><span class="gd-pill" style="background:#603C2B;color:#FFFFFF;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.7 5.6 2.9 8.6 10.5 10.5-7.6 1.9-9.8 4.9-10.5 10.5-.7-5.6-2.9-8.6-10.5-10.5 7.6-1.9 9.8-4.9 10.5-10.5z"/></svg><b>Gold</b></span></div><div><span class="gd-pill" style="background:#603C2B;color:#E1A53E;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.7 5.6 2.9 8.6 10.5 10.5-7.6 1.9-9.8 4.9-10.5 10.5-.7-5.6-2.9-8.6-10.5-10.5 7.6-1.9 9.8-4.9 10.5-10.5z"/></svg><b>Gold</b></span></div><div><span class="gd-pill" style="background:#603C2B;color:#FFD182;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.7 5.6 2.9 8.6 10.5 10.5-7.6 1.9-9.8 4.9-10.5 10.5-.7-5.6-2.9-8.6-10.5-10.5 7.6-1.9 9.8-4.9 10.5-10.5z"/></svg><b>Gold</b></span></div><div><span class="gd-pill" style="background:#603C2B;color:#F3DD9E;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.7 5.6 2.9 8.6 10.5 10.5-7.6 1.9-9.8 4.9-10.5 10.5-.7-5.6-2.9-8.6-10.5-10.5 7.6-1.9 9.8-4.9 10.5-10.5z"/></svg><b>Gold</b></span></div><div></div><div class="gd-pg-r"><b>Dark brown</b><i>#3F1F11</i></div><div><span class="gd-pill" style="background:#3F1F11;color:#FFFFFF;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.7 5.6 2.9 8.6 10.5 10.5-7.6 1.9-9.8 4.9-10.5 10.5-.7-5.6-2.9-8.6-10.5-10.5 7.6-1.9 9.8-4.9 10.5-10.5z"/></svg><b>Gold</b></span></div><div><span class="gd-pill" style="background:#3F1F11;color:#E1A53E;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.7 5.6 2.9 8.6 10.5 10.5-7.6 1.9-9.8 4.9-10.5 10.5-.7-5.6-2.9-8.6-10.5-10.5 7.6-1.9 9.8-4.9 10.5-10.5z"/></svg><b>Gold</b></span></div><div><span class="gd-pill" style="background:#3F1F11;color:#FFD182;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.7 5.6 2.9 8.6 10.5 10.5-7.6 1.9-9.8 4.9-10.5 10.5-.7-5.6-2.9-8.6-10.5-10.5 7.6-1.9 9.8-4.9 10.5-10.5z"/></svg><b>Gold</b></span></div><div><span class="gd-pill" style="background:#3F1F11;color:#F3DD9E;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.7 5.6 2.9 8.6 10.5 10.5-7.6 1.9-9.8 4.9-10.5 10.5-.7-5.6-2.9-8.6-10.5-10.5 7.6-1.9 9.8-4.9 10.5-10.5z"/></svg><b>Gold</b></span></div><div><span class="gd-pill gd-pill--grad" style="background:#3F1F11;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.7 5.6 2.9 8.6 10.5 10.5-7.6 1.9-9.8 4.9-10.5 10.5-.7-5.6-2.9-8.6-10.5-10.5 7.6-1.9 9.8-4.9 10.5-10.5z"/></svg><b>Gold</b></span></div><div class="gd-pg-r"><b>Deepest brown</b><i>#21110A</i></div><div><span class="gd-pill" style="background:#21110A;color:#FFFFFF;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.7 5.6 2.9 8.6 10.5 10.5-7.6 1.9-9.8 4.9-10.5 10.5-.7-5.6-2.9-8.6-10.5-10.5 7.6-1.9 9.8-4.9 10.5-10.5z"/></svg><b>Gold</b></span></div><div><span class="gd-pill" style="background:#21110A;color:#E1A53E;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.7 5.6 2.9 8.6 10.5 10.5-7.6 1.9-9.8 4.9-10.5 10.5-.7-5.6-2.9-8.6-10.5-10.5 7.6-1.9 9.8-4.9 10.5-10.5z"/></svg><b>Gold</b></span></div><div><span class="gd-pill" style="background:#21110A;color:#FFD182;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.7 5.6 2.9 8.6 10.5 10.5-7.6 1.9-9.8 4.9-10.5 10.5-.7-5.6-2.9-8.6-10.5-10.5 7.6-1.9 9.8-4.9 10.5-10.5z"/></svg><b>Gold</b></span></div><div><span class="gd-pill" style="background:#21110A;color:#F3DD9E;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.7 5.6 2.9 8.6 10.5 10.5-7.6 1.9-9.8 4.9-10.5 10.5-.7-5.6-2.9-8.6-10.5-10.5 7.6-1.9 9.8-4.9 10.5-10.5z"/></svg><b>Gold</b></span></div><div></div></div></div><figcaption>Pill explorations: three brown bases against white, amber, light-gold, pale-gold and metallic type, rebuilt from the Figma file</figcaption></figure>
+<h3 class="grp">The final identity: Gold 2.0</h3>
+<p>A style guide for every Gold surface: the star in one and two colours, the pill for UI, the wordmark, a lattice (jaali) background pattern, and a colour system of dark browns with gold and a warm cream.</p>
+<figure class="cs-fig gd-flat"><div class="cs-tile gd-flat-t"><img data-gsrc="images/cases/gold.cce0ffe6.webp" width="1568" height="120" alt="Gold identity markers" loading="lazy" decoding="async"></div><figcaption>Identity markers: two-colour and one-colour star, the UI pill, the wordmark, the mask shape and the Gold USP icons</figcaption></figure>
+<div class="gd-brand-2"><div class="gd-pal"><div class="gd-sw"><span style="background:#F8F0E2"></span><b>Tint</b><i>#F8F0E2</i><em>Backgrounds</em></div><div class="gd-sw"><span style="background:#663727"></span><b>Tone</b><i>#663727</i><em></em></div><div class="gd-sw"><span style="background:#603C2B"></span><b>Tone 1</b><i>#603C2B</i><em>Labelling</em></div><div class="gd-sw"><span style="background:#3F1F11"></span><b>Shade 1</b><i>#3F1F11</i><em>Pill</em></div><div class="gd-sw"><span style="background:#241007"></span><b>Shade 2</b><i>#241007</i><em></em></div><div class="gd-sw"><span style="background:linear-gradient(90deg,#F6E19A,#CEAC6D,#F4DFB0,#CBA868)"></span><b>Gradient</b><i>#F6E19A → #CBA868</i><em></em></div><div class="gd-sw"><span style="background:#A6803A"></span><b>Gold icon</b><i>#A6803A</i><em></em></div><div class="gd-sw"><span style="background:#F9F4E8"></span><b>Pattern</b><i>#F9F4E8</i><em>Jaali background</em></div></div><figure class="cs-fig gd-flat"><div class="cs-tile gd-flat-t"><img data-gsrc="images/cases/gold.67542e6a.webp" width="522" height="647" alt="Jaali lattice background pattern" loading="lazy" decoding="async"></div><figcaption>Background: the jaali lattice pattern</figcaption></figure></div>
+</section>
+
+<section class="cs-sec" id="gd-plan"><span class="eyebrow"><span class="dot"></span>Initiatives</span>
+<h2>What we set out to build, and why: every initiative answers something the data or research showed.</h2>
+<p class="cs-lead">I decided where in the journey to step in, and how, and set the priority with the PM. These are the bets behind the explorations that follow, step by step through the journey. Each one targets a point where shoppers dropped off or doubted Gold.</p>
+<div class="gd-ini"><div class="gd-ini-s"><div class="gd-ini-h"><span class="gd-ini-n">01</span><h4>Listing</h4><span class="gd-ini-o">Recall and comprehension</span><div class="gd-ini-old"><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Listing: before the redesign" style="--k:0"><img data-gsrc="images/cases/gold.e7f4b169.webp" width="720" height="2751" alt="Listing: before the redesign" decoding="async"></div><figcaption>Before</figcaption></figure></div></div><div class="gd-ini-plan"><p class="gd-k">What we planned to do</p><div class="gd-ini-g"><div class="gd-ini-c"><h5>Gold pill joined to the rating</h5><p><span class="gd-ini-k">Why</span>The old Gold tag sat in the corner of the image, easy to miss and not tied to quality. Shoppers judge quality by ratings: if the ratings don’t show premium quality, they don’t trust the premium tag.</p></div><div class="gd-ini-c"><h5>A short value-prop animation</h5><p><span class="gd-ini-k">Why</span>Many shoppers knew the name, few knew what it meant, and no other name explained itself. The card had to say what Gold promises.</p></div></div></div></div><div class="gd-ini-s"><div class="gd-ini-h"><span class="gd-ini-n">02</span><h4>Transition</h4><span class="gd-ini-o">Awareness and comprehension</span><div class="gd-ini-old"><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Transition: before the redesign" style="--k:0"><img data-gsrc="images/cases/gold.f88da8b5.webp" width="514" height="1030" alt="Transition: before the redesign" decoding="async"></div><figcaption>Before</figcaption></figure></div></div><div class="gd-ini-plan"><p class="gd-k">What we planned to do</p><div class="gd-ini-g"><div class="gd-ini-c"><h5>A Gold splash while the page loads</h5><p><span class="gd-ini-k">Why</span>The blank loading screen showed only the Meesho logo. A Gold splash in that wait gives Gold a stronger identity: it builds awareness, and helps shoppers understand why this product is different, without adding a step.</p></div></div></div></div><div class="gd-ini-s"><div class="gd-ini-h"><span class="gd-ini-n">03</span><h4>Product page</h4><span class="gd-ini-o">Decision to buy</span><div class="gd-ini-old"><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: Product page: before the redesign" style="--k:0;--t:0"><img data-gsrc="images/cases/gold.0be96268.webp" width="720" height="3386" alt="Product page: before the redesign" decoding="async"><img class="ph-bar" data-gsrc="images/cases/gold.ebb3b690.webp" alt="" aria-hidden="true"></div><figcaption>Before</figcaption></figure></div></div><div class="gd-ini-plan"><p class="gd-k">What we planned to do</p><div class="gd-ini-g"><div class="gd-ini-c"><h5>The whole page in the Gold theme</h5><p><span class="gd-ini-k">Why</span>Gold lost the most shoppers here. A thin Gold strip over a plain page made Gold read as the same item at a higher price. And this is the first time a shopper enters a fully Gold space, so the page had to give that feel, a learning from how other apps do premium.</p></div><div class="gd-ini-c"><h5>More photos, made to scroll</h5><p><span class="gd-ini-k">Why</span>Shoppers could find similar-looking options for less. Gold’s photos are better and more numerous, so letting shoppers scroll them shows the difference.</p></div><div class="gd-ini-c"><h5>Value props shoppers can see</h5><p><span class="gd-ini-k">Why</span>Shoppers didn’t trust a high price without proof, and past bad experiences with quality or returns made them wary of paying more.</p></div><div class="gd-ini-c"><h5>Visual product details</h5><p><span class="gd-ini-k">Why</span>The page gave the same plain details as a cheap product, so nothing showed what the higher price paid for. So we made those details visual, so shoppers quickly understand why this is a premium product.</p></div><div class="gd-ini-c"><h5>Seller trust signals</h5><p><span class="gd-ini-k">Why</span>Most Gold sellers and products were new, and a product shows a rating only after 5. The seller’s ratings and reviews had to carry the trust until the product’s own came in.</p></div></div></div></div><div class="gd-ini-s gd-ini-s--wide"><div class="gd-ini-h"><span class="gd-ini-n">04</span><h4>Review and payment</h4><span class="gd-ini-o">Left alone on purpose</span><div class="gd-ini-old gd-ini-old--2"><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Review and payment: before the redesign" style="--k:0"><img data-gsrc="images/cases/gold.dea80ca9.webp" width="720" height="1441" alt="Review and payment: before the redesign" decoding="async"></div><figcaption>Review order</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Payment: no change" style="--k:0"><img data-gsrc="images/cases/gold.251b5b7a.webp" width="720" height="1439" alt="Payment: no change" decoding="async"></div><figcaption>Payment</figcaption></figure></div></div><div class="gd-ini-plan"><p class="gd-k">What we planned to do</p><div class="gd-ini-g"><div class="gd-ini-c"><h5>No changes here, on purpose</h5><p><span class="gd-ini-k">Why</span>By now the shopper has decided and is checking the address, final price and discount. We intentionally didn’t change anything here, as it would distract shoppers from these important tasks.</p></div></div></div></div><div class="gd-ini-s gd-ini-s--wide"><div class="gd-ini-h"><span class="gd-ini-n">05</span><h4>After the order</h4><span class="gd-ini-o">Recall</span><div class="gd-ini-old gd-ini-old--2"><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Order confirmed animation, before the redesign" style="--k:0"><img data-gsrc="images/cases/gold.eb0c4865.webp" width="720" height="1442" alt="Order confirmed animation, before the redesign" decoding="async"></div><figcaption>Order confirmed animation</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: After the order: before the redesign" style="--k:0"><img data-gsrc="images/cases/gold.e0e196e0.webp" width="720" height="1441" alt="After the order: before the redesign" decoding="async"></div><figcaption>Order confirmation page</figcaption></figure></div></div><div class="gd-ini-plan"><p class="gd-k">What we planned to do</p><div class="gd-ini-g"><div class="gd-ini-c"><h5>A Gold order confirmation</h5><p><span class="gd-ini-k">Why</span>Understanding grew only with repeat orders. Saying the order was Gold helps shoppers remember it, and come back to Gold.</p></div></div></div></div></div>
+</section>
+
+<section class="cs-sec" id="gd-explore"><span class="eyebrow"><span class="dot"></span>Explorations</span>
+<h2>Explorations at every step: the listing card, the order screens, and how the product page talks about the seller.</h2>
+<p class="cs-lead">I sketched wireframe ideas for these explorations, guided the visual designer on where to explore further, and worked with the motion designer on the story and which direction to take.</p>
+<h3 class="grp">The listing card</h3>
+<p>Ways to mark Gold on the card and explain it: with the rating, with merchandising, and with video in the feed.</p>
+<figure class="cs-fig"><div class="cs-tile strip-tile"><div class="strip"><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Gold on every card’s rating" style="--k:0"><img data-gsrc="images/cases/gold.2b830d1f.webp" width="720" height="2707" alt="Gold on every card’s rating" decoding="async"></div><figcaption>Gold on every card’s rating</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: A gold outline around Gold cards" style="--k:0"><img data-gsrc="images/cases/gold.70f62a30.webp" width="720" height="2826" alt="A gold outline around Gold cards" decoding="async"></div><figcaption>A gold outline around Gold cards</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Outlined Gold card in a mixed feed" style="--k:0"><img data-gsrc="images/cases/gold.d85c596a.webp" width="720" height="2826" alt="Outlined Gold card in a mixed feed" decoding="async"></div><figcaption>Outlined Gold card in a mixed feed</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Gold-tinted card in a mixed feed" style="--k:0"><img data-gsrc="images/cases/gold.06031bd3.webp" width="720" height="2826" alt="Gold-tinted card in a mixed feed" decoding="async"></div><figcaption>Gold-tinted card in a mixed feed</figcaption></figure></div></div><figcaption>Listing card explorations</figcaption></figure>
+<figure class="cs-fig"><div class="cs-tile strip-tile"><div class="strip"><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Gold pill joined to the rating" style="--k:0"><img data-gsrc="images/cases/gold.d4a336c4.webp" width="720" height="3475" alt="Gold pill joined to the rating" decoding="async"></div><figcaption>Gold pill joined to the rating</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Joined pill, dark" style="--k:0"><img data-gsrc="images/cases/gold.066d3832.webp" width="720" height="3475" alt="Joined pill, dark" decoding="async"></div><figcaption>Joined pill, dark</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Gold tag above the rating" style="--k:0"><img data-gsrc="images/cases/gold.24292632.webp" width="720" height="3475" alt="Gold tag above the rating" decoding="async"></div><figcaption>Gold tag above the rating</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Tag above the rating, outlined" style="--k:0"><img data-gsrc="images/cases/gold.a2a0952f.webp" width="720" height="3475" alt="Tag above the rating, outlined" decoding="async"></div><figcaption>Tag above the rating, outlined</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Tag above the rating, small" style="--k:0"><img data-gsrc="images/cases/gold.64679461.webp" width="720" height="3475" alt="Tag above the rating, small" decoding="async"></div><figcaption>Tag above the rating, small</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Joined pill on a timed deal" style="--k:0"><img data-gsrc="images/cases/gold.c08c24d5.webp" width="720" height="3475" alt="Joined pill on a timed deal" decoding="async"></div><figcaption>Joined pill on a timed deal</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Joined pill, another layout" style="--k:0"><img data-gsrc="images/cases/gold.80f3444e.webp" width="720" height="3475" alt="Joined pill, another layout" decoding="async"></div><figcaption>Joined pill, another layout</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Joined pill across categories" style="--k:0"><img data-gsrc="images/cases/gold.e55102b6.webp" width="720" height="3475" alt="Joined pill across categories" decoding="async"></div><figcaption>Joined pill across categories</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Joined pill on a timed deal, variant" style="--k:0"><img data-gsrc="images/cases/gold.37111d6a.webp" width="720" height="3475" alt="Joined pill on a timed deal, variant" decoding="async"></div><figcaption>Joined pill on a timed deal, variant</figcaption></figure></div></div><figcaption>More listing explorations. Scroll for more.</figcaption></figure>
+<div class="pivot gd-pivot"><span class="pivot-eyebrow">After design leadership review</span>
+<h3 class="gd-pivot-h">Too loud. We toned the card down for handoff.</h3>
+<p class="gd-pivot-p">The risk we had flagged came true: design leadership found the dark Gold pill on the rating too loud for the feed. In the dev handoff version, the rating keeps its usual green chip, a light gold band runs behind it, and a small Gold chip sits at its end. Gold still reads with the rating, without shouting over every other card.</p></div>
+<figure class="cs-fig"><div class="cs-tile strip-tile"><div class="strip"><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Before: a dark Gold pill joined to the rating" style="--k:0"><img data-gsrc="images/cases/gold.95de9780.webp" width="720" height="2753" alt="Before: a dark Gold pill joined to the rating" decoding="async"></div><figcaption>Before: a dark Gold pill joined to the rating</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Handoff: a light gold band behind the rating, a small Gold chip at its end" style="--k:0"><img data-gsrc="images/cases/gold.8c280bad.webp" width="540" height="1127" alt="Handoff: a light gold band behind the rating, a small Gold chip at its end" decoding="async"></div><figcaption>Handoff: a light gold band behind the rating, a small Gold chip at its end</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Handoff: two Gold cards side by side in the feed" style="--k:0"><img data-gsrc="images/cases/gold.f7aa5e2f.webp" width="540" height="1130" alt="Handoff: two Gold cards side by side in the feed" decoding="async"></div><figcaption>Handoff: two Gold cards side by side in the feed</figcaption></figure><figure class="ph"><div class="ph-win ph-vid" style="--k:0"><video data-gsrc="images/cases/gold.7709a290.mp4" autoplay muted loop playsinline disablepictureinpicture preload="auto" aria-label="Handoff: the listing animation with the quieter card"></video></div><figcaption>Handoff: the listing animation with the quieter card</figcaption></figure></div></div><figcaption>The listing card, before and after design leadership review</figcaption></figure>
+<h3 class="grp">Visual product details</h3>
+<p>Gold products were described with the same plain list of attributes as any cheap product. We explored showing the attributes that justify the price, like silk cloth, a sweetheart neckline or a rectangular blouse, as images, and how much of the page they should take.</p>
+<div class="gd-ai"><span class="gd-ai-k"><svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M8 1.5l1.6 4.9 4.9 1.6-4.9 1.6L8 14.5l-1.6-4.9L1.5 8l4.9-1.6z" fill="currentColor"/></svg>How we built it</span><h3>Made with an image model, not by sellers</h3><p>We generated these visuals with an image-generation model, giving it each product’s details and photos. Asking sellers to make them wasn’t practical for an experiment:</p><ol class="notes"><li><b>Most of our sellers aren’t tech-savvy</b> enough to create them.</li><li><b>With the outcome unknown,</b> they had little reason to put in the effort.</li><li><b>Getting them made through operations</b> would have been too much work for a test.</li></ol></div>
+<figure class="cs-fig"><div class="cs-tile strip-tile"><div class="strip"><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: Current: a plain list of attributes" style="--k:3.006;--t:0.1556"><img data-gsrc="images/cases/gold.b2c7fa58.webp" width="720" height="5524" alt="Current: a plain list of attributes" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>Current: a plain list of attributes</figcaption></figure><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: Portrait tiles in a scrolling row" style="--k:3.006;--t:0.1556"><img data-gsrc="images/cases/gold.56f861ae.webp" width="720" height="5524" alt="Portrait tiles in a scrolling row" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>Portrait tiles in a scrolling row</figcaption></figure><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: Always open: three full-width banners" style="--k:3.006;--t:0.1556"><img data-gsrc="images/cases/gold.5b7b910d.webp" width="720" height="5524" alt="Always open: three full-width banners" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>Always open: three full-width banners</figcaption></figure><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: Always open, at less height" style="--k:3.006;--t:0.1556"><img data-gsrc="images/cases/gold.9fb4fbde.webp" width="720" height="5524" alt="Always open, at less height" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>Always open, at less height</figcaption></figure><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: Tall cards, one per attribute" style="--k:2.656;--t:0.1556"><img data-gsrc="images/cases/gold.38cc7647.webp" width="720" height="5040" alt="Tall cards, one per attribute" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>Tall cards, one per attribute</figcaption></figure><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: One large card at a time" style="--k:2.656;--t:0.1556"><img data-gsrc="images/cases/gold.af6622b4.webp" width="720" height="5040" alt="One large card at a time" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>One large card at a time</figcaption></figure><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: Large cards with the shop below" style="--k:2.656;--t:0.1556"><img data-gsrc="images/cases/gold.85792248.webp" width="720" height="5040" alt="Large cards with the shop below" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>Large cards with the shop below</figcaption></figure></div></div><figcaption>Visual product details explorations, scrolled to the details section</figcaption></figure>
+<div class="cs-cards cs-cards--2">
+<div class="cs-card"><h4>Show the reason for the price</h4><p>Each banner names one attribute in Gold type, next to a crop of the product that shows it.</p></div>
+<div class="cs-card"><h4>Side by side, always open</h4><p>The final shows the attribute tiles side by side in one short row, open by default, with the full attribute list behind More Details.</p></div>
+</div>
+<p>The horizontally stacked tiles won for two reasons. They don’t depend on a shopper tapping to open them, and one short row doesn’t push down the product-page recommendations, which bring in most orders.</p>
+<h3 class="grp">The seller section on the product page</h3>
+<div class="gd-why" role="list"><div class="gd-why-i" role="listitem"><span class="gd-why-k">New sellers</span><p>Most Gold sellers were new to Meesho</p></div><div class="gd-why-i" role="listitem"><span class="gd-why-k">New products</span><p>Their products were new too</p></div><div class="gd-why-i" role="listitem"><span class="gd-why-k">No rating yet</span><p>Meesho shows a rating only after a product has 5</p></div><div class="gd-why-i gd-why-i--do" role="listitem"><span class="gd-why-k">So we</span><p>rethought the seller details on Gold product pages: the seller’s characteristics, ratings and reviews, until the product’s own reviews came in</p></div></div>
+<p>“About Seller” or “About Shop”, and how to show the seller’s reviews. The label went through several versions, from “Customer review on other products” and “Customer review on Seller” to “Reviews on other products from this shop”, with a count like “Based on 43,433 ratings on other products” and tags for quality, fit and packaging.</p>
+<figure class="cs-fig"><div class="cs-tile strip-tile"><div class="strip"><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: About Seller: a small star rating, seller stats and review tags, no reviews" style="--k:3.75;--t:0"><img data-gsrc="images/cases/gold.97da4df3.webp" width="720" height="5524" alt="About Seller: a small star rating, seller stats and review tags, no reviews" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>About Seller: a small star rating, seller stats and review tags, no reviews</figcaption></figure><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: About Seller: a big rating block with counts, tags and a sample review" style="--k:3.75;--t:0"><img data-gsrc="images/cases/gold.dc23a6f7.webp" width="720" height="5524" alt="About Seller: a big rating block with counts, tags and a sample review" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>About Seller: a big rating block with counts, tags and a sample review</figcaption></figure><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: About Shop: a rating chip by the name, icon stats, tags and reviews" style="--k:3.75;--t:0"><img data-gsrc="images/cases/gold.27b28992.webp" width="720" height="5524" alt="About Shop: a rating chip by the name, icon stats, tags and reviews" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>About Shop: a rating chip by the name, icon stats, tags and reviews</figcaption></figure><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: About Seller: the big rating block, more compact" style="--k:3.75;--t:0"><img data-gsrc="images/cases/gold.aa17f78e.webp" width="720" height="5524" alt="About Seller: the big rating block, more compact" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>About Seller: the big rating block, more compact</figcaption></figure></div></div><figcaption>Seller section explorations, opened on the seller block</figcaption></figure>
+<figure class="cs-fig"><div class="cs-tile strip-tile"><div class="strip"><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: About Shop section" style="--k:0;--t:0.1556;aspect-ratio:720/1446"><img data-gsrc="images/cases/gold.9b82421a.webp" width="720" height="1204" alt="About Shop section" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>About Shop section</figcaption></figure><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: About Shop section" style="--k:0;--t:0.1556;aspect-ratio:720/1470"><img data-gsrc="images/cases/gold.effe4f7c.webp" width="720" height="1228" alt="About Shop section" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>About Shop section</figcaption></figure><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: About Shop section" style="--k:0;--t:0.1556;aspect-ratio:720/1470"><img data-gsrc="images/cases/gold.4419c9a6.webp" width="720" height="1228" alt="About Shop section" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>About Shop section</figcaption></figure><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: About Shop section" style="--k:0;--t:0.1556;aspect-ratio:720/1470"><img data-gsrc="images/cases/gold.aa9688ca.webp" width="720" height="1228" alt="About Shop section" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>About Shop section</figcaption></figure></div></div><figcaption>About Shop section variants</figcaption></figure>
+<h3 class="grp">Order confirmation</h3>
+<p>Several ways to reinforce Gold after the order, so shoppers remember it was a Gold product.</p>
+<figure class="cs-fig"><div class="cs-tile strip-tile"><div class="strip"><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Order confirmation exploration" style="--k:0"><img data-gsrc="images/cases/gold.343592a9.webp" width="720" height="1440" alt="Order confirmation exploration" decoding="async"></div><figcaption>Order confirmation exploration</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Order confirmation exploration" style="--k:0"><img data-gsrc="images/cases/gold.742758a6.webp" width="720" height="1440" alt="Order confirmation exploration" decoding="async"></div><figcaption>Order confirmation exploration</figcaption></figure><figure class="ph"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Order confirmation exploration" style="--k:0"><img data-gsrc="images/cases/gold.0651d618.webp" width="720" height="1440" alt="Order confirmation exploration" decoding="async"></div><figcaption>Order confirmation exploration</figcaption></figure></div></div><figcaption>Order confirmation explorations</figcaption></figure>
+</section>
+
+<section class="cs-sec" id="gd-final"><span class="eyebrow"><span class="dot"></span>Final designs</span>
+<h2>The final designs, step by step, with what each one is for and what to watch for.</h2>
+<figure class="cs-fig"><div class="cs-tile uf-tile"><h4 class="uf-title">Listing</h4><p class="uf-text">Gold joins the rating, toned down for handoff: a light gold band behind it and a small Gold chip at its end. A short animation explains what Gold promises.</p><div class="uf-row uf-row--cap"><figure class="ph uf-step"><div class="ph-win ph-vid" style="--k:0"><video data-gsrc="images/cases/gold.7709a290.mp4" autoplay muted loop playsinline disablepictureinpicture preload="auto" aria-label="Listing animation"></video></div><figcaption>Listing animation</figcaption></figure><span class="uf-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><figure class="ph uf-step"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Listing at rest" style="--k:0"><img data-gsrc="images/cases/gold.8c280bad.webp" width="540" height="1127" alt="Listing at rest" decoding="async"></div><figcaption>Listing at rest</figcaption></figure></div></div><figcaption>The listing</figcaption></figure>
+<div class="cs-cards cs-cards--2">
+<div class="cs-card"><h4>Listing animation</h4><p>An animation tells shoppers about Gold’s value props, building comprehension and the link with quality.</p><p class="watch"><b>Watch out</b>It can pull attention from the other products in the feed.</p></div>
+<div class="cs-card"><h4>Listing at rest</h4><p>A light gold band behind the rating and a small Gold chip at its end build comprehension and the link with quality, without shouting over the feed.</p><p class="watch"><b>Watch out</b>It can be visually overpowering.</p></div>
+</div>
+
+<figure class="cs-fig"><div class="cs-tile uf-tile"><h4 class="uf-title">Transition</h4><p class="uf-text">The blank screen between listing and product page becomes a Gold splash, with a lighter version for low-end phones.</p><div class="uf-row uf-row--cap"><figure class="ph uf-step"><div class="ph-win ph-vid" style="--k:0"><video data-gsrc="images/cases/gold.61d73ee8.mp4" autoplay muted loop playsinline disablepictureinpicture preload="auto" aria-label="Splash: the Gold mark builds, then a shimmer across it"></video></div><figcaption>Splash: the Gold mark builds, then a shimmer across it</figcaption></figure><span class="uf-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><figure class="ph uf-step"><div class="ph-win ph-vid" style="--k:0"><video data-gsrc="images/cases/gold.969f33bd.mp4" autoplay muted loop playsinline disablepictureinpicture preload="auto" aria-label="Low-end phones: a lighter version"></video></div><figcaption>Low-end phones: a lighter version</figcaption></figure></div></div><figcaption>Listing to product page</figcaption></figure>
+<div class="cs-cards cs-cards--2">
+<div class="cs-card"><h4>A Gold splash</h4><p>The blank loading screen tells shoppers they’re entering Gold.</p><p class="watch"><b>Watch out</b>It can make loading feel longer.</p></div>
+</div>
+<figure class="cs-fig"><div class="cs-tile strip-tile"><div class="strip"><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: Product page, top" style="--k:0;--t:0.0000;aspect-ratio:1/2.3"><img data-gsrc="images/cases/gold.34bf218f.webp" width="720" height="5522" alt="Product page" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>The top of the page, all in the Gold theme</figcaption></figure><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: Product page" style="--k:5.0;--t:0.0000;aspect-ratio:1/2.3"><img data-gsrc="images/cases/gold.34bf218f.webp" width="720" height="5522" alt="Product page" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>With product reviews</figcaption></figure><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: Product page with no reviews yet" style="--k:3.86;--t:0.0000;aspect-ratio:1/2.3"><img data-gsrc="images/cases/gold.80c07749.webp" width="720" height="5522" alt="Product page with no reviews yet" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.9d1a1ad4.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.d484ea7b.webp" alt="" aria-hidden="true"></div><figcaption>No reviews yet: the seller’s reviews instead</figcaption></figure></div></div><figcaption>The Gold product page: the top, and the reviews area with and without product reviews</figcaption></figure>
+<h3 class="grp">Visual product details</h3>
+<p>The attributes that justify the price, shown as image tiles side by side in one short row, always open, with the full list behind More Details.</p>
+<figure class="cs-fig"><div class="cs-tile strip-tile"><div class="strip"><figure class="ph"><div class="ph-win ph-tb" tabindex="0" role="button" aria-label="Open full screen: Attribute tiles side by side: Silk, Sweetheart neckline, Blouse back" style="--k:3.13;--t:0.1556;aspect-ratio:1/2.3"><img data-gsrc="images/cases/gold.34bf218f.webp" width="720" height="5522" alt="Attribute tiles side by side: Silk, Sweetheart neckline, Blouse back" decoding="async"><img class="ph-top" data-gsrc="images/cases/gold.db7fb16a.webp" alt="" aria-hidden="true"><img class="ph-bar" data-gsrc="images/cases/gold.68c6da85.webp" alt="" aria-hidden="true"></div><figcaption>Attribute tiles side by side: Silk, Sweetheart neckline, Blouse back</figcaption></figure></div></div><figcaption>Visual product details, final</figcaption></figure>
+<div class="cs-cards cs-cards--2">
+<div class="cs-card gd-card-key"><div><h4>The whole page in the Gold theme</h4><p>Not just a Gold badge: the entire product page takes the Gold theme, from the top down, to reinforce the Gold brand while the shopper decides.</p></div><div><h4>Merch made to scroll</h4><p>The product photos were made more scrollable, so shoppers see the quality, and more of it, which the rest of the Meesho catalogue doesn’t offer.</p></div></div>
+<div class="cs-card"><h4>More and better photos</h4><p>Gold photos are higher in quality and number, so the gallery invites a scroll and shoppers see the detail.</p><p class="watch"><b>Watch out</b>The focused view of a single photo is lost.</p></div>
+<div class="cs-card"><h4>Value props shoppers can see</h4><p>Visual value props to build trust.</p><p class="watch"><b>Watch out</b>The page gets longer.</p></div>
+<div class="cs-card"><h4>Visual product details</h4><p>More visual details, so the product reads as worth a higher price.</p><p class="watch"><b>Watch out</b>The page gets longer.</p></div>
+<div class="cs-card"><h4>Seller trust signals</h4><p>A seller section with ratings and tags, as social proof.</p><p class="watch"><b>Watch out</b>The page gets longer, and shoppers can mistake seller ratings for product ratings.</p></div>
+</div>
+
+<p>A Gold product with fewer than five ratings can’t prove its quality with its own reviews, and research showed shoppers didn’t trust premium positioning on these. For them, the page shows reviews of the shop’s other products instead.</p>
+<figure class="cs-fig"><div class="cs-tile uf-tile"><h4 class="uf-title">Review order and payment</h4><p class="uf-text">No change here, apart from the updated Gold pill on the review page.</p><div class="uf-row uf-row--cap"><figure class="ph uf-step"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Review order: no change" style="--k:0"><img data-gsrc="images/cases/gold.b62095c7.webp" width="720" height="1439" alt="Review order: no change" decoding="async"></div><figcaption>Review order: only the Gold pill updated</figcaption></figure><span class="uf-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><figure class="ph uf-step"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Payment: no change" style="--k:0"><img data-gsrc="images/cases/gold.251b5b7a.webp" width="720" height="1439" alt="Payment: no change" decoding="async"></div><figcaption>Payment: no change</figcaption></figure></div></div><figcaption>Review order and payment</figcaption></figure>
+<figure class="cs-fig"><div class="cs-tile uf-tile"><h4 class="uf-title">Order confirmation</h4><p class="uf-text">Once the order is placed, the animation and the confirmation page say it was a Gold product.</p><div class="uf-row uf-row--cap"><figure class="ph uf-step"><div class="ph-win ph-vid" style="--k:0"><video data-gsrc="images/cases/gold.cb883216.mp4" autoplay muted loop playsinline disablepictureinpicture preload="auto" aria-label="Order confirmation animation"></video></div><figcaption>Order confirmation animation</figcaption></figure><span class="uf-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><figure class="ph uf-step"><div class="ph-win" tabindex="0" role="button" aria-label="Open full screen: Order confirmation page" style="--k:0"><img data-gsrc="images/cases/gold.e07f23e3.webp" width="720" height="1439" alt="Order confirmation page" decoding="async"></div><figcaption>Order confirmation page</figcaption></figure></div></div><figcaption>Order confirmation</figcaption></figure>
+<div class="cs-cards cs-cards--2">
+<div class="cs-card"><h4>Confirmation, animated and on the page</h4><p>Reinforcing that a Gold product was ordered builds recall for the next visit.</p><p class="watch"><b>Watch out</b>Shoppers can confuse it with another order state.</p></div>
+</div>
+<p class="gd-src"><b>What went live</b>The product page’s Gold theme went live, along with the listing and transition changes. The other product page changes never went live, due to the reprioritisation of other KRs.</p>
+</section>
+
+<section class="cs-sec" id="gd-testing"><span class="eyebrow"><span class="dot"></span>What testing showed</span>
+<h2>Shoppers linked the new Gold tag to quality, and found the extra detail on the product page helpful. But they read seller reviews as reviews of the product.</h2>
+<div class="cs-cards">
+<div class="cs-card"><h4>The tag worked</h4><p>On the listing, shoppers noticed the new tag placement and connected it with quality.</p></div>
+<div class="cs-card"><h4>The detail registered</h4><p>On the product page, they saw and realised there were more details than usual.</p></div>
+<div class="cs-card"><h4>Seller trust got mixed up</h4><p>Seller reviews and ratings were taken as the product’s own quality, which shaped how we labelled the seller section.</p></div>
+</div>
+<p class="cs-src">Setup: control against two test versions.</p>
+<div class="key" style="margin-top:1.25rem"><h3>Next initiatives, after this cycle</h3><ol class="notes">
+<li><b>Bring reels onto the product page</b>, so shoppers understand the value props even better.</li>
+<li><b>Replace the cash-on-delivery value prop</b> with one that speaks to Gold: the plan is to introduce faster returns and exchanges.</li>
+<li><b>Check how seller rating and product rating relate</b>, before leaning on seller trust.</li>
+<li><b>Find more ways to bring the right shoppers to Gold</b> in the right context: the discovery problem, scoped out of this cycle at prioritisation.</li>
+</ol></div>
+</section>
+
+<section class="cs-sec" id="gd-exp"><span class="eyebrow"><span class="dot"></span>Experiments</span>
+<h2>The listing changes went live first, and the version without video won.</h2>
+<p class="cs-lead">Two A/B tests measured the awareness work on the listing: the Gold pill joined to the rating, and the value-prop animation. Apart from its Gold theme, the product page changes never went live, due to the reprioritisation of other KRs.</p>
+<p>Joining the Gold pill to the rating on its own lifted Gold orders, and platform orders and GMV rose too, so Gold’s gain didn’t come out of other products.</p>
+<h3 class="grp">With and without video on the listing</h3>
+<p>We then compared two versions of the listing: one with a video card, and one without. The version without video worked better. Without the video, the first card in the feed wasn’t held back, so shoppers converted better on it.</p>
+<div class="key" style="margin-top:1.25rem"><h3>What the tests taught us</h3><ol class="notes">
+<li><b>The listing alone moved Gold.</b> Joining the Gold pill to the rating raised clicks and orders on Gold products, before any product page change.</li>
+<li><b>Gold grew without taking from the rest.</b> Platform orders and GMV per visitor rose slightly in every version.</li>
+<li><b>Motion has a cost on the feed.</b> A video on the listing drew the eye away from the first card, and the version without it won.</li>
+</ol></div>
+</section>
+
+<section class="cs-sec" id="gd-impact"><span class="eyebrow"><span class="dot"></span>Impact</span>
+<h2>In a one-month experiment, Gold went from 1% to 2% of all orders on Meesho.</h2>
+<p class="cs-lead">The lift came from the design changes that went live: the listing, the transition, and the product page’s Gold theme. The rest of the product page changes never went live, due to the reprioritisation of other KRs.</p>
+
+</section>
+
+<section class="cs-sec" id="gd-reflect"><span class="eyebrow"><span class="dot"></span>Reflection</span>
+<h2>Three things I’d carry into the next premium launch.</h2>
+<div class="cs-cards gd-learn">
+<div class="cs-card"><h4>Premium needs proof, not a label</h4><p>Premium isn’t a label you add. It’s proof, at every point where a shopper might doubt the price.</p></div>
+<div class="cs-card"><h4>Motion has a cost on the feed</h4><p>A video on the listing drew the eye away from the first card, and the version without it won.</p></div>
+<div class="cs-card"><h4>Name what each signal is about</h4><p>Seller reviews were read as product reviews. Labelling the source of every trust signal clearly from the first draft would have saved a round.</p></div>
+</div>
+
+</section>
+
+<div class="cs-next"><a class="cs-back" href="#work">← All work</a><a class="next" href="#case/vsku"><span class="eyebrow"><span class="dot"></span>Next case study</span><h3>Designing for the perfect variation purchase →</h3></a></div>
+</div></div>
+<dialog class="lb" aria-label="Full-size design"><button class="lb-x" type="button">Close</button><div class="lb-ph"><img class="lb-top" alt="" hidden><img class="lb-main" alt=""><img class="lb-bar" alt="" hidden></div><div class="lb-cap"></div></dialog>
+</article>
+
 <article class="cs" id="cs-vsku" data-case="vsku" data-title="Designing for the perfect variation purchase" hidden>
 <div class="cs-hero wrap">
 <a class="cs-back" href="#work">← All work</a>
@@ -2889,7 +3751,7 @@ body.is-case{padding-bottom:0}
 <div class="gw-fb"><div><h3>Transfer a GP’s leads</h3><p>Added to the GP profile, so a team leader can move a GP’s candidates to someone else.</p><figure class="cs-fig gw-crop"><div class="cs-tile"><img src="images/cases/gw-513a0058.webp" width="730" height="470" alt="GP profile with the Transfer leads button" loading="lazy" decoding="async"></div><figcaption>Transfer leads on the GP profile</figcaption></figure></div>
 <div><h3>Jobs filtered for each candidate</h3><p>When adding a candidate to a job, the list arrives already filtered by what was entered for that candidate.</p><figure class="cs-fig gw-crop"><div class="cs-tile"><img src="images/cases/gw-8340d7a8.webp" width="758" height="695" alt="Add to job with the work location filter already applied" loading="lazy" decoding="async"></div><figcaption>Pre-filtered jobs</figcaption></figure></div></div></section><section class="cs-sec" id="gw-learn"><span class="eyebrow"><span class="dot"></span>Learnings</span><h2>With real ownership and close feedback, I worked through the whole loop from research to handoff.</h2>
 <div class="cs-cards"><div class="cs-card"><h4>Planning research</h4><p>Setting objectives, questions per objective and who to talk to before the first call made eight interviews enough.</p></div><div class="cs-card"><h4>Running interviews</h4><p>Remote calls across five regions, with team leaders, partners and state heads, some with cameras off.</p></div><div class="cs-card"><h4>Documenting findings</h4><p>A long report doesn’t get reread. An empathy map and two personas did the work in every discussion.</p></div><div class="cs-card"><h4>Designing responsive interfaces</h4><p>The personas set the platform: one portal for an office laptop and a phone in the field.</p></div><div class="cs-card"><h4>Working with developers</h4><p>Sharing flows before visuals let backend work start early and caught what couldn’t be built.</p></div><div class="cs-card"><h4>Managing feedback</h4><p>Rounds with Ops, PMs and users meant agreeing what changed, what waited a sprint, and what was cut.</p></div></div></section>
-<div class="cs-next"><a class="cs-back" href="#work">← All work</a><a class="next" href="#case/vsku"><span class="eyebrow"><span class="dot"></span>Next case study</span><h3>Designing for the perfect variation purchase →</h3></a></div></div></div>
+<div class="cs-next"><a class="cs-back" href="#work">← All work</a><a class="next" href="#case/whatsapp"><span class="eyebrow"><span class="dot"></span>Next case study</span><h3>Shopping on WhatsApp →</h3></a></div></div></div>
 <dialog class="lb" aria-label="Full-size design"><button class="lb-x" type="button">Close</button><div class="lb-ph"><img class="lb-top" alt="" hidden><img class="lb-main" alt=""><img class="lb-bar" alt="" hidden></div><div class="lb-cap"></div></dialog></article>
 
 <article class="cs" id="cs-asr" data-case="asr" data-title="Expectation Reality Mismatch" hidden>
@@ -2912,7 +3774,7 @@ body.is-case{padding-bottom:0}
   </div>
   <div class="cs-next wrap">
     <a class="cs-back" href="#work">← All work</a>
-    <a class="next" href="#case/hevo"><span class="eyebrow"><span class="dot"></span>Next case study</span><h3>Connecting data sources, faster →</h3></a>
+    <a class="next" href="#case/gold"><span class="eyebrow"><span class="dot"></span>Next case study</span><h3>Gold redesign →</h3></a>
   </div>
 </article>
 <article class="cs" id="cs-parking" data-case="parking" data-title="Meesho Parking" hidden>
@@ -2981,7 +3843,7 @@ body.is-case{padding-bottom:0}
   </div>
   <div class="cs-next wrap">
     <a class="cs-back" href="#work">← All work</a>
-    <a class="next" href="#case/vsku"><span class="eyebrow"><span class="dot"></span>Next case study</span><h3>Designing for the perfect variation purchase →</h3></a>
+    <a class="next" href="#case/gw"><span class="eyebrow"><span class="dot"></span>Next case study</span><h3>GoodWorker: a portal for team leaders →</h3></a>
   </div>
 </article>
 </div>
@@ -3534,6 +4396,48 @@ Array.prototype.slice.call(document.querySelectorAll('.pc-track')).forEach(initM
 </script>
 
 <script>
+/* tool cards: mouse -> the recording plays on hover (loops; the Duo unfold plays once and holds); touch / narrow -> the card
+   at least three quarters on screen plays, one at a time. Files on the hosted site; the claude.ai artifact uses its asset store. */
+(function(){
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var BLOB = {"duo": "/_blob/11e52e6a3b8a0c3d55c84a3ac22950ea", "atp": "/_blob/9b6de83721033c26f00e9900ba6d0c5b", "reclaim": "/_blob/5281b2e3dacc34e501d412ac6adfbf94", "ember": "/_blob/af9484bcf59fa009de7d97a95873d94b", "mcc": "/_blob/6bbfb5d905dd9405d442ca2041569700", "bags": "/_blob/d75b065318fa3d49b7431c51ae4cbe42"};
+  var hosted = /(^|\.)github\.io$|netlify\.app$|^localhost$|^127\./.test(location.hostname) || location.protocol === 'file:';
+  var cards = [].slice.call(document.querySelectorAll('a.tool[data-vid]')); if (!cards.length) return;
+  var scrollMQ = window.matchMedia('(hover: none), (pointer: coarse), (max-width: 780px)');
+  function ctl(c){
+    if (c._ctl) return c._ctl;
+    var v = c.querySelector('.tool-vid'), on = false, once = c.hasAttribute('data-once');
+    v.muted = true; v.defaultMuted = true; v.playsInline = true; v.setAttribute('webkit-playsinline', '');
+    v.addEventListener('playing', function(){ if (on) c.classList.add('is-playing'); });
+    return c._ctl = {
+      play: function(){
+        on = true; v.loop = !once && !scrollMQ.matches;
+        if (!v.getAttribute('src')) { var b = BLOB[c.dataset.vid]; v.src = (!hosted && b) ? b : v.dataset.src; v.load(); }
+        try { v.currentTime = 0; } catch (e) {}
+        var p = v.play(); if (p && p.catch) p.catch(function(){});
+      },
+      stop: function(){ on = false; c.classList.remove('is-playing'); if (v.getAttribute('src')) { v.pause(); try { v.currentTime = 0; } catch (e) {} } }
+    };
+  }
+  cards.forEach(function(c){
+    c.addEventListener('pointerenter', function(e){ if (e.pointerType === 'mouse' && !scrollMQ.matches) ctl(c).play(); });
+    c.addEventListener('pointerleave', function(e){ if (e.pointerType === 'mouse' && !scrollMQ.matches) ctl(c).stop(); });
+  });
+  if ('IntersectionObserver' in window) {
+    var active = null;
+    var io = new IntersectionObserver(function(es){
+      if (!scrollMQ.matches) return;
+      es.forEach(function(x){
+        if (x.intersectionRatio >= 0.75) { if (active && active !== x.target) ctl(active).stop(); active = x.target; ctl(x.target).play(); }
+        else if (active === x.target) { ctl(x.target).stop(); active = null; }
+      });
+    }, { threshold: [0, 0.75] });
+    cards.forEach(function(c){ io.observe(c); });
+  }
+})();
+</script>
+
+<script>
 /* case-study stats roll down digit by digit the first time they come into view after a case page opens */
 (function(){
   var els = document.querySelectorAll('.cs-stat b'); if (!els.length) return;
@@ -3915,6 +4819,63 @@ document.addEventListener('wheel', function(e){
   var up = e.deltaY < 0, can = up ? w.scrollTop > 0 : w.scrollTop + w.clientHeight < w.scrollHeight - 1;
   if (can) e.stopPropagation();
 }, { capture: true, passive: true });
+</script>
+
+<script>
+(function(){
+  var b = document.querySelector('.work-more-btn'), g = document.getElementById('work-intern'); if (!b || !g) return;
+  var l = b.querySelector('.wm-label');
+  function set(open){ g.hidden = !open; b.setAttribute('aria-expanded', open ? 'true' : 'false'); l.textContent = open ? 'Hide Previous Work' : 'See Previous Work (2020–2022)'; }
+  b.addEventListener('click', function(){ var open = g.hidden; set(open); if (open) requestAnimationFrame(function(){ g.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }); });
+  /* a Hevo, GoodWorker or WhatsApp case opened straight from a link keeps the section open behind it */
+  function sync(){ var m = location.hash.match(/^#case\/(hevo|gw|whatsapp)$/); if (m) set(true); }
+  window.addEventListener('popstate', sync); sync();
+})();
+</script>
+
+<script>
+/* Gold case: media load when the case is about to be seen. On GitHub Pages they are files; inside the claude.ai
+   artifact (511-file cap) they come from gold-media-1.js, gold-media-2.js, gold-media-3.js. */
+(function(){
+  var page = document.getElementById('cs-gold'); if (!page) return;
+  var hosted = /(^|\.)github\.io$|netlify\.app$|^localhost$|^127\./.test(location.hostname) || location.protocol === 'file:';
+  var BUNDLES = ["images/cases/gold-media-1.js", "images/cases/gold-media-2.js", "images/cases/gold-media-3.js"], state = 0, waiters = [];
+  function apply(){
+    var M = window.GOLD_MEDIA || {};
+    page.querySelectorAll('[data-gsrc],[data-gposter]').forEach(function(el){
+      var s = el.getAttribute('data-gsrc'), p = el.getAttribute('data-gposter');
+      if (p) { el.setAttribute('poster', M[p] || p); el.removeAttribute('data-gposter'); }
+      if (s) { el.setAttribute('src', M[s] || s); el.removeAttribute('data-gsrc'); }
+    });
+    state = 2; waiters.splice(0).forEach(function(f){ f(); });
+  }
+  function load(cb){
+    if (cb) waiters.push(cb);
+    if (state === 2) return apply();
+    if (state === 1) return; state = 1;
+    if (hosted) return apply();
+    var left = BUNDLES.length;
+    BUNDLES.forEach(function(u){ var sc = document.createElement('script'); sc.src = u; sc.onload = sc.onerror = function(){ if (--left === 0) apply(); }; document.head.appendChild(sc); });
+  }
+  window.goldLoad = load;
+  /* hero film: the case router plays it on open; make sure it has a source first */
+  function hero(){ if (page.hidden) return; var v = page.querySelector('.cs-hero-vid'); if (v && v.paused) { var p = v.play(); if (p && p.catch) p.catch(function(){}); } }
+  new MutationObserver(function(){ if (!page.hidden) load(hero); }).observe(page, { attributes: true, attributeFilter: ['hidden'] });
+  document.querySelectorAll('a[href="#case/gold"]').forEach(function(c){ c.addEventListener('pointerenter', function(){ load(); }); });
+  if (!page.hidden) load(hero);
+  var idle = window.requestIdleCallback || function(f){ setTimeout(f, 1500); };
+  window.addEventListener('load', function(){ setTimeout(function(){ idle(function(){ load(); }); }, 2500); });
+
+  /* tap a screen to see it full size */
+  var dlg=page.querySelector('dialog.lb'),ph=dlg.querySelector('.lb-ph'),img=dlg.querySelector('.lb-main'),cap=dlg.querySelector('.lb-cap');
+  function open(src,alt,w,h,k){img.src=src;img.alt=alt||'';cap.textContent=alt||'';var vw=window.innerWidth;var dw=h/w>1.4?Math.min(430,vw*.9):Math.min(w,vw*.94);ph.style.width=dw+'px';img.style.width='100%';if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','');dlg.scrollTop=0;var go=function(){dlg.scrollTop=(k||0)*dw};if(img.complete)go();else img.onload=go;}
+  page.addEventListener('click',function(e){var t=e.target;if(dlg.contains(t))return;var win=t.closest('.ph-win');if(!win||win.classList.contains('ph-todo'))return;var im=win.querySelector('img');if(!im)return;open(im.src,im.alt,im.naturalWidth||+im.getAttribute('width'),im.naturalHeight||+im.getAttribute('height'),parseFloat(win.style.getPropertyValue('--k'))||0);});
+  page.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('ph-win')){e.preventDefault();e.target.click();}});
+  dlg.querySelector('.lb-x').addEventListener('click',function(){dlg.close()});
+  dlg.addEventListener('click',function(e){if(e.target===dlg)dlg.close()});
+
+
+})();
 </script>
 
 <script>
