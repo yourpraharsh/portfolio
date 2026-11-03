@@ -32,7 +32,7 @@ Install it from your organization's skill directory in Claude's settings.
 
 ## 2. Before you start (recommended, 5 minutes)
 
-**Connect Figma.** Go to **Settings → Connectors** and connect **Figma**. Without it, you can still upload exported PNGs or a PDF of your frames.
+**Connect Figma.** Go to **Settings → Connectors** and connect **Figma**. Use an account with **edit access** to the file: Claude pulls your screens by adding a temporary page to the file and removing it afterwards, so view-only access isn't enough. Without the connector (or edit access), you can still upload exported PNGs or a PDF of your frames.
 
 **Make a "for claude" page in your Figma file.** This is the biggest time-saver:
 1. Add a new page and call it `for claude`.
@@ -61,7 +61,7 @@ Start a new chat and paste something like:
 Claude will:
 
 1. **Ask what's missing** in one message. Tap or type your answers. Unsure about something? Say so, and it becomes a TODO.
-2. **Pull your screens and text from Figma.** If Figma downloads are blocked, Claude gives you step-by-step export instructions instead (select frames → Export → 2x PNG → upload the zip).
+2. **Pull your screens and text from Figma.** If Figma downloads are blocked, Claude pulls the frames through the Figma connector itself: it adds a temporary page to your file named "Claude export (temporary, safe to delete)", reads the images back, and deletes the page. It shows you a contact sheet of the screens to check. You only get export instructions (select frames → Export → 2x PNG → upload the zip) if the connector can't edit your file.
 3. **Show an outline**: each section, the point it makes and which frames go in it. Reply "looks good" or adjust it.
 4. **Build and publish the page**, then list every TODO left for you.
 
@@ -129,9 +129,11 @@ There are two ways to share the page. Pick by who needs to open it.
 
 | Problem | What to do |
 |---|---|
-| "Rate limit" or Figma errors | Free Figma plans have tight limits. Export the frames as 2x PNGs (or a PDF) and upload them; Claude carries on from there. |
-| Claude can't open the file | Make sure the Figma file is shared with the account you connected. Or just upload exports. |
-| Screens look blurry | Export at **2x**, not 1x. |
+| "Rate limit" or Figma errors | Free Figma plans have tight limits. Ask Claude to export in fewer, bigger batches, or export the frames as 2x PNGs (or a PDF) and upload them; Claude carries on from there. |
+| Claude asks you to export, or says Figma downloads are blocked | Ask it to pull the screens through the Figma connector (the "connector relay"). This needs the connected account to have edit access to the file. |
+| A page named "Claude export (temporary, safe to delete)" is left in your file | An export was interrupted. Delete the page, or ask Claude to remove it. It holds no design work. |
+| Claude can't open the file | Make sure the Figma file is shared with the account you connected, with edit access if Claude should pull the screens itself. Or just upload exports. |
+| Screens look blurry | Claude pulls screens 360 px wide, or 540 px for ones shown large. Ask for 540 or 720 for any that look soft. If you export yourself, use **2x**, not 1x. |
 | A deck or PDF has several screens per slide | That's fine. Claude crops the screens out automatically, then checks the crops with you. |
 | Fonts don't match your team's style | Your font may not be on Google Fonts. Claude picks the closest match; tell it if you'd prefer another. |
 | The page is too large to publish | Claude shrinks images automatically. Long videos may only be included in the Netlify zip. |
@@ -150,5 +152,6 @@ There are two ways to share the page. Pick by who needs to open it.
 | `references/` | Intake checklist, Figma extraction methods, page structure and writing rules |
 | `scripts/build_site.py` | Builds the page and zip from the content file |
 | `scripts/crop_screens.py` | Crops individual screens out of slides or PDFs |
+| `scripts/figma_relay.py` | Rebuilds the screens Claude pulls through the Figma connector, and makes a contact sheet |
 | `assets/template.html` | The page design |
 | `assets/example-content.json` | A complete example project page |
