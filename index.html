@@ -2686,6 +2686,159 @@ body.is-case{padding-bottom:0}
 @media (max-width:640px){.inc-strip{flex-direction:column;gap:.55rem}.inc-l{flex-direction:column;gap:.35rem}}
 
 .cs-skills{list-style:none;margin:1.25rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.4rem}.cs-skills li{font-family:var(--ff-mono);font-size:.6875rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);background:var(--paper);border:1px solid var(--line-strong);border-radius:999px;padding:.38rem .8rem;line-height:1}.cs-skills + .cs-cover{margin-top:1.25rem}
+
+/* ============================================================
+   PRAHARSH LLM: a Spotlight-style ask bar pinned to the bottom (variant 6)
+   idle = small capsule · focus = suggestions / live top hits · chat = conversation
+   ============================================================ */
+.pllm{
+  --sl-bg:rgba(246,246,248,.80);--sl-solid:#f3f3f5;--sl-ink:#1d1d1f;--sl-ink2:rgba(60,60,67,.80);--sl-ink3:rgba(60,60,67,.56);
+  --sl-line:rgba(0,0,0,.09);--sl-hover:rgba(0,0,0,.05);--sl-chip:rgba(0,0,0,.045);--sl-blue:#0a6cff;--sl-user:rgba(0,0,0,.065);
+  --sl-card:rgba(255,255,255,.78);--sl-hi:inset 0 1px 0 rgba(255,255,255,.75);
+  --sl-shadow:0 0 0 .5px rgba(0,0,0,.16),0 1px 2px rgba(0,0,0,.05),0 26px 70px -14px rgba(0,0,0,.34);
+  --sl-font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","Schibsted Grotesk",system-ui,sans-serif;
+  position:fixed;left:0;right:0;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:56;
+  display:flex;justify-content:center;pointer-events:none;
+  font-family:var(--sl-font);color:var(--sl-ink);-webkit-font-smoothing:antialiased;text-align:left;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pllm{
+  --sl-bg:rgba(38,38,42,.74);--sl-solid:#2a2a2e;--sl-ink:#f5f5f7;--sl-ink2:rgba(235,235,245,.78);--sl-ink3:rgba(235,235,245,.5);
+  --sl-line:rgba(255,255,255,.11);--sl-hover:rgba(255,255,255,.07);--sl-chip:rgba(255,255,255,.07);--sl-blue:#0a84ff;--sl-user:rgba(255,255,255,.09);
+  --sl-card:rgba(255,255,255,.06);--sl-hi:inset 0 1px 0 rgba(255,255,255,.08);
+  --sl-shadow:0 0 0 .5px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06),0 26px 70px -14px rgba(0,0,0,.7)}}
+:root[data-theme="dark"] .pllm{
+  --sl-bg:rgba(38,38,42,.74);--sl-solid:#2a2a2e;--sl-ink:#f5f5f7;--sl-ink2:rgba(235,235,245,.78);--sl-ink3:rgba(235,235,245,.5);
+  --sl-line:rgba(255,255,255,.11);--sl-hover:rgba(255,255,255,.07);--sl-chip:rgba(255,255,255,.07);--sl-blue:#0a84ff;--sl-user:rgba(255,255,255,.09);
+  --sl-card:rgba(255,255,255,.06);--sl-hi:inset 0 1px 0 rgba(255,255,255,.08);
+  --sl-shadow:0 0 0 .5px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06),0 26px 70px -14px rgba(0,0,0,.7)}
+body.pllm-on,body.pllm-on.is-case{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+
+.pllm-win{
+  pointer-events:auto;position:relative;display:flex;flex-direction:column;
+  width:min(470px,calc(100vw - 28px));border-radius:26px;
+  background:var(--sl-bg);-webkit-backdrop-filter:blur(34px) saturate(190%);backdrop-filter:blur(34px) saturate(190%);
+  box-shadow:var(--sl-shadow),var(--sl-hi);overflow:hidden;
+  transition:width .34s cubic-bezier(.2,.8,.2,1),border-radius .34s cubic-bezier(.2,.8,.2,1),transform .2s;
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.pllm-win{background:var(--sl-solid)}}
+.pllm[data-state="idle"] .pllm-win:hover{transform:translateY(-2px)}
+.pllm[data-state="focus"] .pllm-win{width:min(680px,calc(100vw - 28px));border-radius:22px}
+.pllm[data-state="focus"] .pllm-win,.pllm[data-state="chat"] .pllm-win{background:color-mix(in srgb,var(--sl-solid) 90%,transparent)}
+.pllm[data-state="chat"] .pllm-win{width:min(760px,calc(100vw - 28px));border-radius:22px}
+
+/* the panel grows above the field (Spotlight's results, upside down because the field lives at the bottom) */
+.pllm-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .34s cubic-bezier(.2,.8,.2,1)}
+.pllm[data-state="focus"] .pllm-panel,.pllm[data-state="chat"] .pllm-panel{grid-template-rows:1fr}
+.pllm-panel-in{min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.pllm-head,.pllm-log,.pllm-note{display:none}
+.pllm[data-state="chat"] .pllm-head,.pllm[data-state="chat"] .pllm-log{display:flex}
+.pllm[data-state="chat"] .pllm-note{display:block}
+.pllm[data-state="chat"] .pllm-sugg{display:none}
+
+/* field */
+.pllm-bar{display:flex;align-items:center;gap:10px;height:52px;padding:0 10px 0 17px;margin:0;transition:height .3s cubic-bezier(.2,.8,.2,1)}
+.pllm[data-state="focus"] .pllm-bar,.pllm[data-state="chat"] .pllm-bar{height:60px;border-top:1px solid var(--sl-line)}
+.pllm-glass{flex:none;width:19px;height:19px;color:var(--sl-ink3)}
+.pllm[data-state="focus"] .pllm-glass,.pllm[data-state="chat"] .pllm-glass{width:22px;height:22px}
+.pllm-q{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;padding:0;margin:0;
+  font:inherit;font-size:16px;letter-spacing:-.01em;color:var(--sl-ink);text-overflow:ellipsis}
+.pllm[data-state="focus"] .pllm-q,.pllm[data-state="chat"] .pllm-q{font-size:20px;font-weight:400}
+.pllm-q::placeholder{color:var(--sl-ink3);opacity:1}
+.pllm-kbd{flex:none;font:500 12px/1 var(--sl-font);color:var(--sl-ink3);border:1px solid var(--sl-line);border-radius:6px;padding:4px 6px;background:var(--sl-chip);white-space:nowrap}
+.pllm-send{flex:none;width:34px;height:34px;border-radius:50%;border:0;padding:0;display:none;place-items:center;background:var(--sl-blue);color:#fff;cursor:pointer}
+.pllm-send svg{width:16px;height:16px}
+.pllm-send .i-stop{display:none}
+.pllm.has-text .pllm-send,.pllm.is-busy .pllm-send{display:grid;animation:pllmPop .18s ease-out}
+.pllm.is-busy .pllm-send .i-up{display:none}.pllm.is-busy .pllm-send .i-stop{display:block}
+.pllm.has-text .pllm-kbd,.pllm.is-busy .pllm-kbd{display:none}
+.pllm-send:focus-visible,.pllm-row:focus-visible,.pllm-card:focus-visible,.pllm-chip:focus-visible,.pllm-hbtn:focus-visible{outline:2px solid var(--sl-blue);outline-offset:2px}
+@keyframes pllmPop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+
+/* suggestions + live top hits */
+.pllm-sugg{padding:10px 8px 8px;max-height:min(56vh,440px);overflow-y:auto;overscroll-behavior:contain}
+.pllm-sh{font:600 11.5px/1 var(--sl-font);color:var(--sl-ink3);padding:8px 10px 7px}
+.pllm-row{display:flex;align-items:center;gap:12px;width:100%;border:0;background:transparent;text-align:left;
+  font:inherit;font-size:15px;line-height:1.3;color:var(--sl-ink);padding:7px 10px;border-radius:10px;cursor:pointer;min-height:44px}
+.pllm-row:hover{background:var(--sl-hover)}
+.pllm-row.is-sel{background:var(--sl-blue);color:#fff}
+.pllm-row .ic{flex:none;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:#fff;overflow:hidden;background:#8e8e93}
+.pllm-row .ic svg{width:16px;height:16px}
+.pllm-row .ic img{width:100%;height:100%;object-fit:cover;object-position:50% 0;display:block}
+.pllm-row .ic.mk{background:conic-gradient(from 210deg,#E0116B,#FF8A3D,#6B4BE8,#E0116B);border-radius:50%}
+.pllm-row .tx{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pllm-row .tx b{font-weight:600}
+.pllm-row .hint{flex:none;max-width:42%;font-size:12.5px;color:var(--sl-ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pllm-row.is-sel .hint{color:rgba(255,255,255,.82)}
+
+/* chat */
+.pllm-head{align-items:center;gap:10px;padding:11px 10px 10px 16px;border-bottom:1px solid var(--sl-line)}
+.pllm-mk{flex:none;width:24px;height:24px;border-radius:50%;background:conic-gradient(from 210deg,#E0116B,#FF8A3D,#6B4BE8,#E0116B);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+.pllm-ttl{display:flex;flex-direction:column;line-height:1.2;min-width:0;flex:1}
+.pllm-ttl b{font-size:14px;font-weight:600}
+.pllm-eng{font-size:12px;color:var(--sl-ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pllm-hbtn{flex:none;border:0;background:transparent;width:32px;height:32px;border-radius:8px;display:grid;place-items:center;color:var(--sl-ink2);cursor:pointer;padding:0}
+.pllm-hbtn:hover{background:var(--sl-hover);color:var(--sl-ink)}
+.pllm-hbtn svg{width:17px;height:17px}
+.pllm-log{position:relative;flex-direction:column;gap:20px;overflow-y:auto;overscroll-behavior:contain;max-height:min(60vh,600px);padding:18px 18px 10px}
+.pllm-u{align-self:flex-end;max-width:82%;background:var(--sl-user);border-radius:18px 18px 6px 18px;padding:9px 14px;font-size:15px;line-height:1.45;overflow-wrap:anywhere}
+.pllm-a{display:flex;gap:12px;align-items:flex-start}
+.pllm-a > .pllm-mk{margin-top:1px}
+.pllm-body{flex:1;min-width:0}
+.pllm-text{font-size:15px;line-height:1.6;color:var(--sl-ink);overflow-wrap:anywhere}
+.pllm-text p{margin:0}.pllm-text p + p,.pllm-text p + ul,.pllm-text ul + p,.pllm-text p + ol,.pllm-text ol + p{margin-top:.6em}
+.pllm-text ul,.pllm-text ol{margin:0;padding-left:1.25em}.pllm-text li + li{margin-top:.3em}
+.pllm-text strong{font-weight:600}
+.pllm-text em{font-style:italic;color:var(--sl-ink2)}
+.pllm-sub{font-size:12.5px;color:var(--sl-ink3);margin-bottom:6px}
+.pllm-think{display:inline-block;font-size:14.5px;color:transparent;
+  background:linear-gradient(90deg,var(--sl-ink3) 0%,var(--sl-ink3) 35%,var(--sl-ink) 50%,var(--sl-ink3) 65%,var(--sl-ink3) 100%);background-size:250% 100%;
+  -webkit-background-clip:text;background-clip:text;animation:pllmShim 1.5s linear infinite}
+@keyframes pllmShim{from{background-position:100% 0}to{background-position:-150% 0}}
+.pllm-cards{display:flex;gap:10px;overflow-x:auto;padding:12px 2px 6px;margin:0 -2px;scroll-snap-type:x proximity;scrollbar-width:thin}
+.pllm-cards:empty{display:none}
+.pllm-card{flex:none;width:206px;scroll-snap-align:start;display:flex;flex-direction:column;text-align:left;
+  border:1px solid var(--sl-line);background:var(--sl-card);border-radius:14px;overflow:hidden;padding:0;cursor:pointer;
+  font:inherit;color:inherit;transition:transform .18s,box-shadow .18s;animation:pllmIn .3s ease-out both}
+.pllm-card:hover{transform:translateY(-2px);box-shadow:0 12px 26px -14px rgba(0,0,0,.4)}
+.pllm-card-img{display:block;aspect-ratio:16/9;background:var(--sl-chip);overflow:hidden;border-bottom:1px solid var(--sl-line)}
+.pllm-card-img img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 0}
+.pllm-card-img.is-blank{display:grid;place-items:center;font:400 40px/1 Georgia,serif;color:#fff;
+  background:linear-gradient(135deg,#E0116B,#FF8A3D 55%,#6B4BE8)}
+.pllm-card-txt{display:flex;flex-direction:column;gap:3px;padding:9px 11px 10px}
+.pllm-card-k{font-size:11.5px;color:var(--sl-ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pllm-card-t{font-size:13.5px;font-weight:600;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pllm-card-go{font-size:12.5px;color:var(--sl-blue);margin-top:2px}
+@keyframes pllmIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.pllm-follow{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.pllm-follow:empty{display:none}
+.pllm-chip{border:1px solid var(--sl-line);background:transparent;border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;color:var(--sl-ink2);cursor:pointer;text-align:left}
+.pllm-chip:hover{background:var(--sl-hover);color:var(--sl-ink)}
+.pllm-note{font-size:11.5px;color:var(--sl-ink3);text-align:center;padding:0 16px 8px}
+
+/* a section the chat sent you to */
+.pllm-flash{animation:pllmFlash 1.9s ease-out}
+@keyframes pllmFlash{0%,35%{box-shadow:0 0 0 3px color-mix(in srgb,#E0116B 55%,transparent);border-radius:14px}100%{box-shadow:0 0 0 3px transparent;border-radius:14px}}
+
+/* phones: the capsule sits above the tab bar; the chat takes the whole screen */
+@media (max-width:720px){
+  .pllm{bottom:calc(78px + env(safe-area-inset-bottom,0px))}
+  body.is-case .pllm{bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+  body.pllm-on{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+  body.pllm-on.is-case{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .pllm-q{font-size:16px!important}
+  .pllm[data-state="chat"]{top:0;bottom:0}
+  .pllm[data-state="chat"] .pllm-win{width:100vw;height:100%;border-radius:0;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);background:var(--sl-solid)}
+  .pllm[data-state="chat"] .pllm-panel{flex:1;min-height:0}
+  .pllm[data-state="chat"] .pllm-panel-in{height:100%}
+  .pllm[data-state="chat"] .pllm-log{flex:1;max-height:none}
+  .pllm-card{width:178px}
+  .pllm-row .hint{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .pllm-win,.pllm-panel,.pllm-bar{transition:none}
+  .pllm-card,.pllm-send,.pllm-flash{animation:none}
+  .pllm-think{animation:none;color:var(--sl-ink3);background:none}
+}
 </style>
 <style>
   :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
@@ -4914,6 +5067,724 @@ document.addEventListener('wheel', function(e){
     requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
+})();
+</script>
+
+<!-- ================= PRAHARSH LLM (variant 6) ================= -->
+<div class="pllm" id="pllm" data-state="idle" data-api="https://portfoliopraharsh.netlify.app/api/ask">
+  <div class="pllm-win" role="search" aria-label="Ask about Praharsh and his work">
+    <div class="pllm-panel"><div class="pllm-panel-in">
+      <div class="pllm-head">
+        <span class="pllm-mk" aria-hidden="true"></span>
+        <span class="pllm-ttl"><b>Praharsh LLM</b><span class="pllm-eng">Answers from his portfolio</span></span>
+        <button type="button" class="pllm-hbtn" data-act="new" aria-label="New chat" title="New chat"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4.5v11M4.5 10h11"/></svg></button>
+        <button type="button" class="pllm-hbtn" data-act="min" aria-label="Minimise" title="Minimise (Esc)"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8l4.5 4.5L14.5 8"/></svg></button>
+      </div>
+      <div class="pllm-sugg" role="listbox" aria-label="Suggestions"></div>
+      <div class="pllm-log" aria-live="polite"></div>
+      <p class="pllm-note">Answers come from Praharsh’s portfolio and can be wrong. The cards open the source.</p>
+    </div></div>
+    <form class="pllm-bar" autocomplete="off">
+      <svg class="pllm-glass" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.75"/><path d="M12.8 12.8 17 17"/></svg>
+      <input class="pllm-q" type="text" enterkeyhint="send" spellcheck="false" aria-label="Ask what you want to know about Praharsh and his work" placeholder="Ask what you want to know about Praharsh and his work">
+      <kbd class="pllm-kbd" aria-hidden="true">⌘K</kbd>
+      <button type="submit" class="pllm-send" aria-label="Ask"><svg class="i-up" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V3.5M3.8 7.5 8 3.3l4.2 4.2"/></svg><svg class="i-stop" viewBox="0 0 16 16" fill="currentColor"><rect x="4" y="4" width="8" height="8" rx="1.5"/></svg></button>
+    </form>
+  </div>
+</div>
+<script>
+/* Praharsh LLM: a Spotlight-style ask bar. The knowledge is the page itself: every case section, the shipped
+   screens, tools, testimonials and the about text are read from the DOM, indexed, and used two ways:
+   - inside a Claude viewer, the best excerpts go to Claude (sample capability) and it answers from them;
+   - anywhere else (GitHub Pages, a saved copy, or if the viewer declines), a local answerer composes the reply
+     from the same excerpts. Either way the reply ends with cards that jump to the source section. */
+(function(){
+  'use strict';
+  var R = document.getElementById('pllm'); if (!R) return;
+  var win = R.querySelector('.pllm-win'), form = R.querySelector('.pllm-bar'), q = R.querySelector('.pllm-q');
+  var log = R.querySelector('.pllm-log'), sugg = R.querySelector('.pllm-sugg'), engLbl = R.querySelector('.pllm-eng');
+  var kbd = R.querySelector('.pllm-kbd');
+  document.body.classList.add('pllm-on');
+
+  var isMac = /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent || '');
+  var touch = window.matchMedia('(hover: none)').matches;
+  kbd.textContent = isMac ? '⌘K' : 'Ctrl K';
+  if (touch) kbd.hidden = true;
+  var mqSmall = window.matchMedia('(max-width: 560px)');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var state = 'idle', busy = false, ctl = null, hist = [], lastCase = null, rows = [], sel = 0;
+
+  /* ---------------- engine ---------------- */
+  /* order: Claude inside a claude.ai viewer -> the Netlify function when hosted (data-api) -> built-in answers */
+  var sampleFn = null, engine = 'local', API = R.getAttribute('data-api') || '';
+  function engLabel(){ engLbl.textContent = engine === 'local' ? 'Answers from his portfolio' : 'Claude, answering from his portfolio'; }
+  var engReady = ((window.claude && typeof window.claude.use === 'function')
+    ? Promise.resolve().then(function(){ return window.claude.use('sample'); })
+        .then(function(s){ if (typeof s === 'function') { sampleFn = s; engine = 'claude'; } return s; }, function(){ return null; })
+    : Promise.resolve(null))
+    .then(function(s){ if (!sampleFn && API) engine = 'api'; engLabel(); return s; });
+
+  /* ---------------- helpers ---------------- */
+  function T(el){ return el ? (el.textContent || '').replace(/\s+/g, ' ').trim() : ''; }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+  function clip(s, n){ s = s || ''; return s.length > n ? s.slice(0, n).replace(/\s+\S*$/, '') + '…' : s; }
+  /* readable text of a section: block boundaries become sentence breaks, rolling stat digits read as their label */
+  var BLOCK = /^(P|LI|H1|H2|H3|H4|H5|H6|FIGCAPTION|TD|TH|DT|DD|BLOCKQUOTE|Q|BUTTON|SUMMARY|LABEL)$/;
+  function textOf(root, skip){
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), out = [], n, len = 0, lastBlock = null, lastStat = null;
+    while ((n = w.nextNode())) {
+      var p = n.parentNode, v = n.nodeValue;
+      if (!v || !/\S/.test(v) || (p && /^(script|style|text|tspan|title)$/i.test(p.nodeName))) continue;
+      if (skip && skip.some(function(k){ return k && k.contains(n); })) continue;
+      var st = p && p.closest ? p.closest('.cs-stat b') : null;
+      if (st) { if (st === lastStat) continue; lastStat = st; v = st.getAttribute('aria-label') || v; }
+      var b = p; while (b && b !== root && !BLOCK.test(b.nodeName)) b = b.parentNode;
+      if (out.length && b !== lastBlock && !/[.!?:;…]$/.test(out[out.length - 1])) out[out.length - 1] += '.';
+      lastBlock = b;
+      out.push(v.trim()); len += v.length; if (len > 6000) break;
+    }
+    return out.join(' ').replace(/\s+/g, ' ').trim();
+  }
+  function statOf(x){ var b = x.querySelector('b'); return { b: b ? (b.getAttribute('aria-label') || T(b)) : '', t: T(x.querySelector('span')) }; }
+  var SHORT = { vsku: 'Variation purchase', pop: 'Pay in two parts', asr: 'Attribute ratings', gold: 'Gold', hevo: 'Connecting data sources', gw: 'GoodWorker', whatsapp: 'Shopping on WhatsApp', parking: 'Meesho Parking' };
+  function srcOf(img){ if (!img) return ''; var s = img.currentSrc || img.getAttribute('src') || img.getAttribute('data-src') || ''; return /^data:image\/svg/.test(s) ? '' : s; }
+
+  /* ---------------- knowledge base, read from the page ---------------- */
+  var KB = null, byId = {}, IDF = {}, VOCAB = [], FEATURED = [], META = {};
+  var STOP = {}; (('a an the and or of to in on for with about what whats is are was were be been being do does did done how why who whom which when where '
+    + 'his him he hes praharsh praharshs agrawal me my i im you your can could would should will tell show give any some this that these those it its from as at by '
+    + 'into more most much many also just like has have had there their them they we our us not no yes please work works worked working kind sort get got make made '
+    + 'one ones thing things something anything know want see look let lets say said').split(' ')).forEach(function(w){ STOP[w] = 1; });
+  function stem(w){
+    w = w.replace(/['’]s$/, '');
+    if (w.length > 5) w = w.replace(/(ations|ation|ings|ing|ies|ed|es)$/, function(m){ return m === 'ies' ? 'y' : ''; });
+    if (w.length > 3) w = w.replace(/s$/, '');
+    return w;
+  }
+  function toks(s){
+    return String(s || '').toLowerCase().replace(/[‘’]/g, "'").replace(/[^a-z0-9%₹'\s]/g, ' ').split(/\s+/)
+      .filter(function(w){ return w && w.length > 1 && !STOP[w.replace(/'/g, '')]; }).map(stem).filter(Boolean);
+  }
+  var SYN = {
+    research: ['usability', 'interview', 'survey', 'field', 'study', 'insight', 'lod', 'participant'],
+    usability: ['test', 'research', 'participant'], test: ['usability', 'experiment'], user: ['shopper', 'research'],
+    ai: ['claude', 'llm', 'prototype', 'skill', 'vibe', 'agent'], prototype: ['prototyp', 'figma'],
+    impact: ['outcome', 'result', 'uplift', 'moved', 'doubl'], result: ['outcome', 'impact', 'uplift'], outcome: ['impact', 'result', 'uplift'],
+    metric: ['outcome', 'impact', 'uplift'], number: ['outcome', 'uplift'],
+    inclusive: ['hindi', 'literacy', 'constraint', 'low-end', 'accessib', 'first', 'tier'],
+    accessib: ['inclusive', 'constraint'], accessibility: ['inclusive', 'constraint'], literacy: ['inclusive', 'hindi', 'icon'],
+    hindi: ['inclusive', 'language', 'audio'], internet: ['first', 'inclusive', 'bharat', 'tier'], first: ['inclusive', 'tier', 'bharat'], bharat: ['tier', 'first', 'inclusive'], tier: ['town', 'first'],
+    payment: ['pay', 'upi', 'cod', 'cash', 'prepaid', 'online', 'checkout'], pay: ['payment', 'upi', 'cod', 'prepaid'],
+    upi: ['payment', 'prepaid'], cod: ['cash', 'payment'], cash: ['cod'], prepaid: ['online', 'upi'],
+    size: ['variant', 'variation', 'seller', 'duplicate'], variant: ['size', 'variation'], variation: ['size', 'variant'],
+    review: ['rating', 'attribute', 'expectation'], rating: ['review', 'attribute'],
+    trust: ['gold', 'quality', 'premium'], premium: ['gold', 'price'], price: ['pric', 'gold', 'cost'],
+    strategy: ['strateg', 'prioriti', 'framing', 'decision', 'roadmap'], prioriti: ['strategy', 'decision'], decision: ['decided', 'strateg'],
+    process: ['research', 'framing', 'exploration', 'test', 'approach'],
+    team: ['pm', 'stakeholder', 'collaborat', 'engineer'], stakeholder: ['alignment', 'team', 'leadership'],
+    motion: ['animation', 'video'], animation: ['motion'],
+    hire: ['contact', 'email', 'role'], email: ['contact'], contact: ['email']
+  };
+
+  function build(){
+    if (KB) return;
+    KB = [];
+    function add(c){
+      c.id = c.id.replace(/[^\w:-]/g, '-');
+      if (byId[c.id]) return;
+      KB.push(c); byId[c.id] = c;
+    }
+    /* who he is */
+    var status = T(document.querySelector('#top .status-row'));
+    var heroSub = T(document.querySelector('#top .hero-sub'));
+    var tags = [].map.call(document.querySelectorAll('#top .tags .tag'), T);
+    META.status = status; META.intro = heroSub; META.tags = tags;
+    add({ id: 'h-intro', kind: 'home', label: 'About', title: 'Who Praharsh is', text: status + '. ' + heroSub + ' Skills: ' + tags.join(', ') + '.', el: document.getElementById('top') });
+    /* shipped screens with their results */
+    META.shipped = [];
+    [].forEach.call(document.querySelectorAll('#ui .sp'), function(f, i){
+      var cap = f.getAttribute('data-cap') || '', met = f.getAttribute('data-metric') || '';
+      if (!cap) return;
+      META.shipped.push({ cap: cap, met: met, i: i });
+      add({ id: 'h-shipped-' + (i + 1), kind: 'home', label: 'Shipped at Meesho', title: cap, text: cap + (met ? '. Result: ' + met + '.' : '.'), el: document.getElementById('ui'), slide: i, imgEl: f.querySelector('img') });
+    });
+    /* case studies, then every section in them */
+    [].forEach.call(document.querySelectorAll('article.cs[data-case]'), function(a){
+      var cid = a.getAttribute('data-case');
+      var title = T(a.querySelector('.cs-hero h1')) || a.getAttribute('data-title') || cid;
+      var short = SHORT[cid] || (a.getAttribute('data-title') || title).split(':')[0];
+      var dek = T(a.querySelector('.cs-dek'));
+      var facts = [].map.call(a.querySelectorAll('.cs-fact'), function(f){ return T(f.querySelector('span')) + ': ' + T(f.querySelector('b')); });
+      var skills = [].map.call(a.querySelectorAll('.cs-skills li'), T);
+      var outcome = ''; facts.forEach(function(f){ if (/^outcome/i.test(f)) outcome = f.replace(/^outcome:\s*/i, ''); });
+      META[cid] = { title: title, short: short, dek: dek, outcome: outcome, skills: skills };
+      add({ id: 'c-' + cid, kind: 'case', caseId: cid, caseTitle: title, caseShort: short, label: 'Case study', title: title,
+        text: dek + ' ' + facts.join('. ') + (skills.length ? '. Skills: ' + skills.join(', ') : '') + '.' });
+      [].forEach.call(a.querySelectorAll('section.cs-sec[id]'), function(s){
+        var eb = s.querySelector('.eyebrow'), hh = s.querySelector('h2');
+        var lab = T(eb), h2 = T(hh);
+        var body = textOf(s, [eb, hh]); if (body.length > 4000) body = body.slice(0, 4000);
+        add({ id: 's-' + cid + '-' + s.id, kind: 'sec', caseId: cid, caseTitle: title, caseShort: short, label: lab || 'Section', title: h2 || lab, text: body, secId: s.id, secEl: s });
+      });
+    });
+    /* inclusive-design notes inside the cases */
+    META.inc = [];
+    [].forEach.call(document.querySelectorAll('article.cs .inc-l, article.cs .cs-card .inc-tag'), function(el){
+      var art = el.closest('article.cs'), sec = el.closest('section.cs-sec'); if (!art) return;
+      var card = el.classList.contains('inc-tag') ? el.closest('.cs-card') : null;
+      var kind = T((card || el).querySelector('.inc-chip'));
+      var body = card ? T(card.querySelector('h4')) + '. ' + T(card.querySelector('p')) : T(el).replace(kind, '').trim();
+      META.inc.push({ cid: art.getAttribute('data-case'), sec: sec ? sec.id : '', kind: kind, body: body });
+    });
+    /* featured = the case cards that are visible on the home page */
+    [].forEach.call(document.querySelectorAll('#work a.case[href^="#case/"]'), function(a){
+      var cid = a.getAttribute('href').slice(6);
+      if (a.hidden || a.closest('[hidden]') || !META[cid]) return;
+      if (FEATURED.indexOf(cid) < 0) FEATURED.push(cid);
+    });
+    /* tools */
+    META.tools = [];
+    [].forEach.call(document.querySelectorAll('#tools .tool'), function(t, i){
+      var name = T(t.querySelector('h3')); if (!name) return;
+      var what = T(t.querySelector('.what')), why = T(t.querySelector('.why'));
+      META.tools.push({ name: name, what: what });
+      add({ id: 'h-tool-' + (i + 1), kind: 'home', label: 'Built with AI', title: name, text: name + ': ' + what + ' ' + why + ' ' + T(document.querySelector('#tools .sec-head')), el: t, imgEl: t.querySelector('img') });
+    });
+    /* teardowns */
+    [].forEach.call(document.querySelectorAll('#teardowns .tdc'), function(t, i){
+      var app = T(t.querySelector('.tdc-app')), what = T(t.querySelector('.tdc-what'));
+      if (!app && !what) return;
+      add({ id: 'h-td-' + (i + 1), kind: 'home', label: 'Teardown', title: app + (what ? ': ' + what : ''), text: 'Product teardown of ' + app + ', ' + what + '. ' + T(document.querySelector('#teardowns .sec-head')), el: t, imgEl: t.querySelector('img') });
+    });
+    /* testimonials */
+    META.words = [];
+    [].forEach.call(document.querySelectorAll('#words .quote'), function(f, i){
+      if (f.classList.contains('is-clone') || f.closest('.is-clone')) return;
+      var qt = T(f.querySelector('blockquote')), n = T(f.querySelector('.who .n')), r = T(f.querySelector('.who .r'));
+      if (!qt) return;
+      META.words.push({ q: qt, n: n, r: r });
+      add({ id: 'h-words-' + (i + 1), kind: 'home', label: 'What people say', title: n + (r ? ', ' + r : ''), text: 'Testimonial from ' + n + ' (' + r + '): ' + qt, el: f, quote: true });
+    });
+    /* about + contact */
+    var ab = document.getElementById('about');
+    if (ab) {
+      var abt = [].map.call(ab.querySelectorAll('p'), T).filter(function(s){ return s.length > 40; }).join(' ');
+      META.about = abt;
+      add({ id: 'h-about', kind: 'home', label: 'About', title: 'A bit about him', text: abt, el: ab, imgEl: ab.querySelector('img') });
+    }
+    var ct = document.getElementById('contact');
+    if (ct) {
+      var mail = ct.querySelector('a[href^="mailto:"]');
+      META.email = mail ? mail.getAttribute('href').replace(/^mailto:/, '').split('?')[0] : '';
+      add({ id: 'h-contact', kind: 'home', label: 'Contact', title: 'Get in touch', text: T(ct) + (META.email ? ' Email: ' + META.email : ''), el: ct, quote: true });
+    }
+    /* index */
+    var df = {};
+    KB.forEach(function(c){
+      var tf = {};
+      function feed(s, w){ toks(s).forEach(function(t){ tf[t] = (tf[t] || 0) + w; }); }
+      feed(c.title, 3); feed(c.label, 2); feed(c.caseTitle, c.kind === 'case' ? 2 : .4); feed(c.text, 1);
+      c.tf = tf; c.low = (c.title + ' ' + c.text).toLowerCase();
+      Object.keys(tf).forEach(function(t){ df[t] = (df[t] || 0) + 1; });
+    });
+    var N = KB.length;
+    Object.keys(df).forEach(function(t){ IDF[t] = Math.log(1 + N / df[t]); });
+    VOCAB = Object.keys(df);
+  }
+
+  /* ---------------- search ---------------- */
+  var CASEKW = [
+    ['vsku', /\b(vsku|sizes?|variants?|variations?|out of stock|other sellers?|another seller)\b/i],
+    ['pop', /\b(pop|pay in two|partial|cash on delivery|cod|upi|prepaid|payments?)\b/i],
+    ['asr', /\b(asr|attribute|ratings?|reviews?|expectation|mismatch)\b/i],
+    ['gold', /\bgold\b/i],
+    ['hevo', /\b(hevo|data sources?|pipelines?)\b/i],
+    ['gw', /\b(goodworker|good worker|team leaders?|gw)\b/i],
+    ['whatsapp', /\bwhats ?app\b/i],
+    ['parking', /\bparking\b/i]
+  ];
+  function caseIn(text){ for (var i = 0; i < CASEKW.length; i++) if (META[CASEKW[i][0]] && CASEKW[i][1].test(text)) return CASEKW[i][0]; return null; }
+  function expand(qt, live){
+    var w = {};
+    function put(t, v){ if (IDF[t] === undefined) return; if (!w[t] || w[t] < v) w[t] = v; }
+    qt.forEach(function(t, i){
+      put(t, 1);
+      (SYN[t] || []).forEach(function(s){ put(stem(s), .5); VOCAB.forEach(function(v){ if (v.indexOf(s) === 0 && v !== s) put(v, .4); }); });
+      var pre = t.length >= 4 || (live && i === qt.length - 1 && t.length >= 2);
+      if (pre) VOCAB.forEach(function(v){ if (v !== t && v.indexOf(t) === 0) put(v, live && i === qt.length - 1 ? .8 : .6); });
+    });
+    return w;
+  }
+  function search(text, opts){
+    build(); opts = opts || {};
+    var qt = toks(text); if (!qt.length) return [];
+    var ex = expand(qt, opts.live), terms = Object.keys(ex);
+    var cid = caseIn(text), ctx = (!cid && opts.ctx && lastCase && text.split(/\s+/).length <= 12) ? lastCase : null;
+    var phr = []; for (var i = 0; i + 1 < qt.length; i++) phr.push(qt[i] + ' ' + qt[i + 1]);
+    var out = [];
+    KB.forEach(function(c){
+      var s = 0, hit = 0;
+      terms.forEach(function(t){ var f = c.tf[t]; if (f) { s += ex[t] * IDF[t] * (f * 2.2 / (f + 1.2)); if (ex[t] >= .99) hit++; } });
+      if (!s) return;
+      s *= 1 + .25 * Math.max(0, hit - 1);
+      phr.forEach(function(p){ if (c.low.indexOf(p) >= 0) s += 1.5; });
+      if (cid) { if (c.caseId === cid) s = s * 1.7 + 2; else if (c.caseId) s *= .6; }
+      if (ctx && c.caseId === ctx) s = s * 1.35 + .8;
+      if (c.kind === 'case') s *= 1.08;
+      if (!cid && c.caseId && FEATURED.length) s *= FEATURED.indexOf(c.caseId) >= 0 ? 1.35 : .75;
+      out.push({ c: c, s: s });
+    });
+    out.sort(function(a, b){ return b.s - a.s; });
+    return out;
+  }
+  function diverse(hits, n, perCase){
+    var seen = {}, out = [];
+    for (var i = 0; i < hits.length && out.length < n; i++) {
+      var c = hits[i].c || hits[i], k = c.caseId || c.kind + c.label;
+      seen[k] = (seen[k] || 0) + 1;
+      if (seen[k] > (perCase || 2)) continue;
+      out.push(c);
+    }
+    return out;
+  }
+
+  /* ---------------- rendering ---------------- */
+  function inline(s){
+    return esc(s).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/(^|[\s(])_([^_\n]+)_(?=$|[\s).,!?])/g, '$1<em>$2</em>')
+      .replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, '$1<em>$2</em>');
+  }
+  function md(src){
+    var lines = String(src || '').replace(/\r/g, '').split('\n'), out = [], list = null, para = [];
+    function fp(){ if (para.length) { out.push('<p>' + inline(para.join(' ')) + '</p>'); para = []; } }
+    function fl(){ if (list) { out.push('<' + list.t + '>' + list.items.map(function(i){ return '<li>' + inline(i) + '</li>'; }).join('') + '</' + list.t + '>'); list = null; } }
+    lines.forEach(function(l){
+      var m;
+      if (/^\s*$/.test(l)) { fp(); fl(); return; }
+      if ((m = l.match(/^\s*[-*•]\s+(.*)/))) { fp(); if (!list || list.t !== 'ul') { fl(); list = { t: 'ul', items: [] }; } list.items.push(m[1]); return; }
+      if ((m = l.match(/^\s*\d+[.)]\s+(.*)/))) { fp(); if (!list || list.t !== 'ol') { fl(); list = { t: 'ol', items: [] }; } list.items.push(m[1]); return; }
+      if ((m = l.match(/^\s*#{1,4}\s+(.*)/))) { fp(); fl(); out.push('<p><strong>' + inline(m[1]) + '</strong></p>'); return; }
+      fl(); para.push(l.trim());
+    });
+    fp(); fl();
+    return out.join('');
+  }
+  function nearBottom(){ return log.scrollHeight - log.scrollTop - log.clientHeight < 80; }
+  function stick(force){ if (force || nearBottom()) log.scrollTop = log.scrollHeight; }
+  function addUser(text){
+    var d = document.createElement('div'); d.className = 'pllm-u'; d.textContent = text; log.appendChild(d); stick(true);
+  }
+  function addAI(){
+    var d = document.createElement('div'); d.className = 'pllm-a';
+    d.innerHTML = '<span class="pllm-mk" aria-hidden="true"></span><div class="pllm-body"><div class="pllm-sub" hidden></div><div class="pllm-text"><span class="pllm-think">Thinking…</span></div><div class="pllm-cards"></div><div class="pllm-follow"></div></div>';
+    log.appendChild(d); stick(true);
+    return { el: d, text: d.querySelector('.pllm-text'), cards: d.querySelector('.pllm-cards'), follow: d.querySelector('.pllm-follow'), sub: d.querySelector('.pllm-sub') };
+  }
+  function setText(a, s){ a.text.innerHTML = md(s); stick(); }
+  function setSub(a, s){ a.sub.textContent = s; a.sub.hidden = !s; }
+
+  function imgFor(c){
+    if (c.img !== undefined) return c.img;
+    var s = '';
+    if (c.imgEl) s = srcOf(c.imgEl);
+    if (!s && c.secEl) {
+      var ims = c.secEl.querySelectorAll('img');
+      for (var i = 0; i < ims.length && !s; i++) { if (/ph-top|ph-bar|lb-/.test(ims[i].className)) continue; s = srcOf(ims[i]); }
+    }
+    if (!s && c.caseId) s = srcOf(document.querySelector('#work a.case[href="#case/' + c.caseId + '"] .thumb img'));
+    c.img = s; return s;
+  }
+  function kicker(c){
+    if (c.kind === 'case') return 'Case study';
+    if (c.kind === 'sec') return c.caseShort + ' · ' + c.label;
+    return c.label;
+  }
+  function cardTitle(c){ return c.kind === 'case' ? c.caseTitle : c.title; }
+  function cardEl(c){
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'pllm-card';
+    var im = c.quote ? '' : imgFor(c);
+    b.innerHTML = '<span class="pllm-card-img' + (im ? '' : ' is-blank') + '">' + (im ? '<img alt="" decoding="async">' : (c.id === 'h-contact' ? '@' : c.label === 'What people say' ? '“' : 'P')) + '</span>'
+      + '<span class="pllm-card-txt"><span class="pllm-card-k"></span><span class="pllm-card-t"></span><span class="pllm-card-go">' + (c.kind === 'case' ? 'Open case study' : c.kind === 'sec' ? 'Jump to section' : 'Show me') + ' →</span></span>';
+    if (im) b.querySelector('img').src = im;
+    b.querySelector('.pllm-card-k').textContent = kicker(c);
+    b.querySelector('.pllm-card-t').textContent = cardTitle(c);
+    b.setAttribute('aria-label', kicker(c) + ': ' + cardTitle(c));
+    b.addEventListener('click', function(){ go(c); });
+    return b;
+  }
+  function chip(text){
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'pllm-chip'; b.textContent = text;
+    b.addEventListener('click', function(){ ask(text); });
+    return b;
+  }
+
+  /* ---------------- navigation ---------------- */
+  function scrollToEl(el){
+    if (!el) return;
+    var y = el.getBoundingClientRect().top + window.scrollY - 84;
+    window.scrollTo({ top: Math.max(0, y), behavior: reduce ? 'auto' : 'smooth' });
+    el.classList.remove('pllm-flash'); void el.offsetWidth; el.classList.add('pllm-flash');
+    setTimeout(function(){ el.classList.remove('pllm-flash'); }, 2000);
+  }
+  function go(c){
+    minimise();
+    if (c.caseId) {
+      var cur = document.querySelector('article.cs[data-case="' + c.caseId + '"]');
+      var open = cur && !cur.hidden && document.body.classList.contains('is-case');
+      if (!open) { var a = document.createElement('a'); a.href = '#case/' + c.caseId; a.hidden = true; document.body.appendChild(a); a.click(); a.remove(); }
+      if (c.secId) setTimeout(function(){ scrollToEl(document.getElementById(c.secId)); }, open ? 0 : 140);
+      else if (open) window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      return;
+    }
+    var inCase = document.body.classList.contains('is-case');
+    if (inCase) { var back = document.querySelector('article.cs:not([hidden]) .cs-back'); if (back) back.click(); }
+    setTimeout(function(){
+      if (typeof c.slide === 'number') { var dots = document.querySelectorAll('#ui .show-dots button'); if (dots[c.slide]) dots[c.slide].click(); }
+      scrollToEl(c.el);
+    }, inCase ? 160 : 0);
+  }
+
+  /* ---------------- states ---------------- */
+  function placeholder(){
+    q.placeholder = state === 'chat' && log.children.length ? 'Ask a follow-up…' : (mqSmall.matches ? 'Ask about Praharsh and his work' : 'Ask what you want to know about Praharsh and his work');
+  }
+  function setState(s){ state = s; R.setAttribute('data-state', s); placeholder(); if (s === 'focus') renderRows(); }
+  function minimise(){ setState('idle'); q.blur(); }
+  function open(){ if (state === 'idle') setState(log.children.length ? 'chat' : 'focus'); }
+  q.addEventListener('focus', open);
+  q.addEventListener('pointerdown', open);
+  q.addEventListener('input', function(){
+    R.classList.toggle('has-text', !!q.value.trim());
+    if (state === 'focus') renderRows();
+  });
+  if (mqSmall.addEventListener) mqSmall.addEventListener('change', placeholder);
+  document.addEventListener('pointerdown', function(e){
+    if (state !== 'idle' && !win.contains(e.target) && !busy) minimise();
+  });
+  R.querySelector('[data-act="min"]').addEventListener('click', minimise);
+  R.querySelector('[data-act="new"]').addEventListener('click', function(){
+    if (ctl) ctl.abort();
+    log.innerHTML = ''; hist = []; lastCase = null; setState('focus'); q.focus();
+  });
+
+  /* ---------------- suggestions and live top hits ---------------- */
+  var ICONS = {
+    bag: '<path d="M4 6.5h12l-1 10H5l-1-10Z"/><path d="M7.5 6.5a2.5 2.5 0 0 1 5 0"/>',
+    star: '<path d="m10 3.5 2 4.3 4.6.5-3.4 3.1 1 4.6L10 13.7 5.8 16l1-4.6L3.4 8.3l4.6-.5L10 3.5Z"/>',
+    ear: '<circle cx="9" cy="9" r="4.5"/><path d="m12.4 12.4 3.6 3.6"/>',
+    globe: '<circle cx="10" cy="10" r="6.5"/><path d="M3.5 10h13M10 3.5c2 2 2.8 4.2 2.8 6.5s-.8 4.5-2.8 6.5c-2-2-2.8-4.2-2.8-6.5s.8-4.5 2.8-6.5Z"/>',
+    spark: '<path d="M10 3v4M10 13v4M3 10h4M13 10h4M5.5 5.5l2.3 2.3M12.2 12.2l2.3 2.3M14.5 5.5l-2.3 2.3M7.8 12.2l-2.3 2.3"/>',
+    quote: '<path d="M5 13.5c0-3 1.2-5 3.5-6M11 13.5c0-3 1.2-5 3.5-6"/><circle cx="6.5" cy="13" r="1.6"/><circle cx="12.5" cy="13" r="1.6"/>'
+  };
+  var SUGG = [
+    ['What has Praharsh shipped at Meesho?', 'bag', '#0a84ff'],
+    ['Show me his strongest case study', 'star', '#ff9f0a'],
+    ['How does he run user research?', 'ear', '#30b158'],
+    ['How does he design for first-time internet users?', 'globe', '#5e5ce6'],
+    ['What has he built with AI?', 'spark', '#ff375f'],
+    ['What do people who’ve worked with him say?', 'quote', '#8e8e93']
+  ];
+  function svg(name){ return '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + ICONS[name] + '</svg>'; }
+  function renderRows(){
+    var text = q.value.trim(); rows = []; var html = '';
+    if (!text) {
+      html += '<div class="pllm-sh">Try asking</div>';
+      SUGG.forEach(function(s){ rows.push({ type: 'ask', text: s[0], ic: '<span class="ic" style="background:' + s[2] + '">' + svg(s[1]) + '</span>', hint: '' }); });
+    } else {
+      rows.push({ type: 'ask', text: text, ic: '<span class="ic mk"></span>', ask: true, hint: 'Ask ↵' });
+      var lh = search(text, { live: true }), lc = caseIn(text);
+      var hits = diverse(lh, 4, lc ? 4 : 2);
+      if (hits.length) rows.push({ type: 'head', text: 'Top hits in his work' });
+      hits.forEach(function(c){ rows.push({ type: 'go', c: c, text: cardTitle(c), hint: kicker(c) }); });
+    }
+    var n = -1;
+    rows.forEach(function(r){
+      if (r.type === 'head') { html += '<div class="pllm-sh">' + esc(r.text) + '</div>'; return; }
+      n++; r.n = n;
+      var ic = r.ic;
+      if (r.type === 'go') { var im = r.c.quote ? '' : imgFor(r.c); ic = '<span class="ic"' + (im ? '' : ' style="background:linear-gradient(135deg,#E0116B,#FF8A3D 55%,#6B4BE8)"') + '>' + (im ? '<img alt="" decoding="async">' : svg(r.c.kind === 'home' ? 'quote' : 'star')) + '</span>'; r.im = im; }
+      var label = r.ask && text ? '<b>Ask:</b> “' + esc(r.text) + '”' : esc(r.text);
+      html += '<button type="button" role="option" class="pllm-row" data-n="' + n + '">' + ic + '<span class="tx">' + label + '</span>' + (r.hint ? '<span class="hint">' + esc(r.hint) + '</span>' : '') + '</button>';
+    });
+    sugg.innerHTML = html;
+    rows = rows.filter(function(r){ return r.type !== 'head'; });
+    [].forEach.call(sugg.querySelectorAll('.pllm-row'), function(b){
+      var r = rows[+b.getAttribute('data-n')];
+      if (r.im) b.querySelector('img').src = r.im;
+      b.addEventListener('click', function(){ pick(r); });
+      b.addEventListener('mousemove', function(){ if (sel !== r.n) { sel = r.n; mark(); } });
+    });
+    sel = text ? 0 : -1; mark();
+  }
+  function mark(){
+    [].forEach.call(sugg.querySelectorAll('.pllm-row'), function(b){ var on = +b.getAttribute('data-n') === sel; b.classList.toggle('is-sel', on); b.setAttribute('aria-selected', on ? 'true' : 'false'); if (on && b.scrollIntoView) b.scrollIntoView({ block: 'nearest' }); });
+  }
+  function pick(r){ if (!r) return; if (r.type === 'go') go(r.c); else ask(r.text); }
+
+  q.addEventListener('keydown', function(e){
+    if (state === 'focus' && rows.length && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+      e.preventDefault();
+      sel = e.key === 'ArrowDown' ? Math.min(rows.length - 1, sel + 1) : Math.max(q.value.trim() ? 0 : -1, sel - 1);
+      mark(); return;
+    }
+    if (e.key === 'Escape') { e.preventDefault(); if (busy && ctl) ctl.abort(); else minimise(); }
+  });
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (busy) { if (ctl) ctl.abort(); return; }
+    if (state === 'focus' && sel >= 0 && rows[sel] && (rows[sel].type === 'go' || !q.value.trim())) { pick(rows[sel]); return; }
+    ask(q.value);
+  });
+  document.addEventListener('keydown', function(e){
+    var k = (e.key || '').toLowerCase();
+    var typing = /^(input|textarea|select)$/i.test((e.target && e.target.tagName) || '') || (e.target && e.target.isContentEditable);
+    if ((e.metaKey || e.ctrlKey) && (k === 'k' || e.code === 'Space')) {
+      e.preventDefault();
+      if (state !== 'idle' && document.activeElement === q) minimise(); else { q.focus(); open(); }
+      return;
+    }
+    if (!typing && k === '/' && !e.metaKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); q.focus(); open(); }
+  });
+
+  /* ---------------- asking ---------------- */
+  function done(){ busy = false; ctl = null; R.classList.remove('is-busy'); placeholder(); if (!touch) q.focus({ preventScroll: true }); }
+  function finish(a, srcs, text){
+    var seen = {}, list = [];
+    (srcs || []).forEach(function(c){ var k = c.caseId ? c.caseId + (c.secId || '') : c.id; if (!seen[k] && list.length < 4) { seen[k] = 1; list.push(c); } });
+    list.forEach(function(c, i){ var el = cardEl(c); el.style.animationDelay = (i * 60) + 'ms'; a.cards.appendChild(el); });
+    var top = null; for (var i = 0; i < list.length; i++) if (list[i].caseId) { top = list[i].caseId; break; }
+    if (top) lastCase = top;
+    follow(a, text, top);
+    log.scrollTop = Math.min(log.scrollHeight - log.clientHeight, Math.max(0, (a.el.previousElementSibling || a.el).offsetTop - 12));
+    done();
+  }
+  function follow(a, text, cid){
+    var f = [];
+    if (cid && META[cid]) {
+      var nm = META[cid].short;
+      if (!/impact|result|outcome|moved/i.test(text)) f.push(nm + ': what was the impact?');
+      if (!/research|interview|usability|test|survey/i.test(text)) f.push(nm + ': how was it researched?');
+      if (!/decision|strateg|why/i.test(text)) f.push(nm + ': what were the key decisions?');
+    }
+    if (!f.length) {
+      [SUGG[0][0], SUGG[1][0], SUGG[2][0], SUGG[4][0]].forEach(function(s){ if (s.toLowerCase() !== text.toLowerCase() && f.length < 2) f.push(s); });
+    }
+    f.slice(0, 3).forEach(function(s){ a.follow.appendChild(chip(s)); });
+  }
+
+  function ask(raw){
+    var text = String(raw || '').trim(); if (!text || busy) return;
+    build();
+    q.value = ''; R.classList.remove('has-text');
+    setState('chat');
+    addUser(text);
+    var a = addAI();
+    busy = true; R.classList.add('is-busy');
+    ctl = new AbortController();
+    var hits = search(text, { ctx: true });
+    engReady.then(function(){ return engine === 'claude' ? askClaude(text, hits, a) : engine === 'api' ? askApi(text, hits, a) : askLocal(text, hits, a); })
+      .catch(function(){ setText(a, 'Something went wrong. Try asking again.'); done(); });
+  }
+
+  /* Claude: the page's best excerpts + a fixed overview go in; the answer streams back and names its sources */
+  var RULES = null, OVERVIEW = null;
+  function overview(){
+    if (OVERVIEW) return OVERVIEW;
+    var r = rules(); OVERVIEW = r.slice(r.indexOf('PORTFOLIO OVERVIEW'));
+    return OVERVIEW;
+  }
+  function rules(){
+    if (RULES) return RULES;
+    var cases = Object.keys(META).filter(function(k){ return META[k] && META[k].dek !== undefined; }).map(function(k){
+      var m = META[k]; return '- ' + m.title + ' [c-' + k + ']' + (FEATURED.indexOf(k) >= 0 ? ' (featured)' : ' (earlier work)') + ': ' + clip(m.dek, 320) + (m.outcome ? ' Outcome: ' + m.outcome + '.' : '');
+    });
+    RULES = [
+      'You are "Praharsh LLM", the answer box on Praharsh Agrawal’s product design portfolio. Visitors are mostly recruiters, hiring managers and designers.',
+      '',
+      'How to answer:',
+      '- Use ONLY the portfolio overview below and the excerpts sent with each question. If they don’t cover something, say his portfolio doesn’t say, and point to what it does cover or to his email.',
+      '- Talk about Praharsh in the third person, plainly and warmly, like a colleague who knows his work well.',
+      '- Lead with the direct answer. Keep it short: 2 to 5 sentences, or up to 4 bullets when listing.',
+      '- Put the key fact or number in **bold**. Quote numbers exactly as written and keep their meaning as the excerpt gives it: never add what a percentage is a share of, a sample size or a timeframe the excerpt doesn’t state. Never invent metrics, quotes, names, employers, dates or results.',
+      '- No headings, no links, no emoji.',
+      '- End with one final line, exactly: SOURCES: then up to 3 excerpt ids in square-bracket form without the brackets (for example s-gold-gd-research, c-vsku), comma-separated, most relevant first. Write SOURCES: none if nothing fits.',
+      '',
+      'PORTFOLIO OVERVIEW',
+      'Status: ' + META.status,
+      'In his words: ' + META.intro,
+      'Skills he lists: ' + (META.tags || []).join(', '),
+      'Case studies:',
+      cases.join('\n'),
+      'Shipped at Meesho (screen, result): ' + (META.shipped || []).map(function(s){ return s.cap + (s.met ? ' (' + s.met + ')' : ''); }).join('; '),
+      'Things he built solo with AI: ' + (META.tools || []).map(function(t){ return t.name; }).join(', '),
+      'People who have worked with him: ' + (META.words || []).map(function(w){ return w.n + ' (' + w.r + ')'; }).join('; '),
+      'Contact: ' + (META.email || 'see the contact section')
+    ].join('\n');
+    return RULES;
+  }
+  function excerpt(c){ return '[' + c.id + '] ' + (c.kind === 'sec' ? c.caseTitle + ' › ' : '') + c.label + ': ' + c.title + '\n' + clip(c.text, c.kind === 'sec' ? 1100 : 700); }
+  function visible(t){
+    var i = t.search(/\n?\s*\**SOURCES\**\s*:/i); if (i >= 0) t = t.slice(0, i);
+    var m = t.match(/\n\s*\**S(?:O(?:U(?:R(?:C(?:E(?:S)?)?)?)?)?)?\s*$/i); if (m) t = t.slice(0, m.index);
+    return t.trim();
+  }
+  function sources(t){
+    var m = t.match(/SOURCES\**\s*:\s*([^\n]*)/i); if (!m) return null;
+    if (/^\s*none/i.test(m[1])) return [];
+    return m[1].split(/[,\s]+/).map(function(s){ return s.replace(/[\[\]`*.()]/g, '').trim(); }).filter(function(s){ return byId[s]; }).map(function(s){ return byId[s]; });
+  }
+  function askClaude(text, hits, a){
+    var ex = diverse(hits, 9, 4);
+    var turns = [{ role: 'user', content: rules() }];
+    hist.slice(-6).forEach(function(t){ turns.push(t); });
+    turns.push({ role: 'user', content: 'Portfolio excerpts for this question:\n\n' + (ex.length ? ex.map(excerpt).join('\n\n') : '(none matched)') + '\n\nVisitor’s question: ' + text });
+    var my = ctl;
+    return sampleFn(turns, { modelTier: 'quick', cache: false, signal: my.signal, onText: function(u){ var v = visible(u.text); if (v) setText(a, v); } })
+      .then(function(r){
+        var body = visible(r.text) || 'I couldn’t find that in his portfolio.';
+        setText(a, body + (r.truncated ? '\n\n_(cut short)_' : ''));
+        hist.push({ role: 'user', content: text }, { role: 'assistant', content: body });
+        var s = sources(r.text);
+        finish(a, s === null ? diverse(hits, 3, 1) : s, text);
+      }, function(e){
+        var code = (e && e.code) || 'upstream_error';
+        if (code === 'cancelled') { setText(a, visible((e && e.text) || '') || '_Stopped._'); finish(a, [], text); return; }
+        if (/^(not_granted|sampling_disabled|not_declared|capability_disabled|capability_removed)$/.test(code)) { engine = 'local'; engLabel(); }
+        if (e && e.text && code !== 'refused') { setText(a, visible(e.text) + '\n\n_(interrupted)_'); finish(a, diverse(hits, 3, 1), text); return; }
+        setSub(a, engine === 'local' ? '' : (code === 'rate_limited' ? 'Claude is busy, so here’s a quick answer from his portfolio.' : 'Couldn’t reach Claude, so here’s a quick answer from his portfolio.'));
+        return askLocal(text, hits, a);
+      });
+  }
+
+  /* Hosted: the same overview + excerpts go to Praharsh's Netlify function, which holds the API key and asks Claude */
+  function askApi(text, hits, a){
+    var ex = diverse(hits, 9, 4), my = ctl;
+    var ctx = overview() + '\n\nEXCERPTS FOR THIS QUESTION\n\n' + (ex.length ? ex.map(excerpt).join('\n\n') : '(none matched)');
+    return fetch(API, { method: 'POST', headers: { 'content-type': 'application/json' }, signal: my.signal,
+        body: JSON.stringify({ question: text, context: ctx.slice(0, 23000), history: hist.slice(-6) }) })
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if (!r.ok || !j.text) throw { code: j.error || 'upstream_error' }; return j; }); })
+      .then(function(j){
+        var body = visible(j.text) || 'I couldn’t find that in his portfolio.';
+        hist.push({ role: 'user', content: text }, { role: 'assistant', content: body });
+        var s = sources(j.text);
+        return typeOut(a, body + (j.truncated ? '\n\n_(cut short)_' : ''), my, s === null ? diverse(hits, 3, 1) : s, text);
+      })
+      .catch(function(e){
+        if (my.signal.aborted) { setText(a, '_Stopped._'); finish(a, [], text); return; }
+        setSub(a, e && e.code === 'rate_limited' ? 'Lots of questions right now, so here’s a quick answer from his portfolio.' : 'Couldn’t reach Claude, so here’s a quick answer from his portfolio.');
+        return askLocal(text, hits, a);
+      });
+  }
+  function typeOut(a, md, my, cards, text){
+    if (reduce) { setText(a, md); finish(a, cards, text); return Promise.resolve(); }
+    var words = md.split(/(\s+)/), i = 0, step = Math.max(2, Math.ceil(words.length / 45));
+    return new Promise(function(resolve){
+      (function tick(){
+        if (my && my.signal.aborted) { setText(a, words.slice(0, i).join('') + '\n\n_(stopped)_'); finish(a, cards, text); resolve(); return; }
+        i = Math.min(words.length, i + step);
+        setText(a, words.slice(0, i).join(''));
+        if (i >= words.length) { finish(a, cards, text); resolve(); return; }
+        setTimeout(tick, 22);
+      })();
+    });
+  }
+
+  /* Local: intent first, then the best excerpts, written out a few words at a time */
+  function sentences(s){ return (String(s).match(/[^.!?]+[.!?]+["”’)]?(?=\s|$)|[^.!?]+$/g) || [s]).map(function(x){ return x.trim(); }).filter(function(x){ return x.length > 20; }); }
+  function best(c, qt){
+    var ss = sentences(c.text).filter(function(s){
+      if (s === c.title || c.title.indexOf(s) >= 0 || /#[0-9a-f]{6}/i.test(s)) return false;
+      var w = s.toLowerCase().split(/\s+/), u = {}; w.forEach(function(x){ u[x] = 1; });
+      return Object.keys(u).length / w.length > .6;
+    });
+    var tset = {}; qt.forEach(function(t){ tset[t] = 1; });
+    var top = null, sc = 0;
+    ss.forEach(function(s, i){ var k = 0; toks(s).forEach(function(t){ if (tset[t]) k += 1; }); k -= i * .01; if (k > sc) { sc = k; top = s; } });
+    return top ? clip(top, 240) : '';
+  }
+  function lead(c){
+    if (c.kind === 'case') return '**' + c.caseTitle + '**: ' + clip(META[c.caseId].dek, 240);
+    if (c.kind === 'sec') return '**' + c.caseShort + ' · ' + c.label + '**: ' + clip(c.title, 220);
+    return '**' + c.label + '**: ' + clip(c.title, 200);
+  }
+  function featuredCards(){ return FEATURED.map(function(k){ return byId['c-' + k]; }).filter(Boolean); }
+  function compose(text, hits){
+    var t = text.toLowerCase(), qt = toks(text), short = text.split(/\s+/).length <= 10;
+    var cid = caseIn(text), ctxCase = cid || (text.split(/\s+/).length <= 8 ? lastCase : null);
+    if (/\b(contact|e-?mail|reach|get in touch|hire|resume|résumé|cv|linkedin|available|open to)\b/.test(t)) {
+      return { md: (META.email ? 'You can reach Praharsh at **' + META.email + '**. ' : '') + 'His status on the page: ' + META.status + '.\n\nHis résumé and LinkedIn are linked in the contact section at the bottom of the page.', cards: [byId['h-contact'], byId['h-intro']].filter(Boolean) };
+    }
+    if (ctxCase && META[ctxCase] && /\b(impact|results?|outcomes?|moved?|numbers?|metrics?|uplift|succe\w*|achiev\w*)\b/.test(t)) {
+      var art = document.querySelector('article.cs[data-case="' + ctxCase + '"]'), M = META[ctxCase];
+      var stats = art ? [].slice.call(art.querySelectorAll('.cs-stat'), 0, 4).map(statOf).filter(function(x){ return x.b; }) : [];
+      var osec = KB.filter(function(c){ return c.caseId === ctxCase && c.kind === 'sec' && /outcome|impact|result|moved/i.test(c.label + ' ' + c.secId); });
+      return { md: '**' + M.short + '**' + (M.outcome ? ': ' + M.outcome + '.' : '.') + (stats.length ? '\n\n' + stats.map(function(x){ return '- **' + x.b + '** ' + x.t; }).join('\n') : ''), cards: osec.slice(0, 2).concat([byId['c-' + ctxCase]]).filter(Boolean) };
+    }
+    if (/\b(inclusive|accessib\w*|first[- ]time|internet users|new to (the )?internet|literacy|hindi|regional|vernacular|bharat|tier[- ]?(2|3|two|three)|low[- ]end|constraints?)\b/.test(t) && (META.inc || []).length) {
+      var line = sentences(META.intro || '').filter(function(x){ return /inclusive design/i.test(x); })[0];
+      var inc = META.inc.filter(function(x){ return !cid || x.cid === cid; }).slice(0, 5);
+      var secs = [], seen = {};
+      inc.forEach(function(x){ var c = byId['s-' + x.cid + '-' + x.sec]; if (c && !seen[c.id]) { seen[c.id] = 1; secs.push(c); } });
+      return { md: (line ? 'In his words: “' + line + '”\n\n' : '') + 'Where it shows up in his case studies:\n\n' + inc.map(function(x){ return '- **' + (META[x.cid] ? META[x.cid].short : x.cid) + '**' + (x.kind ? ' (' + x.kind.toLowerCase() + ')' : '') + ': ' + clip(x.body, 200); }).join('\n'), cards: secs.slice(0, 4) };
+    }
+    if (!cid && /\b(research|interviews?|usability|surveys?|field stud\w*|user stud\w*|talk(s|ed)? to users)\b/.test(t)) {
+      var rs = [], rseen = {};
+      FEATURED.concat(Object.keys(META).filter(function(k){ return META[k] && META[k].dek !== undefined && FEATURED.indexOf(k) < 0; })).forEach(function(k){
+        if (rs.length >= 4 || rseen[k]) return;
+        var RK = [/research/i, /shoppers said|people said|users said/i, /usability|testing|interview/i, /survey/i, /data said/i], c = null;
+        for (var ri = 0; ri < RK.length && !c; ri++) c = KB.filter(function(x){ return x.caseId === k && x.kind === 'sec' && RK[ri].test(x.label); })[0] || null;
+        if (c) { rseen[k] = 1; rs.push(c); }
+      });
+      var rl = sentences(META.intro || '').filter(function(x){ return /research/i.test(x); })[0];
+      var kq = (META.words || []).filter(function(w){ return /research/i.test(w.q); })[0];
+      return { md: (rl ? 'In his words: “' + rl + '”\n\n' : '') + 'What that looked like in his case studies:\n\n' + rs.map(function(c){ return '- **' + c.caseShort + ' · ' + c.label + '**: ' + clip(c.title, 200); }).join('\n')
+        + (kq ? '\n\n' + kq.n + ' (' + kq.r + '): “' + clip(kq.q.replace(/^[“"\s]+|[”"\s]+$/g, ''), 200) + '”' : ''), cards: rs };
+    }
+    if (/\b(say|said|testimonials?|feedback|colleagues?|managers?|like to work|working with him|worked with him|recommend)/.test(t) && !cid) {
+      var ws = (META.words || []).map(function(w, i){ var k = 0; toks(w.q).forEach(function(x){ if (qt.indexOf(x) >= 0 && ['people', 'who\'ve', 'whove'].indexOf(x) < 0) k++; }); return { w: w, k: k, i: i }; });
+      ws.sort(function(x, y){ return (y.k - x.k) || (x.i - y.i); });
+      var pickd = ws.slice(0, 3);
+      return { md: 'Here’s what people who’ve shipped with him say:\n\n' + pickd.map(function(x){ return '- “' + clip(x.w.q.replace(/^[“"\s]+|[”"\s]+$/g, ''), 220) + '” **' + x.w.n + '**, ' + x.w.r; }).join('\n'),
+        cards: pickd.map(function(x){ return KB.filter(function(c){ return c.label === 'What people say' && c.title.indexOf(x.w.n) === 0; })[0]; }).filter(Boolean) };
+    }
+    if (short && !cid && /\b(built|build|side projects?|vibe|coded|apps? he|tools?)\b|\bai\b/.test(t)) {
+      return { md: 'He designs and ships these solo, with AI doing the typing: no team, no backlog.\n\n' + (META.tools || []).slice(0, 5).map(function(x){ return '- **' + x.name + '**: ' + clip(x.what, 150); }).join('\n'), cards: KB.filter(function(c){ return c.label === 'Built with AI'; }).slice(0, 4) };
+    }
+    if (short && !cid && /\b(shipped|launched|live|built at meesho|results?|impact|numbers?|metrics?|moved)\b/.test(t)) {
+      return { md: 'A few things he’s shipped at Meesho, with what they moved:\n\n' + (META.shipped || []).slice(0, 7).map(function(s){ return '- ' + s.cap + (s.met ? ': **' + s.met + '**' : ''); }).join('\n'), cards: KB.filter(function(c){ return c.label === 'Shipped at Meesho'; }).slice(0, 4) };
+    }
+    if (short && !cid && /\b(best|strongest|top|favou?rite|highlights?|case stud(y|ies)|portfolio|projects?|where (do|should) i start)\b/.test(t)) {
+      return { md: 'His portfolio leads with ' + (FEATURED.length === 1 ? 'this case study' : 'these ' + FEATURED.length + ' case studies') + ':\n\n' + FEATURED.map(function(k){ var m = META[k]; return '- **' + m.title + '**: ' + clip(sentences(m.dek)[0] || m.dek, 200) + (m.outcome ? ' _Outcome: ' + m.outcome + '._' : ''); }).join('\n'), cards: featuredCards() };
+    }
+    if (short && !cid && /\b(skills?|strengths?|good at|superpowers?|expertise)\b/.test(t)) {
+      var all = {}; Object.keys(META).forEach(function(k){ (META[k] && META[k].skills || []).forEach(function(s){ all[s] = 1; }); });
+      return { md: 'The skills he lists on his portfolio: **' + (META.tags || []).join(', ') + '**.' + (Object.keys(all).length ? '\n\nHis case studies add: ' + Object.keys(all).join(', ') + '.' : ''), cards: featuredCards() };
+    }
+    if (short && !cid && /\b(experience|years?|background|education|college|iit|career|companies)\b/.test(t)) {
+      var ab = sentences(META.about || '').filter(function(s){ return /IIT|designed across|Meesho/i.test(s); }).slice(0, 3).join(' ');
+      return { md: '**' + META.status + '**.' + (ab ? '\n\n' + ab : ''), cards: [byId['h-about']].concat(KB.filter(function(c){ return c.kind === 'case' && FEATURED.indexOf(c.caseId) < 0; }).slice(0, 3)).filter(Boolean) };
+    }
+    if (/^(who is|who's|whos|tell me about|introduce|about)\b/.test(t) && !cid || /^praharsh\??$/.test(t)) {
+      return { md: 'In his own words: “' + META.intro + '”\n\n' + META.status + '.', cards: featuredCards() };
+    }
+    /* retrieval */
+    var top = cid ? hits.filter(function(h){ return h.c.caseId === cid; }).slice(0, 3).map(function(h){ return h.c; }) : diverse(hits, 3, 1);
+    if (!top.length || hits[0].s < 2.2) {
+      return { md: 'I couldn’t find that in Praharsh’s portfolio. It covers his case studies (' + FEATURED.map(function(k){ return META[k].short; }).join(', ') + '), how he researches and decides, what he’s built with AI, and how to reach him.', cards: featuredCards() };
+    }
+    var parts = top.map(function(c){ var b = best(c, qt); return '- ' + lead(c) + (b && c.kind !== 'case' ? ' ' + b : ''); });
+    return { md: 'Here’s what his portfolio says' + (cid && META[cid] ? ' about **' + META[cid].short + '**' : '') + ':\n\n' + parts.join('\n'), cards: top };
+  }
+  function askLocal(text, hits, a){
+    var my = ctl, res = compose(text, hits);
+    return wait(380 + Math.random() * 260).then(function(){
+      if (my && my.signal.aborted) { setText(a, '_Stopped._'); finish(a, [], text); return; }
+      return typeOut(a, res.md, my, res.cards, text);
+    });
+  }
+
+  placeholder();
 })();
 </script>
 
