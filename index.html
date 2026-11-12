@@ -5218,8 +5218,8 @@ document.addEventListener('wheel', function(e){
       var dek = T(a.querySelector('.cs-dek'));
       var facts = [].map.call(a.querySelectorAll('.cs-fact'), function(f){ return T(f.querySelector('span')) + ': ' + T(f.querySelector('b')); });
       var skills = [].map.call(a.querySelectorAll('.cs-skills li'), T);
-      var outcome = ''; facts.forEach(function(f){ if (/^outcome/i.test(f)) outcome = f.replace(/^outcome:\s*/i, ''); });
-      META[cid] = { title: title, short: short, dek: dek, outcome: outcome, skills: skills };
+      var outcome = '', role = ''; facts.forEach(function(f){ if (/^outcome/i.test(f)) outcome = f.replace(/^outcome:\s*/i, ''); if (/^role/i.test(f)) role = f.replace(/^role:\s*/i, ''); });
+      META[cid] = { title: title, short: short, dek: dek, outcome: outcome, role: role, skills: skills };
       add({ id: 'c-' + cid, kind: 'case', caseId: cid, caseTitle: title, caseShort: short, label: 'Case study', title: title,
         text: dek + ' ' + facts.join('. ') + (skills.length ? '. Skills: ' + skills.join(', ') : '') + '.' });
       [].forEach.call(a.querySelectorAll('section.cs-sec[id]'), function(s){
@@ -5294,6 +5294,32 @@ document.addEventListener('wheel', function(e){
     VOCAB = Object.keys(df);
   }
 
+  /* ---------------- where the visitor is: the open case study and the section on screen ---------------- */
+  var VIEW = {};
+  var DEIXIS = /\b(this|that|these|here|current|it|its|summar\w*|tl;?dr|overview|recap|walk me through)\b/i;
+  var HOME = { top: 'intro', ui: 'Shipped at Meesho', work: 'case studies', words: 'testimonials', tools: 'things he built with AI', teardowns: 'teardowns', about: 'about him', contact: 'contact' };
+  function viewing(){
+    var v = {};
+    if (document.body.classList.contains('is-case')) {
+      var art = document.querySelector('article.cs[data-case]:not([hidden])');
+      if (art) {
+        v.caseId = art.getAttribute('data-case');
+        [].forEach.call(art.querySelectorAll('section.cs-sec[id]'), function(sec){ if (sec.getBoundingClientRect().top < window.innerHeight * .35) v.secId = sec.id; });
+      }
+    } else {
+      Object.keys(HOME).forEach(function(id){ var el = document.getElementById(id); if (el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight * .4 && r.bottom > 80) v.home = id; } });
+    }
+    return v;
+  }
+  function hardCase(text){ return caseIn(text) || (VIEW.caseId && META[VIEW.caseId] && DEIXIS.test(text) ? VIEW.caseId : null); }
+  function viewDesc(){
+    if (VIEW.caseId && META[VIEW.caseId]) {
+      var sc = VIEW.secId && byId['s-' + VIEW.caseId + '-' + VIEW.secId];
+      return 'the case study “' + META[VIEW.caseId].title + '” [c-' + VIEW.caseId + ']' + (sc ? ', scrolled to its “' + sc.label + '” section [' + sc.id + ']' : '');
+    }
+    return 'the home page' + (VIEW.home ? ', at the ' + HOME[VIEW.home] + ' section' : '');
+  }
+
   /* ---------------- search ---------------- */
   var CASEKW = [
     ['vsku', /\b(vsku|sizes?|variants?|variations?|out of stock|other sellers?|another seller)\b/i],
@@ -5321,19 +5347,23 @@ document.addEventListener('wheel', function(e){
     build(); opts = opts || {};
     var qt = toks(text); if (!qt.length) return [];
     var ex = expand(qt, opts.live), terms = Object.keys(ex);
-    var cid = caseIn(text), ctx = (!cid && opts.ctx && lastCase && text.split(/\s+/).length <= 12) ? lastCase : null;
+    var cid = hardCase(text), short = text.split(/\s+/).length <= 12;
+    var ctx = cid ? null : (VIEW.caseId && META[VIEW.caseId] ? VIEW.caseId : (opts.ctx && lastCase && short ? lastCase : null));
+    var here = VIEW.secId && /\b(this section|this part|this screen|here)\b/i.test(text) ? VIEW.secId : null;
     var phr = []; for (var i = 0; i + 1 < qt.length; i++) phr.push(qt[i] + ' ' + qt[i + 1]);
     var out = [];
     KB.forEach(function(c){
       var s = 0, hit = 0;
       terms.forEach(function(t){ var f = c.tf[t]; if (f) { s += ex[t] * IDF[t] * (f * 2.2 / (f + 1.2)); if (ex[t] >= .99) hit++; } });
+      if (!s && here && c.secId === here) s = 1;
       if (!s) return;
       s *= 1 + .25 * Math.max(0, hit - 1);
       phr.forEach(function(p){ if (c.low.indexOf(p) >= 0) s += 1.5; });
       if (cid) { if (c.caseId === cid) s = s * 1.7 + 2; else if (c.caseId) s *= .6; }
-      if (ctx && c.caseId === ctx) s = s * 1.35 + .8;
+      if (ctx) { if (c.caseId === ctx) s = s * 1.5 + 1.2; else if (c.caseId) s *= .85; }
+      if (here && c.secId === here) s = s * 1.6 + 2.5;
       if (c.kind === 'case') s *= 1.08;
-      if (!cid && c.caseId && FEATURED.length) s *= FEATURED.indexOf(c.caseId) >= 0 ? 1.35 : .75;
+      if (!cid && !ctx && c.caseId && FEATURED.length) s *= FEATURED.indexOf(c.caseId) >= 0 ? 1.35 : .75;
       out.push({ c: c, s: s });
     });
     out.sort(function(a, b){ return b.s - a.s; });
@@ -5451,7 +5481,7 @@ document.addEventListener('wheel', function(e){
   }
   function setState(s){ state = s; R.setAttribute('data-state', s); placeholder(); if (s === 'focus') renderRows(); }
   function minimise(){ setState('idle'); q.blur(); }
-  function open(){ if (state === 'idle') setState(log.children.length ? 'chat' : 'focus'); }
+  function open(){ if (state === 'idle') { VIEW = viewing(); setState(log.children.length ? 'chat' : 'focus'); } }
   q.addEventListener('focus', open);
   q.addEventListener('pointerdown', open);
   q.addEventListener('input', function(){
@@ -5582,6 +5612,7 @@ document.addEventListener('wheel', function(e){
     var a = addAI();
     busy = true; R.classList.add('is-busy');
     ctl = new AbortController();
+    VIEW = viewing();
     var hits = search(text, { ctx: true });
     engReady.then(function(){ return engine === 'claude' ? askClaude(text, hits, a) : engine === 'api' ? askApi(text, hits, a) : askLocal(text, hits, a); })
       .catch(function(){ setText(a, 'Something went wrong. Try asking again.'); done(); });
@@ -5607,6 +5638,7 @@ document.addEventListener('wheel', function(e){
       '- Talk about Praharsh in the third person, plainly and warmly, like a colleague who knows his work well.',
       '- Lead with the direct answer. Keep it short: 2 to 5 sentences, or up to 4 bullets when listing.',
       '- Put the key fact or number in **bold**. Quote numbers exactly as written and keep their meaning as the excerpt gives it: never add what a percentage is a share of, a sample size or a timeframe the excerpt doesn’t state. Never invent metrics, quotes, names, employers, dates or results.',
+      '- The latest message says what the visitor is viewing. Words like this, here, it or this case study refer to that page or section. Never mention “the visitor” or guess aloud what they meant; just answer.',
       '- No headings, no links, no emoji.',
       '- End with one final line, exactly: SOURCES: then up to 3 excerpt ids in square-bracket form without the brackets (for example s-gold-gd-research, c-vsku), comma-separated, most relevant first. Write SOURCES: none if nothing fits.',
       '',
@@ -5634,11 +5666,18 @@ document.addEventListener('wheel', function(e){
     if (/^\s*none/i.test(m[1])) return [];
     return m[1].split(/[,\s]+/).map(function(s){ return s.replace(/[\[\]`*.()]/g, '').trim(); }).filter(function(s){ return byId[s]; }).map(function(s){ return byId[s]; });
   }
+  function withView(ex){
+    var vc = VIEW.caseId && META[VIEW.caseId] ? VIEW.caseId : null; if (!vc) return ex;
+    var art = document.querySelector('article.cs[data-case="' + vc + '"]'), first = art && art.querySelector('section.cs-sec[id]');
+    var need = [byId['c-' + vc], first && byId['s-' + vc + '-' + first.id], VIEW.secId && byId['s-' + vc + '-' + VIEW.secId]].filter(Boolean);
+    need.reverse().forEach(function(c){ if (ex.indexOf(c) < 0) ex.unshift(c); });
+    return ex.slice(0, 10);
+  }
   function askClaude(text, hits, a){
-    var ex = diverse(hits, 9, 4);
+    var ex = withView(diverse(hits, 9, 4));
     var turns = [{ role: 'user', content: rules() }];
     hist.slice(-6).forEach(function(t){ turns.push(t); });
-    turns.push({ role: 'user', content: 'Portfolio excerpts for this question:\n\n' + (ex.length ? ex.map(excerpt).join('\n\n') : '(none matched)') + '\n\nVisitor’s question: ' + text });
+    turns.push({ role: 'user', content: 'The visitor is viewing ' + viewDesc() + '.\n\nPortfolio excerpts for this question:\n\n' + (ex.length ? ex.map(excerpt).join('\n\n') : '(none matched)') + '\n\nVisitor’s question: ' + text });
     var my = ctl;
     return sampleFn(turns, { modelTier: 'quick', cache: false, signal: my.signal, onText: function(u){ var v = visible(u.text); if (v) setText(a, v); } })
       .then(function(r){
@@ -5659,8 +5698,8 @@ document.addEventListener('wheel', function(e){
 
   /* Hosted: the same overview + excerpts go to Praharsh's Netlify function, which holds the API key and asks Claude */
   function askApi(text, hits, a){
-    var ex = diverse(hits, 9, 4), my = ctl;
-    var ctx = overview() + '\n\nEXCERPTS FOR THIS QUESTION\n\n' + (ex.length ? ex.map(excerpt).join('\n\n') : '(none matched)');
+    var ex = withView(diverse(hits, 9, 4)), my = ctl;
+    var ctx = 'THE VISITOR IS VIEWING ' + viewDesc() + '.\n\n' + overview() + '\n\nEXCERPTS FOR THIS QUESTION\n\n' + (ex.length ? ex.map(excerpt).join('\n\n') : '(none matched)');
     return fetch(API, { method: 'POST', headers: { 'content-type': 'application/json' }, signal: my.signal,
         body: JSON.stringify({ question: text, context: ctx.slice(0, 23000), history: hist.slice(-6) }) })
       .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if (!r.ok || !j.text) throw { code: j.error || 'upstream_error' }; return j; }); })
@@ -5711,7 +5750,19 @@ document.addEventListener('wheel', function(e){
   function featuredCards(){ return FEATURED.map(function(k){ return byId['c-' + k]; }).filter(Boolean); }
   function compose(text, hits){
     var t = text.toLowerCase(), qt = toks(text), short = text.split(/\s+/).length <= 10;
-    var cid = caseIn(text), ctxCase = cid || (text.split(/\s+/).length <= 8 ? lastCase : null);
+    var cid = hardCase(text), ctxCase = cid || (VIEW.caseId && META[VIEW.caseId] ? VIEW.caseId : null) || (text.split(/\s+/).length <= 8 ? lastCase : null);
+    var hsec = VIEW.caseId && VIEW.secId && /\b(this section|this part|this screen|here)\b/i.test(text) ? byId['s-' + VIEW.caseId + '-' + VIEW.secId] : null;
+    if (hsec && !caseIn(text)) {
+      return { md: '**' + hsec.caseShort + ' \u00b7 ' + hsec.label + '**: ' + hsec.title + '\n\n' + clip(sentences(hsec.text).slice(0, 3).join(' '), 440), cards: [hsec] };
+    }
+    if (ctxCase && META[ctxCase] && /\b(summar\w*|tl;?dr|overview|recap|short version|walk me through|what is (this|it) about|explain (this|it))\b/.test(t)) {
+      var SM = META[ctxCase], sart = document.querySelector('article.cs[data-case="' + ctxCase + '"]');
+      var sfirst = sart && sart.querySelector('section.cs-sec[id]');
+      var built = sfirst ? [].slice.call(sfirst.querySelectorAll('.cs-list li'), 0, 3).map(T) : [];
+      var souts = KB.filter(function(c){ return c.caseId === ctxCase && c.kind === 'sec' && /outcome|impact|result|moved/i.test(c.label + ' ' + c.secId); });
+      return { md: '**' + SM.title + '**\n\n' + SM.dek + (built.length ? '\n\nWhat was built:\n' + built.map(function(b){ return '- ' + clip(b, 180); }).join('\n') : '') + (SM.outcome ? '\n\n**Outcome:** ' + SM.outcome : '') + (SM.role ? '\n\n**His role:** ' + SM.role : ''),
+        cards: [byId['c-' + ctxCase], sfirst && byId['s-' + ctxCase + '-' + sfirst.id]].concat(souts.slice(0, 1)).filter(Boolean) };
+    }
     if (/\b(contact|e-?mail|reach|get in touch|hire|resume|résumé|cv|linkedin|available|open to)\b/.test(t)) {
       return { md: (META.email ? 'You can reach Praharsh at **' + META.email + '**. ' : '') + 'His status on the page: ' + META.status + '.\n\nHis résumé and LinkedIn are linked in the contact section at the bottom of the page.', cards: [byId['h-contact'], byId['h-intro']].filter(Boolean) };
     }
