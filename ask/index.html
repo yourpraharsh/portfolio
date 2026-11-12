@@ -5447,7 +5447,7 @@ document.addEventListener('wheel', function(e){
 
   /* ---------------- states ---------------- */
   function placeholder(){
-    q.placeholder = log.children.length && state !== 'focus' ? 'Ask a follow-up…' : (mqSmall.matches ? 'Ask about Praharsh and his work' : 'Ask what you want to know about Praharsh and his work');
+    q.placeholder = state === 'chat' && log.children.length ? 'Ask a follow-up…' : (mqSmall.matches ? 'Ask about Praharsh and his work' : 'Ask what you want to know about Praharsh and his work');
   }
   function setState(s){ state = s; R.setAttribute('data-state', s); placeholder(); if (s === 'focus') renderRows(); }
   function minimise(){ setState('idle'); q.blur(); }
@@ -5606,7 +5606,7 @@ document.addEventListener('wheel', function(e){
       '- Use ONLY the portfolio overview below and the excerpts sent with each question. If they don’t cover something, say his portfolio doesn’t say, and point to what it does cover or to his email.',
       '- Talk about Praharsh in the third person, plainly and warmly, like a colleague who knows his work well.',
       '- Lead with the direct answer. Keep it short: 2 to 5 sentences, or up to 4 bullets when listing.',
-      '- Put the key fact or number in **bold**. Quote numbers exactly as written. Never invent metrics, quotes, names, employers, dates or results.',
+      '- Put the key fact or number in **bold**. Quote numbers exactly as written and keep their meaning as the excerpt gives it: never add what a percentage is a share of, a sample size or a timeframe the excerpt doesn’t state. Never invent metrics, quotes, names, employers, dates or results.',
       '- No headings, no links, no emoji.',
       '- End with one final line, exactly: SOURCES: then up to 3 excerpt ids in square-bracket form without the brackets (for example s-gold-gd-research, c-vsku), comma-separated, most relevant first. Write SOURCES: none if nothing fits.',
       '',
