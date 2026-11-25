@@ -2722,6 +2722,23 @@ body.pllm-on,body.pllm-on.is-case{padding-bottom:calc(92px + env(safe-area-inset
 }
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.pllm-win{background:var(--sl-solid)}}
 .pllm[data-state="idle"] .pllm-win:hover{transform:translateY(-2px)}
+/* gradient ring so the bar gets noticed: brand rose -> marigold -> violet, slowly turning while idle */
+@property --pllm-a{syntax:'<angle>';inherits:false;initial-value:0deg}
+.pllm-win::before{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;padding:1.75px;pointer-events:none;
+  background:conic-gradient(from var(--pllm-a),#E0116B,#FF8A3D,#FFC23D,#6B4BE8,#E0116B);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+  animation:pllmSpin 6s linear infinite;opacity:.35}
+@keyframes pllmSpin{to{--pllm-a:360deg}}
+.pllm[data-state="idle"] .pllm-win{width:min(548px,calc(100vw - 28px));background:color-mix(in srgb,var(--sl-solid) 95%,transparent);box-shadow:0 18px 44px -20px rgba(22,18,26,.26),0 0 0 .5px rgba(0,0,0,.06),var(--sl-hi)}
+.pllm-halo{position:absolute;left:50%;bottom:-3px;width:min(548px,calc(100vw - 28px));height:58px;transform:translateX(-50%);border-radius:30px;pointer-events:none;background:conic-gradient(from var(--pllm-a),#E0116B,#FF8A3D,#FFC23D,#6B4BE8,#E0116B);filter:blur(18px);opacity:.38;animation:pllmSpin 6s linear infinite;transition:opacity .3s}
+.pllm:not([data-state="idle"]) .pllm-halo{opacity:0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pllm-halo{opacity:.5}}
+:root[data-theme="dark"] .pllm-halo{opacity:.5}
+.pllm[data-state="idle"] .pllm-q::placeholder{color:var(--sl-ink2)}
+.pllm[data-state="focus"] .pllm-win::before,.pllm[data-state="chat"] .pllm-win::before{animation-duration:14s;opacity:.3}
+@media (max-width:720px){.pllm[data-state="chat"] .pllm-win::before{display:none}}
+@media (prefers-reduced-motion:reduce){.pllm-win::before,.pllm-halo{animation:none}}
+
 .pllm[data-state="focus"] .pllm-win{width:min(680px,calc(100vw - 28px));border-radius:22px}
 .pllm[data-state="focus"] .pllm-win,.pllm[data-state="chat"] .pllm-win{background:color-mix(in srgb,var(--sl-solid) 90%,transparent)}
 .pllm[data-state="chat"] .pllm-win{width:min(760px,calc(100vw - 28px));border-radius:22px}
@@ -2736,7 +2753,7 @@ body.pllm-on,body.pllm-on.is-case{padding-bottom:calc(92px + env(safe-area-inset
 .pllm[data-state="chat"] .pllm-sugg{display:none}
 
 /* field */
-.pllm-bar{display:flex;align-items:center;gap:10px;height:52px;padding:0 10px 0 17px;margin:0;transition:height .3s cubic-bezier(.2,.8,.2,1)}
+.pllm-bar{display:flex;align-items:center;gap:10px;height:52px;padding:0 17px 0 17px;margin:0;transition:height .3s cubic-bezier(.2,.8,.2,1)}
 .pllm[data-state="focus"] .pllm-bar,.pllm[data-state="chat"] .pllm-bar{height:60px;border-top:1px solid var(--sl-line)}
 .pllm-glass{flex:none;width:19px;height:19px;color:var(--sl-ink3)}
 .pllm[data-state="focus"] .pllm-glass,.pllm[data-state="chat"] .pllm-glass{width:22px;height:22px}
@@ -3290,7 +3307,7 @@ body.pllm-on,body.pllm-on.is-case{padding-bottom:calc(92px + env(safe-area-inset
         Now on <strong>commerce at Meesho</strong>, often for someone's <strong>first ever online purchase</strong>.
       </p>
       <p>
-        The rest happens on the road: <strong>20 of 28 states</strong>, <strong>3 of 8 UTs</strong>, five countries,
+        The rest happens on the road: <strong>20 of 28 states</strong>, <strong>3 of 8 UTs</strong>, six countries,
         <strong>Japan next</strong>. Every trip doubles as a field study. People behave differently when they aren't
         being observed on purpose, and that's where I keep relearning <strong>human behaviour</strong>.
       </p>
@@ -3310,7 +3327,7 @@ body.pllm-on,body.pllm-on.is-case{padding-bottom:calc(92px + env(safe-area-inset
       <div class="stat-strip" style="margin-top:1.75rem">
         <div class="stat"><b>20</b><span>of 28 states</span></div>
         <div class="stat"><b>3</b><span>of 8 UTs</span></div>
-        <div class="stat"><b>5</b><span>countries</span></div>
+        <div class="stat"><b>6</b><span>countries</span></div>
       </div>
       <div class="places" role="group" aria-label="Countries">
         <span class="pill is-disabled" title="No photos from Nepal yet"><span class="flag"><span class="emo">🇳🇵</span><span class="iso">NP</span></span>Nepal</span>
@@ -3318,6 +3335,7 @@ body.pllm-on,body.pllm-on.is-case{padding-bottom:calc(92px + env(safe-area-inset
         <button type="button" class="pill" data-country="vietnam" aria-label="Show Vietnam photos"><span class="flag"><span class="emo">🇻🇳</span><span class="iso">VN</span></span>Vietnam</button>
         <button type="button" class="pill" data-country="singapore" aria-label="Show Singapore photos"><span class="flag"><span class="emo">🇸🇬</span><span class="iso">SG</span></span>Singapore</button>
         <button type="button" class="pill" data-country="australia" aria-label="Show Australia photos"><span class="flag"><span class="emo">🇦🇺</span><span class="iso">AU</span></span>Australia</button>
+        <button type="button" class="pill" data-country="malaysia" aria-label="Show Malaysia photos"><span class="flag"><span class="emo">🇲🇾</span><span class="iso">MY</span></span>Malaysia</button>
         <span class="pill is-next" title="Planned"><span class="flag"><span class="emo">🇯🇵</span><span class="iso">JP</span></span>Japan<span class="tag-next">Next</span></span>
       </div>
       <svg viewBox="0 0 260 40" style="width:200px;margin-top:1.5rem;display:block" aria-hidden="true">
@@ -3332,7 +3350,7 @@ body.pllm-on,body.pllm-on.is-case{padding-bottom:calc(92px + env(safe-area-inset
   <div class="postcards" id="photos">
     <div class="pc-head">
       <span class="eyebrow"><span class="dot"></span>From the road</span>
-      <p class="note">Thailand, Vietnam, Singapore, Australia. Hover to pause.</p>
+      <p class="note">Thailand, Vietnam, Singapore, Australia, Malaysia. Hover to pause.</p>
     </div>
     <div class="pc-marquee">
       <div class="pc-track">
@@ -3398,6 +3416,18 @@ body.pllm-on,body.pllm-on.is-case{padding-bottom:calc(92px + env(safe-area-inset
       <figure class="pc"><img src="images/travel/au-15-cafe.38757afa.webp" data-file="images/travel/au-15-cafe.webp" width="270" height="480" alt="Café counter" draggable="false" loading="lazy" decoding="async"></figure>
       <figure class="pc"><img src="images/travel/au-16-surfers.76310be8.webp" data-file="images/travel/au-16-surfers.webp" width="270" height="480" alt="Surfers at golden hour" draggable="false" loading="lazy" decoding="async"></figure>
       <figure class="pc"><img src="images/travel/au-17-brunch.7f9353ab.webp" data-file="images/travel/au-17-brunch.webp" width="270" height="480" alt="Brunch" draggable="false" loading="lazy" decoding="async"></figure>
+      <span class="pc-tag" data-country="malaysia"><span class="dot"></span><span class="flag"><span class="emo">🇲🇾</span><span class="iso">MY</span></span>Malaysia</span>
+      <figure class="pc"><img src="images/travel/my-01-jalansultan.8a0b48f9.webp" data-file="images/travel/my-01-jalansultan.webp" width="270" height="480" alt="Neon food signs on Jalan Sultan at night, Kuala Lumpur" draggable="false" loading="lazy" decoding="async"></figure>
+      <figure class="pc"><img src="images/travel/my-02-lanterns.2bb60d8d.webp" data-file="images/travel/my-02-lanterns.webp" width="270" height="480" alt="Lantern-lit lane under a lit-up tower, Kuala Lumpur" draggable="false" loading="lazy" decoding="async"></figure>
+      <figure class="pc"><img src="images/travel/my-03-kombucha.fd26c037.webp" data-file="images/travel/my-03-kombucha.webp" width="270" height="480" alt="Fat Tiger kombucha boxes" draggable="false" loading="lazy" decoding="async"></figure>
+      <figure class="pc"><img src="images/travel/my-04-brunch.7a8279a4.webp" data-file="images/travel/my-04-brunch.webp" width="270" height="480" alt="Brunch by a shophouse window" draggable="false" loading="lazy" decoding="async"></figure>
+      <figure class="pc"><img src="images/travel/my-05-mural.dfd13a3e.webp" data-file="images/travel/my-05-mural.webp" width="270" height="480" alt="Street mural of kids playing basketball, George Town" draggable="false" loading="lazy" decoding="async"></figure>
+      <figure class="pc"><img src="images/travel/my-06-campervan.4924d61f.webp" data-file="images/travel/my-06-campervan.webp" width="270" height="480" alt="Vintage camper van in the greenery" draggable="false" loading="lazy" decoding="async"></figure>
+      <figure class="pc"><img src="images/travel/my-07-journal.f1ea877c.webp" data-file="images/travel/my-07-journal.webp" width="270" height="480" alt="Journal café in an old shophouse, George Town" draggable="false" loading="lazy" decoding="async"></figure>
+      <figure class="pc"><img src="images/travel/my-08-penanghill.aa48a91f.webp" data-file="images/travel/my-08-penanghill.webp" width="270" height="480" alt="View down the Penang Hill railway" draggable="false" loading="lazy" decoding="async"></figure>
+      <figure class="pc"><img src="images/travel/my-09-cat.901de383.webp" data-file="images/travel/my-09-cat.webp" width="270" height="480" alt="Café cat on a rattan chair" draggable="false" loading="lazy" decoding="async"></figure>
+      <figure class="pc"><img src="images/travel/my-10-firestation.bfb99a17.webp" data-file="images/travel/my-10-firestation.webp" width="270" height="480" alt="Central Fire Station (1908), George Town" draggable="false" loading="lazy" decoding="async"></figure>
+      <figure class="pc"><img src="images/travel/my-11-petronas.1172c856.webp" data-file="images/travel/my-11-petronas.webp" width="270" height="480" alt="Petronas Tower at night, Kuala Lumpur" draggable="false" loading="lazy" decoding="async"></figure>
       </div>
     </div>
   </div>
@@ -5072,7 +5102,7 @@ document.addEventListener('wheel', function(e){
 
 <!-- ================= PRAHARSH LLM (variant 6) ================= -->
 <div class="pllm" id="pllm" data-state="idle" data-api="https://portfoliopraharsh.netlify.app/api/ask">
-  <div class="pllm-win" role="search" aria-label="Ask about Praharsh and his work">
+  <span class="pllm-halo" aria-hidden="true"></span><div class="pllm-win" role="search" aria-label="Ask about Praharsh and his work">
     <div class="pllm-panel"><div class="pllm-panel-in">
       <div class="pllm-head">
         <span class="pllm-mk" aria-hidden="true"></span>
